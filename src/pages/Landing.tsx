@@ -571,7 +571,7 @@ function FeaturesZigZag() {
   const features = [
     {
       title: '',
-      image: '/assets/ventas-cajas.png',
+      image: '/assets/ventas-cajas.png?v=1.0.6',
       description: 'Centralizá todo tu proceso de ventas en una única pantalla, diseñadas para operar rápido, sin errores y sin cambiar de entorno.',
       lines: [
         'Gestión unificada: Cotizaciones, remitos, facturación y retiros de cuentas corrientes en un solo lugar.',
@@ -583,7 +583,7 @@ function FeaturesZigZag() {
     },
     {
       title: '',
-      image: '/assets/catalogo-inventario.png',
+      image: '/assets/catalogo-inventario.png?v=1.0.6',
       description: 'Control total de tus productos, precios y stock en un solo lugar.',
       lines: [
         'Carga flexible: Productos manuales o importalos desde Excel.',
