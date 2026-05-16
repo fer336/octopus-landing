@@ -2,10 +2,9 @@ import Button from '../components/ui/Button'
 import { ArrowLeft } from 'lucide-react'
 import AnimatedTentacleLogo from '../components/ui/AnimatedTentacleLogo'
 
-const OCTOPUS_TRACK_LOGIN_URL = import.meta.env.VITE_OCTOPUS_TRACK_LOGIN_URL
 const OCTOPUS_FLOW_LOGIN_URL = import.meta.env.VITE_OCTOPUS_FLOW_LOGIN_URL
 
-const DEFAULT_OCTOPUS_TRACK_LOGIN_URL = 'https://app.octopustrack.shop'
+const OCTOPUS_TRACK_LOGIN_URL = 'https://app.octopustrack.shop'
 const DEFAULT_OCTOPUS_FLOW_LOGIN_URL = 'https://login-flow.octopustrack.shop'
 
 function resolveLoginUrl(
@@ -25,11 +24,8 @@ const products = [
   {
     name: 'OctopusTrack',
     image: '/OC-ERP.png',
-    ...resolveLoginUrl(
-      'VITE_OCTOPUS_TRACK_LOGIN_URL',
-      OCTOPUS_TRACK_LOGIN_URL,
-      DEFAULT_OCTOPUS_TRACK_LOGIN_URL,
-    ),
+    href: OCTOPUS_TRACK_LOGIN_URL,
+    enabled: true,
     buttonClassName: '',
   },
   {
