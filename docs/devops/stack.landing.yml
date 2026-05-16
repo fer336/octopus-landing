@@ -1,6 +1,6 @@
 # stack.landing.yml — Landing Page Octopus
 # URL raw para Portainer: actualizar cuando exista el repo remoto de landing.
-# Ejemplo: https://raw.githubusercontent.com/fer336/octopustrack-landing/main/docs/devops/stack.landing.yml
+# Ejemplo: https://raw.githubusercontent.com/fer336/octopus-landing/main/docs/devops/stack.landing.yml
 # Fuente activa del stack landing en Portainer.
 # En Portainer: Stack > Git repository o Web editor usando esta URL raw.
 # Recomendado: IMAGE_TAG=latest. Para rollback, usar una versión numérica: 1.2.3
@@ -9,7 +9,7 @@ version: "3.9"
 
 services:
   landing:
-    image: ghcr.io/fer336/octopustrack-landing:${IMAGE_TAG:-latest}
+    image: ghcr.io/fer336/octopus-landing:${IMAGE_TAG:-latest}
     networks:
       - octopus_net
       - network_public

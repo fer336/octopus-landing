@@ -61,7 +61,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/octopustrack-landing
+          images: ghcr.io/${{ github.repository_owner }}/octopus-landing
           tags: |
             type=raw,value=${{ steps.docker_tags.outputs.version }}
             type=raw,value=latest
@@ -101,8 +101,8 @@ jobs:
 
             | Registry | Imagen |
             |---|---|
-            | GHCR | `ghcr.io/${{ github.repository_owner }}/octopustrack-landing:${{ needs.build-and-push.outputs.version }}` |
-            | GHCR latest | `ghcr.io/${{ github.repository_owner }}/octopustrack-landing:latest` |
+            | GHCR | `ghcr.io/${{ github.repository_owner }}/octopus-landing:${{ needs.build-and-push.outputs.version }}` |
+            | GHCR latest | `ghcr.io/${{ github.repository_owner }}/octopus-landing:latest` |
 
             ## Portainer
             El stack de landing debe usar `IMAGE_TAG=latest` o `${{ needs.build-and-push.outputs.version }}`.

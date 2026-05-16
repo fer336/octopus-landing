@@ -22,8 +22,8 @@ npm run build
 El workflow `.github/workflows/landing-deploy.yml` publica la imagen:
 
 ```txt
-ghcr.io/fer336/octopustrack-landing:<version>
-ghcr.io/fer336/octopustrack-landing:latest
+ghcr.io/fer336/octopus-landing:<version>
+ghcr.io/fer336/octopus-landing:latest
 ```
 
 Usar tags numéricos:
