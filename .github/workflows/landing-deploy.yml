@@ -83,6 +83,7 @@ jobs:
             VITE_LANDING_CHECKOUT_URL=${{ vars.VITE_LANDING_CHECKOUT_URL }}
             VITE_LANDING_MP_CHECKOUT_WEBHOOK_URL=${{ vars.VITE_LANDING_MP_CHECKOUT_WEBHOOK_URL }}
             VITE_LANDING_ASSET_WEBHOOK_URL=${{ vars.VITE_LANDING_ASSET_WEBHOOK_URL }}
+            VITE_VISITOR_WEBHOOK_URL=${{ vars.VITE_VISITOR_WEBHOOK_URL }}
             APP_VERSION=${{ steps.docker_tags.outputs.version }}
 
   github-release:
