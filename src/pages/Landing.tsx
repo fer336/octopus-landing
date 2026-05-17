@@ -57,23 +57,17 @@ function useVisitorTracking() {
   useEffect(() => {
     if (!VISITOR_WEBHOOK_URL || VISITOR_WEBHOOK_URL.startsWith('#')) return
 
-    const params = new URLSearchParams(window.location.search)
+    const search = new URLSearchParams(window.location.search)
+    const query = new URLSearchParams({
+      page_url: window.location.href,
+      referrer: document.referrer || '',
+      utm_source: search.get('utm_source') || '',
+      utm_medium: search.get('utm_medium') || '',
+      utm_campaign: search.get('utm_campaign') || '',
+      visited_at: new Date().toISOString(),
+    })
 
-    fetch(VISITOR_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        page_url: window.location.href,
-        referrer: document.referrer || null,
-        user_agent: navigator.userAgent,
-        utm_source: params.get('utm_source'),
-        utm_medium: params.get('utm_medium'),
-        utm_campaign: params.get('utm_campaign'),
-        utm_term: params.get('utm_term'),
-        utm_content: params.get('utm_content'),
-        visited_at: new Date().toISOString(),
-      }),
-    }).catch(() => {})
+    fetch(`${VISITOR_WEBHOOK_URL}?${query.toString()}`).catch(() => {})
   }, [])
 }
 
