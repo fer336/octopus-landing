@@ -9,6 +9,7 @@ const MP_CHECKOUT_WEBHOOK_URL =
   import.meta.env.VITE_LANDING_MP_CHECKOUT_WEBHOOK_URL || 'https://n8nw.qeva.xyz/webhook/octopus-mp'
 const ASSET_WEBHOOK_URL = import.meta.env.VITE_LANDING_ASSET_WEBHOOK_URL || '#webhook-no-configured'
 const FORM_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-formulario'
+const VISITOR_WEBHOOK_URL = import.meta.env.VITE_VISITOR_WEBHOOK_URL || ''
 const EXCEL_OFFER_BASE_PRICE = 20.99
 const EXCEL_OFFER_PRICE = 5.99
 
@@ -50,6 +51,30 @@ function scrollToId(id: string, event?: { preventDefault?: () => void }, desktop
   const offset = window.innerWidth >= 768 ? desktopOffset : mobileOffset
   const top = element.getBoundingClientRect().top + window.scrollY - offset
   window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' })
+}
+
+function useVisitorTracking() {
+  useEffect(() => {
+    if (!VISITOR_WEBHOOK_URL || VISITOR_WEBHOOK_URL.startsWith('#')) return
+
+    const params = new URLSearchParams(window.location.search)
+
+    fetch(VISITOR_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        page_url: window.location.href,
+        referrer: document.referrer || null,
+        user_agent: navigator.userAgent,
+        utm_source: params.get('utm_source'),
+        utm_medium: params.get('utm_medium'),
+        utm_campaign: params.get('utm_campaign'),
+        utm_term: params.get('utm_term'),
+        utm_content: params.get('utm_content'),
+        visited_at: new Date().toISOString(),
+      }),
+    }).catch(() => {})
+  }, [])
 }
 
 function useScrollReveal() {
@@ -932,6 +957,7 @@ function ThankYouPage() {
 // ========================================
 function LandingContent({ loginUrl }: { loginUrl: string }) {
   useScrollReveal()
+  useVisitorTracking()
 
   const [isCheckoutLoading, setIsCheckoutLoading] = useState(false)
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false)
