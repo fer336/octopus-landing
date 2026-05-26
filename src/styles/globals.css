@@ -242,6 +242,45 @@ body {
   appearance: textfield;
 }
 
+/* Aurora blob animations */
+@keyframes aurora-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  40%       { transform: translate(45px, -28px) scale(1.09); opacity: 0.85; }
+  70%       { transform: translate(-22px, 20px) scale(0.93); opacity: 0.5; }
+}
+
+@keyframes aurora-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  35%       { transform: translate(-38px, 22px) scale(1.07); opacity: 0.72; }
+  70%       { transform: translate(24px, -16px) scale(0.96); opacity: 0.42; }
+}
+
+.aurora-blob {
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.animate-aurora-1 { animation: aurora-1 15s ease-in-out infinite; }
+.animate-aurora-2 { animation: aurora-2 12s ease-in-out infinite; }
+
+/* Float */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+.animate-float          { animation: float 5s ease-in-out infinite; }
+.animate-float-delayed  { animation: float 5s ease-in-out 1.8s infinite; }
+
+/* Ping indicator */
+@keyframes ping-slow {
+  75%, 100% { transform: scale(2.2); opacity: 0; }
+}
+
+.animate-ping-slow { animation: ping-slow 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
 /* Respect reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   .reveal-on-scroll,
@@ -251,7 +290,12 @@ body {
   .animate-fade-in-up-delay-1,
   .animate-fade-in-up-delay-2,
   .animate-fade-in-up-delay-3,
-  .carousel-image {
+  .carousel-image,
+  .animate-aurora-1,
+  .animate-aurora-2,
+  .animate-float,
+  .animate-float-delayed,
+  .animate-ping-slow {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;

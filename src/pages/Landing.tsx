@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowRight, CheckCircle2, Menu, X, Zap, Shield, Users, MessageCircle, ChevronLeft, ChevronRight } from 'lucide-react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from '../components/ui/Button'
 import AnimatedTentacleLogo from '../components/ui/AnimatedTentacleLogo'
 
@@ -10,8 +12,7 @@ const MP_CHECKOUT_WEBHOOK_URL =
 const ASSET_WEBHOOK_URL = import.meta.env.VITE_LANDING_ASSET_WEBHOOK_URL || '#webhook-no-configured'
 const FORM_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-formulario'
 const VISITOR_WEBHOOK_URL = import.meta.env.VITE_VISITOR_WEBHOOK_URL || ''
-const EXCEL_OFFER_BASE_PRICE = 20.99
-const EXCEL_OFFER_PRICE = 5.99
+const EXCEL_OFFER_PRICE = 5
 
 interface LandingProps {
   loginUrl?: string
@@ -73,71 +74,103 @@ function useVisitorTracking() {
 
 function useScrollReveal() {
   useEffect(() => {
-    const nodes = Array.from(document.querySelectorAll<HTMLElement>('.reveal-on-scroll'))
-    if (nodes.length === 0) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.16, rootMargin: '0px 0px -8% 0px' },
-    )
+    gsap.registerPlugin(ScrollTrigger)
 
-    nodes.forEach((node) => observer.observe(node))
-    return () => observer.disconnect()
+    const elements = gsap.utils.toArray<HTMLElement>('.reveal-on-scroll')
+    if (elements.length === 0) return
+
+    elements.forEach((el) => {
+      const rawDelay = el.style.getPropertyValue('--reveal-delay') || getComputedStyle(el).getPropertyValue('--reveal-delay') || '0'
+      const delay = parseFloat(rawDelay) / 1000
+
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 36, filter: 'blur(6px)' },
+        {
+          opacity: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          duration: 0.85,
+          delay,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            once: true,
+          },
+        },
+      )
+    })
+
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill())
   }, [])
 }
 
-function CountUp({ value, suffix = '', duration = 900 }: { value: number; suffix?: string; duration?: number }) {
-  const [display, setDisplay] = useState(0)
-  const [started, setStarted] = useState(false)
+// 3D perspective tilt on hover — wraps any content
+function TiltCard({
+  children,
+  className = '',
+  strength = 10,
+  tag: Tag = 'div',
+  style,
+}: {
+  children: React.ReactNode
+  className?: string
+  strength?: number
+  tag?: 'div' | 'article'
+  style?: React.CSSProperties
+}) {
+  const ref = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    if (!started) return
-    let raf = 0
-    const start = performance.now()
+    const card = ref.current
+    if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setDisplay(Math.round(value * eased))
-      if (progress < 1) raf = requestAnimationFrame(tick)
+    let frame = 0
+
+    function onMove(e: MouseEvent) {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        const r = card!.getBoundingClientRect()
+        const x = (e.clientX - r.left) / r.width - 0.5
+        const y = (e.clientY - r.top) / r.height - 0.5
+        card!.style.transform = `perspective(1000px) rotateY(${x * strength}deg) rotateX(${-y * strength}deg) translateZ(6px)`
+      })
     }
 
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [duration, started, value])
+    function onEnter() {
+      card!.style.transition = 'transform 0.08s linear, box-shadow 0.3s ease'
+    }
+
+    function onLeave() {
+      cancelAnimationFrame(frame)
+      card!.style.transition = 'transform 0.55s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease'
+      card!.style.transform = ''
+    }
+
+    card.addEventListener('mousemove', onMove as EventListener)
+    card.addEventListener('mouseenter', onEnter)
+    card.addEventListener('mouseleave', onLeave)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      card.removeEventListener('mousemove', onMove as EventListener)
+      card.removeEventListener('mouseenter', onEnter)
+      card.removeEventListener('mouseleave', onLeave)
+    }
+  }, [strength])
 
   return (
-    <span
-      ref={(el) => {
-        if (!el || started) return
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                setStarted(true)
-                observer.disconnect()
-              }
-            })
-          },
-          { threshold: 0.4 },
-        )
-        observer.observe(el)
-      }}
-    >
-      {display}
-      {suffix}
-    </span>
+    <Tag ref={ref as React.RefObject<HTMLDivElement & HTMLElement>} className={className} style={style}>
+      {children}
+    </Tag>
   )
 }
 
-function PriceTicker({ value, duration = 1400 }: { value: number; duration?: number }) {
+
+function PriceTicker({ value, duration = 1400, decimals = 2 }: { value: number; duration?: number; decimals?: number }) {
   const [display, setDisplay] = useState(0)
   const [started, setStarted] = useState(false)
 
@@ -158,8 +191,8 @@ function PriceTicker({ value, duration = 1400 }: { value: number; duration?: num
   }, [duration, started, value])
 
   const formatted = display.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
   })
 
   return (
@@ -355,36 +388,47 @@ function Header({ loginUrl }: { loginUrl: string }) {
 }
 
 // ========================================
-// Hero — Staggered entrance with enhanced glow
+// Hero
 // ========================================
 function Hero() {
   return (
-    <section id="inicio" className="relative overflow-hidden bg-[#0a0a14] px-4 pb-24 pt-32 text-center sm:px-6 sm:pt-40 sm:pb-28">
-      {/* Ambient glow effects */}
-      <div className="absolute left-1/2 top-[-200px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-radial from-primary-600/20 via-primary-700/10 to-transparent blur-3xl" />
-      <div className="absolute left-[10%] top-[20%] h-[300px] w-[300px] rounded-full bg-primary-800/10 blur-[100px]" />
-      <div className="absolute right-[10%] top-[40%] h-[200px] w-[200px] rounded-full bg-violet-600/10 blur-[80px]" />
+    <section id="inicio" className="relative overflow-hidden bg-[#0a0a14] px-4 pb-24 pt-32 text-center sm:px-6 sm:pt-44 sm:pb-32">
+      {/* Aurora blobs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="aurora-blob animate-aurora-1 absolute left-[-8%] top-[-15%] h-[620px] w-[620px] bg-primary-700/35" />
+        <div className="aurora-blob animate-aurora-2 absolute right-[-8%] top-[0%] h-[520px] w-[520px] bg-violet-700/28" style={{ animationDelay: '-4s' }} />
+        <div className="aurora-blob animate-aurora-1 absolute bottom-[-12%] left-[38%] h-[420px] w-[420px] bg-indigo-800/22" style={{ animationDelay: '-9s' }} />
+      </div>
 
-      {/* Animated content */}
+      {/* Subtle grid */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_40%,black_20%,transparent_100%)]" />
+
       <div className="relative z-10 mx-auto max-w-4xl animate-fade-in-up">
-        <h1 className="text-[36px] font-bold leading-[1.08] tracking-tight text-white sm:text-5xl sm:leading-tight lg:text-6xl">
-          Agilizá tu negocio{' '}
-          <span className="bg-gradient-to-r from-primary-400 to-violet-400 bg-clip-text text-transparent">
-            desde hoy
+        {/* Floating status badge */}
+        <div className="mb-10 inline-flex animate-float items-center gap-2.5 rounded-full border border-primary-500/25 bg-primary-500/8 px-4 py-1.5 text-sm font-medium text-primary-300 backdrop-blur-md">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary-400" />
           </span>
+          Herramientas para tu negocio
+        </div>
+
+        <h1 className="text-[38px] font-bold leading-[1.06] tracking-tight text-white sm:text-5xl sm:leading-tight lg:text-[64px] lg:leading-[1.04]">
+          Agilizá tu negocio{' '}
+          <span className="text-primary-300">desde hoy</span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-white/60 sm:text-xl">
+        <p className="mx-auto mt-7 max-w-2xl text-lg text-white/55 sm:text-xl">
           Soluciones en Excel listas para usar: cotizá, controlá el stock y gestioná tu negocio sin complicaciones.
         </p>
 
-        <p className="mx-auto mt-3 max-w-xl text-base text-white/40 sm:text-lg">
+        <p className="mx-auto mt-3 max-w-xl text-base text-white/35 sm:text-lg">
           Cuando llegue el momento escalá a un sistema completo sin empezar de cero. Crecemos con vos.
         </p>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a href="#excel-start" onClick={(event) => scrollToId('excel-start', event, 100, 92)}>
-            <Button size="lg" className="min-w-[240px] gap-2 px-8 shadow-lg shadow-primary-500/25">
+            <Button size="lg" className="min-w-[240px] gap-2 px-8 shadow-lg shadow-primary-500/30">
               Cotizá con Excel
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -393,18 +437,28 @@ function Hero() {
             <Button
               size="lg"
               variant="outline"
-              className="min-w-[200px] border-white/20 bg-white/5 text-white hover:bg-white/10"
+              className="min-w-[200px] border-white/15 bg-white/[0.04] text-white backdrop-blur-sm hover:bg-white/8"
             >
-             Ver sistema completo
+              Ver sistema completo
             </Button>
           </a>
         </div>
 
-        {/* Social proof badges */}
-        <div className="mt-16 flex flex-wrap items-center justify-center gap-6 text-sm text-white/40">
+        {/* Trust strip */}
+        <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-sm text-white/35">
           <div className="flex items-center gap-2">
             <Zap className="h-4 w-4 text-primary-400" />
             <span>Configuración en 2 minutos</span>
+          </div>
+          <div className="hidden h-3 w-px bg-white/10 sm:block" />
+          <div className="flex items-center gap-2">
+            <Shield className="h-4 w-4 text-primary-400" />
+            <span>Datos seguros</span>
+          </div>
+          <div className="hidden h-3 w-px bg-white/10 sm:block" />
+          <div className="flex items-center gap-2">
+            <Users className="h-4 w-4 text-primary-400" />
+            <span>Soporte incluido</span>
           </div>
         </div>
       </div>
@@ -413,19 +467,9 @@ function Hero() {
 }
 
 // ========================================
-// ExcelOffer — Visual premium card
-// ========================================(
-function ExcelOffer({
-  excelBasePrice,
-  excelPrice,
-  onBuyExcel,
-  isCheckoutLoading,
-}: {
-  excelBasePrice: number
-  excelPrice: number
-  onBuyExcel: () => void
-  isCheckoutLoading: boolean
-}) {
+// ExcelOffer — Feature showcase (pricing moved to end)
+// ========================================
+function ExcelOffer() {
   const includeItems = [
     'Excel descargable + Google Sheets',
     'Cotizador que trabaja en segundos',
@@ -456,9 +500,13 @@ function ExcelOffer({
 
       <div className="relative mx-auto grid w-full max-w-6xl items-stretch gap-10 lg:grid-cols-2">
         {/* Image side with carousel */}
-        <article className="group relative flex flex-col justify-center rounded-3xl border border-white/10 bg-white/5 p-2 shadow-2xl shadow-black/50">
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-500/10 to-violet-500/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          <div className="pointer-events-none absolute left-1/2 top-8 z-10 hidden -translate-x-1/2 rounded-full border border-white/15 bg-black/35 px-4 py-1 text-center text-[20px] font-bold tracking-wide text-white/95 backdrop-blur-sm sm:block">
+        <TiltCard
+          tag="article"
+          strength={8}
+          className="group relative flex flex-col justify-center rounded-3xl border border-white/10 bg-white/[0.04] p-2 shadow-2xl shadow-black/60 backdrop-blur-sm"
+        >
+          <div className="absolute inset-0 rounded-3xl bg-primary-600/6 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          <div className="pointer-events-none absolute left-1/2 top-8 z-10 hidden -translate-x-1/2 rounded-full border border-white/15 bg-black/40 px-4 py-1 text-center text-[20px] font-bold tracking-wide text-white/95 backdrop-blur-sm sm:block">
             OctopusTool
           </div>
           
@@ -504,7 +552,7 @@ function ExcelOffer({
               </>
             )}
           </div>
-        </article>
+        </TiltCard>
 
         {/* Content side */}
         <article className="flex flex-col justify-center">
@@ -545,38 +593,14 @@ function ExcelOffer({
             </ul>
           </div>
 
-          {/* Price card */}
-          <div className="mt-10 rounded-2xl border border-white/10 bg-gradient-to-br from-[#17172a]/90 via-[#1b1b33]/80 to-[#141428]/90 p-6 shadow-[0_20px_60px_rgba(93,63,211,0.16)] backdrop-blur-sm">
-            <div className="mx-auto mb-2 inline-flex rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/45">
-              Precio
-            </div>
-
-            <div className="mb-2 text-center">
-              <span className="text-sm font-medium text-white/35 line-through">
-                USD {excelBasePrice.toFixed(2)}
-              </span>
-            </div>
-
-            <div className="flex items-end justify-center gap-2 text-center">
-              <span className="text-xl font-semibold text-primary-300/85 sm:text-2xl">USD</span>
-              <span className="bg-gradient-to-r from-primary-300 via-violet-300 to-primary-400 bg-clip-text text-5xl font-black leading-none text-transparent drop-shadow-[0_0_18px_rgba(157,132,191,0.3)] sm:text-6xl">
-                <PriceTicker value={excelPrice} />
-              </span>
-            </div>
-
-            <Button
-              className="cta-shimmer mt-5 w-full gap-2 py-3"
-              onClick={onBuyExcel}
-              isLoading={isCheckoutLoading}
-            >
-              Comprar ahora
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-
-            <p className="mt-3 text-center text-xs text-white/30">
-              Pago seguro • Entrega inmediata
-            </p>
-          </div>
+          <a
+            href="#precios"
+            onClick={(e) => scrollToId('precios', e, 80, 72)}
+            className="mt-10 inline-flex items-center gap-2 text-sm font-medium text-primary-400 transition-colors hover:text-primary-300"
+          >
+            Ver precio
+            <ArrowRight className="h-4 w-4" />
+          </a>
         </article>
       </div>
     </section>
@@ -642,16 +666,14 @@ function FeaturesZigZag() {
       <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-900/10 blur-[120px]" />
 
 <div className="relative mx-auto w-full max-w-6xl">
-<p className="mx-auto mb-6 max-w-2xl text-center text-xl font-medium text-primary-400">
+<p className="mx-auto mb-6 max-w-2xl text-center text-xl font-medium text-primary-300/75">
           ¿Listo para dar el siguiente paso? Cuando tus necesidades crezcan, podés migrar a <span className="text-[24px] font-extrabold text-white">OctopusTrack</span> y llevar tu negocio al siguiente nivel.
         </p>
 
         <div className="text-center">
           <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
             Sistema completo para{' '}
-            <span className="bg-gradient-to-r from-primary-400 to-violet-400 bg-clip-text text-transparent">
-              hacer crecer tu negocio
-            </span>
+            <span className="text-primary-300">hacer crecer tu negocio</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/50 sm:text-lg">
             Una solución diseñada para todo tipo de comercios que quieren escalar sus ventas y crecer sin límites.
@@ -667,15 +689,14 @@ function FeaturesZigZag() {
                 index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''
               }`}
             >
-              {/* Image */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-1 shadow-xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-violet-500/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              {/* Image — 3D tilt */}
+              <TiltCard strength={7} className="relative overflow-hidden rounded-3xl border border-white/8 bg-white/[0.03] p-1 shadow-xl shadow-black/40 backdrop-blur-sm">
                 <img
                   src={feature.image}
                   alt="OctopusTrack"
                   className="relative h-auto w-full rounded-2xl"
                 />
-              </div>
+              </TiltCard>
 
               {/* Content - sin título */}
               <div className="flex flex-col justify-center">
@@ -701,137 +722,159 @@ function FeaturesZigZag() {
 }
 
 // ========================================
-// Plans — Premium cards with distinction
+// Pricing — 2 cards at the bottom
 // ========================================
-function Plans({
+function Pricing({
+  onBuyExcel,
   onBuyPlan,
   isCheckoutLoading,
 }: {
+  onBuyExcel: () => void
   onBuyPlan: (plan: { code: string; name: string; price: number }) => void
   isCheckoutLoading: boolean
 }) {
-  const plans = [
-    {
-      name: 'Básico',
-      code: 'basico',
-      price: 21,
-      description: 'Ideal para empezar ordenado',
-      features: [
-        'Hasta 3.000 productos',
-        'Cotizaciones',
-        'Actualización de precios',
-        'Clientes y proveedores',
-        'Control de stock e inventario',
-      ],
-      featured: false,
-    },
-    {
-      name: 'Negocio',
-      code: 'negocio',
-      price: 42,
-      description: 'Para operar con más volumen',
-      features: [
-        'Hasta 9.000 productos',
-        'Todo lo del plan Básico',
-        'Cuentas corrientes',
-        'Soporte personalizado mediante tickets',
-      ],
-      featured: false,
-    },
-    {
-      name: 'Completo',
-      code: 'completo',
-      price: 72,
-      description: 'El más elegido',
-      features: [
-        'Más de 12.000 productos',
-        'Todo lo de los planes anteriores',
-        'Facturación Electrónica ARCA (hasta 100 facturas mensuales)',
-        'Soporte continuo',
-        'Soporte personalizado mediante línea directa',
-      ],
-      featured: true,
-    },
-    {
-      name: 'Premium',
-      code: 'premium',
-      price: 111,
-      description: 'Escala total para equipos exigentes',
-      features: [
-        'Más de 200 facturas mensuales',
-        'Productos ilimitados',
-        'Todo lo de los planes anteriores',
-        'Soporte continuo',
-        'Adaptación de nuevas funcionalidades a medida',
-      ],
-      featured: false,
-    },
+  const excelFeatures = [
+    'Excel descargable + Google Sheets',
+    'Generá presupuestos en segundos',
+    '4 planillas listas para usar',
+    'Base de datos de productos',
+    'Configuración única de tu empresa',
+    'Instrucciones paso a paso',
+  ]
+
+  const systemFeatures = [
+    'Ventas, remitos y cuentas corrientes',
+    'Control de stock e inventario en tiempo real',
+    'Clientes con autorizaciones y proveedores',
+    'Facturación electrónica ARCA',
+    'Reportes y análisis de tu negocio',
+    'Soporte personalizado incluido',
   ]
 
   return (
-    <section id="precios" className="relative overflow-hidden bg-[#0d0d1a] px-4 py-20 sm:px-6 sm:py-24">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a14] via-transparent to-[#0a0a14]" />
+    <section
+      id="precios"
+      aria-label="Precios de OctopusTool y OctopusTrack"
+      className="relative overflow-hidden bg-[#070710] px-4 py-24 sm:px-6 sm:py-32"
+    >
+      {/* Aurora accent */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="aurora-blob animate-aurora-1 absolute left-[-8%] bottom-[-15%] h-[500px] w-[500px] bg-primary-800/18" />
+        <div className="aurora-blob animate-aurora-2 absolute right-[-6%] top-[-10%] h-[450px] w-[450px] bg-violet-800/15" style={{ animationDelay: '-6s' }} />
+      </div>
 
-      <div className="relative mx-auto w-full max-w-6xl">
-        <div className="text-center">
+      <div className="relative mx-auto w-full max-w-5xl">
+        {/* Section header */}
+        <header className="mb-16 text-center">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary-400">Precios transparentes</p>
           <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-            Planes diseñados para{' '}
-            <span className="bg-gradient-to-r from-primary-400 to-violet-400 bg-clip-text text-transparent">
-              crecer con vos
-            </span>
+            Elegí tu punto de partida
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/50 sm:text-lg">
-            Elegí el plan que mejor se adapte a las necesidades de tu negocio. Todos incluyen soporte y actualizaciones.
+          <p className="mx-auto mt-4 max-w-lg text-base text-white/45 sm:text-lg">
+            Empezá con el cotizador y migrá al sistema cuando tu negocio lo pida. Tus datos se conservan.
           </p>
-        </div>
+        </header>
 
-        {/* Plans grid */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {plans.map((plan, index) => (
-            <article
-                key={plan.name}
-                style={{ ['--reveal-delay' as string]: `${(index + 1) * 100}ms` }}
-                className={`reveal-on-scroll relative flex flex-col rounded-3xl border p-6 transition-all duration-300 hover:-translate-y-1 ${
-                  plan.featured
-                    ? 'border-primary-500/50 bg-gradient-to-b from-primary-900/30 to-[#0d0d1a] shadow-xl shadow-primary-500/10 scale-105'
-                    : 'border-white/10 bg-white/5 hover:border-white/20'
-                }`}
-              >
-              {plan.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-primary-600 to-violet-600 px-4 py-1 text-xs font-semibold text-white">
-                  Más elegido
-                </span>
-              )}
+        {/* Two cards — distinct visual weight */}
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8 lg:items-start">
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary-400">{plan.name}</p>
-              <p className="mt-1 text-sm text-white/50">{plan.description}</p>
+          {/* OctopusTool — compact, minimal */}
+          <TiltCard
+            tag="article"
+            strength={9}
+            className="reveal-on-scroll flex flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-8"
+            style={{ '--reveal-delay': '0ms' } as React.CSSProperties}
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/35">OctopusTool</p>
+            <h3 className="mt-2 text-2xl font-bold text-white">Cotizador en Excel</h3>
+            <p className="mt-2 text-sm text-white/50 leading-relaxed">
+              La forma más rápida de empezar a cotizar profesionalmente. Sin instalaciones, sin servidores.
+            </p>
 
-              <div className="mt-6 flex items-baseline gap-1">
-                <span className="text-5xl font-bold text-white">$<CountUp value={plan.price} /></span>
-                <span className="text-sm text-white/50">USD/mes</span>
+            <div className="mt-8 flex items-end gap-3">
+              <span className="text-[64px] font-black leading-none text-white tabular-nums">
+                <PriceTicker value={5} decimals={0} />
+              </span>
+              <div className="mb-2 flex flex-col text-sm text-white/40 leading-snug">
+                <span>USD</span>
+                <span>pago único</span>
               </div>
+            </div>
 
-              <div className="my-6 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div className="my-7 h-px w-full bg-white/7" />
 
-              <ul className="flex-1 space-y-3 text-sm text-white/70">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 text-primary-400" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+            <ul className="flex-1 space-y-3">
+              {excelFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-3 text-sm text-white/60">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-primary-400" />
+                  {f}
+                </li>
+              ))}
+            </ul>
 
-              <Button
-                variant={plan.featured ? 'primary' : 'outline'}
-                className="mt-6 w-full"
-                onClick={() => onBuyPlan({ code: plan.code, name: plan.name, price: plan.price })}
-                isLoading={isCheckoutLoading}
-              >
-                Elegir {plan.name}
-              </Button>
-            </article>
-          ))}
+            <Button
+              variant="outline"
+              className="cta-shimmer mt-8 w-full gap-2 border-white/12 bg-white/[0.04] py-3 text-white hover:bg-white/7"
+              onClick={onBuyExcel}
+              isLoading={isCheckoutLoading}
+            >
+              Comprar cotizador
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+            <p className="mt-3 text-center text-xs text-white/25">Pago seguro · Entrega inmediata</p>
+          </TiltCard>
+
+          {/* OctopusTrack — featured, visually heavier */}
+          <TiltCard
+            tag="article"
+            strength={6}
+            className="reveal-on-scroll relative flex flex-col rounded-3xl border border-primary-500/30 bg-primary-950/40 p-8 shadow-2xl shadow-primary-500/10 lg:scale-[1.03]"
+            style={{ '--reveal-delay': '130ms' } as React.CSSProperties}
+          >
+            <span className="absolute -top-4 left-8 rounded-full border border-primary-500/40 bg-primary-600 px-4 py-1.5 text-xs font-semibold text-white">
+              Sistema completo
+            </span>
+
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-400">OctopusTrack</p>
+            <h3 className="mt-2 text-2xl font-bold text-white">Sistema de gestión</h3>
+            <p className="mt-2 text-sm text-white/55 leading-relaxed">
+              Ventas, stock, clientes, reportes y facturación ARCA en una sola plataforma. Crece con tu negocio.
+            </p>
+
+            <div className="mt-8">
+              <span className="text-xs font-medium text-white/35 uppercase tracking-wider">desde</span>
+              <div className="mt-1 flex items-end gap-3">
+                <span className="text-[64px] font-black leading-none text-primary-300 tabular-nums">
+                  <PriceTicker value={20} decimals={0} />
+                </span>
+                <div className="mb-2 flex flex-col text-sm text-white/45 leading-snug">
+                  <span>USD</span>
+                  <span>por mes</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="my-7 h-px w-full bg-primary-500/15" />
+
+            <ul className="flex-1 space-y-3">
+              {systemFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-3 text-sm text-white/70">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-primary-400" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+
+            <Button
+              className="cta-shimmer mt-8 w-full gap-2 py-3"
+              onClick={() => onBuyPlan({ code: 'basico', name: 'Básico', price: 20 })}
+              isLoading={isCheckoutLoading}
+            >
+              Empezar con OctopusTrack
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+            <p className="mt-3 text-center text-xs text-white/30">Cancelá cuando quieras · Sin contrato</p>
+          </TiltCard>
         </div>
       </div>
     </section>
@@ -1058,14 +1101,10 @@ function LandingContent({ loginUrl }: { loginUrl: string }) {
       <FloatingContactButton />
       <main>
         <Hero />
-        <ExcelOffer
-          excelBasePrice={EXCEL_OFFER_BASE_PRICE}
-          excelPrice={EXCEL_OFFER_PRICE}
-          onBuyExcel={openLeadModalForExcel}
-          isCheckoutLoading={isCheckoutLoading}
-        />
+        <ExcelOffer />
         <FeaturesZigZag />
-        <Plans
+        <Pricing
+          onBuyExcel={openLeadModalForExcel}
           onBuyPlan={openLeadModalForPlan}
           isCheckoutLoading={isCheckoutLoading}
         />

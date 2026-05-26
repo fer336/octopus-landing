@@ -11,7 +11,7 @@
 
     <!-- Google / Search Engine -->
     <title>OctopusTrack - ERP para Ferreterías | Gestión de Stock, Ventas y Facturación ARCA</title>
-    <meta name="description" content="Sistema integral para ferreterías, sanitarios y corralones. Gestioná stock, ventas, cotizaciones y facturación electrónica ARCA desde un solo lugar. Planes desde USD 5/mes." />
+    <meta name="description" content="Cotizá en Excel por $5 USD o gestioná tu negocio completo con OctopusTrack desde $20 USD/mes. Stock, ventas, clientes y facturación electrónica ARCA para ferreterías y comercios." />
     <link rel="canonical" href="https://octopustrack.shop/" />
 
     <!-- Open Graph -->
@@ -49,32 +49,13 @@
       "image": "https://octopustrack.shop/images/og/og-image-1200x630.jpg",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "Plan Básico",
-          "price": "5",
-          "priceCurrency": "USD",
-          "priceValidUntil": "2027-05-01",
-          "availability": "https://schema.org/OnlineOnly"
-        },
-        {
-          "@type": "Offer",
-          "name": "Plan Negocio",
-          "price": "12",
-          "priceCurrency": "USD",
-          "priceValidUntil": "2027-05-01",
-          "availability": "https://schema.org/OnlineOnly"
-        },
-        {
-          "@type": "Offer",
-          "name": "Plan Completo",
-          "price": "21",
-          "priceCurrency": "USD",
-          "priceValidUntil": "2027-05-01",
-          "availability": "https://schema.org/OnlineOnly"
-        }
-      ],
+      "offers": {
+        "@type": "AggregateOffer",
+        "lowPrice": "20",
+        "priceCurrency": "USD",
+        "offerCount": "4",
+        "availability": "https://schema.org/OnlineOnly"
+      },
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.8",
@@ -96,7 +77,7 @@
       "operatingSystem": "Windows, macOS, Google Sheets",
       "offers": {
         "@type": "Offer",
-        "price": "5.99",
+        "price": "5",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock"
       }
