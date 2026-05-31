@@ -7,7 +7,7 @@ import AnimatedTentacleLogo from '../components/ui/AnimatedTentacleLogo'
 
 const WHATSAPP_URL = 'https://wa.me/5492254596618'
 const ASSET_WEBHOOK_URL = import.meta.env.VITE_LANDING_ASSET_WEBHOOK_URL || '#webhook-no-configured'
-const FORM_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-formulario'
+const FORM_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-landing-contacto'
 const MP_CHECKOUT_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-mp'
 const VISITOR_WEBHOOK_URL = import.meta.env.VITE_VISITOR_WEBHOOK_URL || ''
 interface LandingProps {
