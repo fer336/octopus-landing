@@ -36,7 +36,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Structured Data — SoftwareApplication: Sistema Web -->
     <script type="application/ld+json">
@@ -133,32 +133,29 @@
            React replaces this when JS loads.
            ======================================== -->
 
-      <div class="ssr-landing" style="min-height:100vh;background:#080810;color:#fff;font-family:Manrope,system-ui,sans-serif;">
+      <div class="ssr-landing" style="min-height:100vh;background:#080810;color:#fff;font-family:Figtree,system-ui,sans-serif;">
 
         <!-- HERO -->
-        <header style="padding:128px 24px 96px;text-align:center;background:#0a0a14;position:relative;overflow:hidden;">
-          <h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.08;max-width:800px;margin:0 auto;letter-spacing:-0.02em;">
-            Agilizá tu negocio <span style="background:linear-gradient(135deg,#9d84bf,#ad8ed2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">desde hoy</span>
+        <header style="padding:128px 24px 96px;background:#0a0a14;position:relative;overflow:hidden;">
+          <p style="font-size:0.875rem;font-weight:600;color:#c3abdf;margin-bottom:16px;">Herramientas para tu negocio</p>
+          <h1 style="font-size:clamp(2.25rem,5vw,4.25rem);font-weight:800;line-height:1.04;max-width:700px;letter-spacing:-0.02em;font-family:'Bricolage Grotesque',system-ui,sans-serif;">
+            Agilizá tu negocio <span style="color:#c3abdf;">desde hoy.</span>
           </h1>
           <p style="font-size:clamp(1rem,2vw,1.25rem);color:rgba(255,255,255,0.6);max-width:600px;margin:24px auto 0;">
             Soluciones en Excel listas para usar: cotizá, controlá el stock y gestioná tu negocio sin complicaciones.
             Cuando llegue el momento escalá a un sistema completo sin empezar de cero. Crecemos con vos.
           </p>
-          <div style="margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <div style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;">
             <a href="#excel-start" style="display:inline-block;padding:14px 32px;border-radius:12px;background:#7c5ca8;color:#fff;font-weight:700;text-decoration:none;font-size:1rem;">Cotizá con Excel</a>
             <a href="#caracteristicas" style="display:inline-block;padding:14px 32px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);color:#fff;font-weight:600;text-decoration:none;font-size:1rem;">Ver sistema completo</a>
           </div>
-          <p style="margin-top:48px;font-size:0.875rem;color:rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;gap:8px;">
-            ⚡ Configuración en 2 minutos
-          </p>
         </header>
 
         <!-- EXCEL OFFER -->
         <section id="excel-start" style="padding:80px 24px;background:#0d0d1a;">
           <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
             <div>
-              <span style="display:inline-block;padding:4px 12px;border-radius:999px;border:1px solid rgba(157,132,191,0.3);background:rgba(157,132,191,0.1);font-size:0.75rem;font-weight:600;color:#c3abdf;">⚡ Más vendido</span>
-              <h2 style="font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;margin-top:12px;">Tu cotizador profesional en Excel</h2>
+              <h2 style="font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;font-family:'Bricolage Grotesque',system-ui,sans-serif;">Tu cotizador profesional en Excel</h2>
               <p style="color:rgba(255,255,255,0.6);margin-top:16px;font-size:1rem;line-height:1.6;">
                 Dejá de perder tiempo cotizando a mano. Generá presupuestos profesionales en segundos, con todos tus datos y precios actualizados.
               </p>
@@ -179,13 +176,7 @@
                 <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#9d84bf;margin-right:8px;"></span>
                 Para negocios que cotizan todos los días
               </p>
-              <!-- Price card -->
-              <div style="margin-top:32px;padding:24px;border-radius:16px;border:1px solid rgba(255,255,255,0.1);background:linear-gradient(135deg,rgba(23,23,42,0.9),rgba(27,27,51,0.8));text-align:center;">
-                <p style="font-size:0.75rem;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.22em;font-weight:700;">Precio</p>
-                <p style="font-size:0.875rem;color:rgba(255,255,255,0.35);text-decoration:line-through;">USD 20.99</p>
-                <p style="font-size:clamp(2.5rem,4vw,3.5rem);font-weight:900;background:linear-gradient(135deg,#c3abdf,#ad8ed2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:4px 0;">USD 5.99</p>
-                <p style="font-size:0.75rem;color:rgba(255,255,255,0.3);margin-top:8px;">Pago seguro • Entrega inmediata</p>
-              </div>
+              <a href="#precios" style="display:inline-flex;align-items:center;gap:8px;margin-top:32px;font-size:0.875rem;font-weight:600;color:#c3abdf;text-decoration:none;">Ver precio →</a>
             </div>
             <div style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);padding:8px;min-height:400px;display:flex;align-items:center;justify-content:center;">
               <p style="color:rgba(255,255,255,0.4);font-size:0.875rem;">Cotizador OctopusTool — Capturas del producto</p>
@@ -196,11 +187,8 @@
         <!-- FEATURES -->
         <section id="caracteristicas" style="padding:96px 24px;background:#0a0a14;">
           <div style="max-width:1200px;margin:0 auto;">
-            <p style="text-align:center;font-size:1.125rem;font-weight:500;color:#c3abdf;max-width:600px;margin:0 auto 24px;">
-              ¿Listo para dar el siguiente paso? Cuando tus necesidades crezcan, migrá a <strong style="color:#fff;">OctopusTrack</strong> y llevá tu negocio al siguiente nivel.
-            </p>
-            <h2 style="text-align:center;font-size:clamp(1.5rem,3vw,2.75rem);font-weight:700;">
-              Sistema completo para <span style="background:linear-gradient(135deg,#9d84bf,#ad8ed2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">hacer crecer tu negocio</span>
+            <h2 style="font-size:clamp(1.5rem,3vw,2.75rem);font-weight:700;font-family:'Bricolage Grotesque',system-ui,sans-serif;">
+              Sistema completo para <span style="color:#c3abdf;">hacer crecer tu negocio</span>
             </h2>
             <p style="text-align:center;color:rgba(255,255,255,0.5);max-width:600px;margin:12px auto 0;font-size:1rem;">
               Una solución diseñada para todo tipo de comercios que quieren escalar sus ventas.
@@ -268,15 +256,15 @@
         <!-- PLANS / PRICING -->
         <section id="precios" style="padding:96px 24px;background:#0d0d1a;">
           <div style="max-width:1200px;margin:0 auto;">
-            <h2 style="text-align:center;font-size:clamp(1.5rem,3vw,2.75rem);font-weight:700;">
-              Planes diseñados para <span style="background:linear-gradient(135deg,#9d84bf,#ad8ed2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">crecer con vos</span>
+            <h2 style="text-align:center;font-size:clamp(1.5rem,3vw,2.75rem);font-weight:700;font-family:'Bricolage Grotesque',system-ui,sans-serif;">
+              Elegí tu punto de partida
             </h2>
             <p style="text-align:center;color:rgba(255,255,255,0.5);max-width:500px;margin:12px auto 0;">Elegí el plan que mejor se adapte a las necesidades de tu negocio.</p>
 
             <div style="margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin-left:auto;margin-right:auto;">
-              <!-- Básico $5 -->
-              <article style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);padding:24px;background:rgba(255,255,255,0.05);">
-                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#c3abdf;">Básico</p>
+              <!-- OctopusTool $5 -->
+              <article style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);padding:24px;background:rgba(255,255,255,0.03);">
+                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.4);">OctopusTool</p>
                 <p style="font-size:0.875rem;color:rgba(255,255,255,0.5);margin-top:4px;">Para empezar ordenado</p>
                 <p style="font-size:2.5rem;font-weight:700;margin-top:16px;">$5 <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);font-weight:400;">USD/mes</span></p>
                 <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:24px 0;" />
@@ -288,10 +276,10 @@
                 </ul>
               </article>
 
-              <!-- Negocio $12 (más elegido) -->
-              <article style="border-radius:24px;border:1px solid #7c5ca8;padding:24px;background:linear-gradient(180deg,rgba(124,92,168,0.15),#0d0d1a);transform:scale(1.05);position:relative;">
-                <span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7c5ca8,#ad8ed2);padding:4px 16px;border-radius:999px;font-size:0.75rem;font-weight:700;color:#fff;">Más elegido</span>
-                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#c3abdf;">Negocio</p>
+              <!-- OctopusTrack $20 -->
+              <article style="border-radius:24px;border:1px solid rgba(124,92,168,0.35);padding:24px;background:rgba(92,58,140,0.12);transform:scale(1.05);position:relative;">
+                <span style="position:absolute;top:-12px;left:32px;background:#7c5ca8;padding:4px 16px;border-radius:999px;font-size:0.75rem;font-weight:700;color:#fff;">Sistema completo</span>
+                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#c3abdf;">OctopusTrack</p>
                 <p style="font-size:0.875rem;color:rgba(255,255,255,0.5);margin-top:4px;">Para crecer con fuerza</p>
                 <p style="font-size:2.5rem;font-weight:700;margin-top:16px;">$12 <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);font-weight:400;">USD/mes</span></p>
                 <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:24px 0;" />
@@ -304,9 +292,9 @@
                 </ul>
               </article>
 
-              <!-- Completo $21 -->
-              <article style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);padding:24px;background:rgba(255,255,255,0.05);">
-                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#c3abdf;">Completo</p>
+              <!-- placeholder (SSR uses 2 cards in React version) -->
+              <article style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);padding:24px;background:rgba(255,255,255,0.03);">
+                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.4);">Completo</p>
                 <p style="font-size:0.875rem;color:rgba(255,255,255,0.5);margin-top:4px;">Para escalar de verdad</p>
                 <p style="font-size:2.5rem;font-weight:700;margin-top:16px;">$21 <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);font-weight:400;">USD/mes</span></p>
                 <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:24px 0;" />
@@ -324,17 +312,12 @@
 
         <!-- FOOTER -->
         <footer style="border-top:1px solid rgba(255,255,255,0.05);background:#080810;padding:48px 24px;text-align:center;">
-          <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:32px;">
-            <span style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:0.875rem;">🛡️ Datos seguros</span>
-            <span style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:0.875rem;">⚡ Configuración rápida</span>
-            <span style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:0.875rem;">👥 Soporte dedicado</span>
-          </div>
           <nav>
             <a href="/politicas-privacidad.html" style="color:rgba(255,255,255,0.6);font-size:0.875rem;text-decoration:underline;text-underline-offset:4px;">Política de privacidad</a>
             <span style="color:rgba(255,255,255,0.2);margin:0 12px;">•</span>
             <a href="/politicas-seguridad.html" style="color:rgba(255,255,255,0.6);font-size:0.875rem;text-decoration:underline;text-underline-offset:4px;">Política de seguridad</a>
           </nav>
-          <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:24px;">
+          <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:16px;">
             Contacto: <a href="https://wa.me/5492254596618" style="color:#c3abdf;">WhatsApp</a>
           </p>
         </footer>

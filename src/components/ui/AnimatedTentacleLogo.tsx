@@ -1,9 +1,32 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 
 type AnimatedTentacleLogoProps = {
   className?: string
   alt?: string
+  palette?: 'default' | 'tool'
+}
+
+const TOOL_LOGO_COLORS = {
+  light: '#7ecf86',
+  accent: '#5aad62',
+  primary: '#3d8c47',
+  border: '#2d6b35',
+}
+
+function replaceEvery(value: string, search: string, replacement: string) {
+  return value.split(search).join(replacement)
+}
+
+function applyLogoPalette(svg: string, palette: AnimatedTentacleLogoProps['palette']) {
+  if (palette !== 'tool') return svg
+
+  return [
+    ['fill:#6b4a8c', `fill:${TOOL_LOGO_COLORS.accent}`],
+    ['fill:#5c3a8c', `fill:${TOOL_LOGO_COLORS.primary}`],
+    ['fill:#729483', `fill:${TOOL_LOGO_COLORS.light}`],
+    ['fill:#456455', `fill:${TOOL_LOGO_COLORS.border}`],
+  ].reduce((markup, [search, replacement]) => replaceEvery(markup, search, replacement), svg)
 }
 
 /**
@@ -11,9 +34,10 @@ type AnimatedTentacleLogoProps = {
  * Fase 1: enrolla/desenrolla lentamente.
  * Fase 2: deriva suave (movimiento flotante) en loop.
  */
-export default function AnimatedTentacleLogo({ className = 'h-12 w-auto', alt = 'OctopusTrack' }: AnimatedTentacleLogoProps) {
+export default function AnimatedTentacleLogo({ className = 'h-12 w-auto', alt = 'OctopusTrack', palette = 'default' }: AnimatedTentacleLogoProps) {
   const wrapperRef = useRef<HTMLSpanElement | null>(null)
   const [svgMarkup, setSvgMarkup] = useState<string>('')
+  const renderedSvgMarkup = useMemo(() => applyLogoPalette(svgMarkup, palette), [svgMarkup, palette])
 
   useEffect(() => {
     let mounted = true
@@ -33,7 +57,7 @@ export default function AnimatedTentacleLogo({ className = 'h-12 w-auto', alt = 
   }, [])
 
   useEffect(() => {
-    if (!svgMarkup || !wrapperRef.current) return
+    if (!renderedSvgMarkup || !wrapperRef.current) return
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
@@ -60,9 +84,9 @@ export default function AnimatedTentacleLogo({ className = 'h-12 w-auto', alt = 
     }, wrapperRef)
 
     return () => ctx.revert()
-  }, [svgMarkup])
+  }, [renderedSvgMarkup])
 
-  if (!svgMarkup) {
+  if (!renderedSvgMarkup) {
     return <img src="/images/logos/logo-header@2x.png" alt={alt} className={className} />
   }
 
@@ -72,7 +96,7 @@ export default function AnimatedTentacleLogo({ className = 'h-12 w-auto', alt = 
       aria-label={alt}
       role="img"
       className={`inline-flex overflow-visible ${className}`}
-      dangerouslySetInnerHTML={{ __html: svgMarkup }}
+      dangerouslySetInnerHTML={{ __html: renderedSvgMarkup }}
     />
   )
 }
