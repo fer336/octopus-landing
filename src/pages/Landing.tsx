@@ -544,7 +544,7 @@ function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
           <img
             src="/assets/octopustool916.png"
             alt="OctopusTool — cotizador profesional en Excel"
-            className="max-h-[400px] w-full rounded-3xl object-contain sm:max-h-[600px]"
+            className="w-full rounded-3xl"
           />
         </TiltCard>
         </div>
@@ -650,7 +650,7 @@ function OctopusTrackShowcase({ sectionActive = false, openDemoModal }: { sectio
               <img
                 src="/assets/octopustrack916.png"
                 alt="Panel de OctopusTrack"
-                className="max-h-[400px] w-full object-contain sm:max-h-[600px]"
+                className="w-full"
               />
 
               {/* Status bar */}
@@ -765,7 +765,7 @@ function OctopusFlowSection({ sectionActive = false, openDemoModal }: { sectionA
             <img
                 src="/assets/octopusflow916.png"
               alt="OctopusFlow — sistema de presupuestos"
-              className="max-h-[400px] w-full rounded-3xl object-contain sm:max-h-[600px]"
+            className="w-full rounded-3xl"
             />
           </TiltCard>
         </div>
