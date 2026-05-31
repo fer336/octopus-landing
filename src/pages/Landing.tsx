@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowRight, CheckCircle2, Menu, X, MessageCircle } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Menu, X, MessageCircle, Package, Receipt, DollarSign, Wallet, Truck, RefreshCw, FileUp, FileDown, Zap, ShoppingCart } from 'lucide-react'
+import FeatureVideoModal, { type FeatureVideoItem } from '../components/FeatureVideoModal'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from '../components/ui/Button'
@@ -10,6 +11,12 @@ const ASSET_WEBHOOK_URL = import.meta.env.VITE_LANDING_ASSET_WEBHOOK_URL || '#we
 const FORM_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-landing-contacto'
 const MP_CHECKOUT_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-mp'
 const VISITOR_WEBHOOK_URL = import.meta.env.VITE_VISITOR_WEBHOOK_URL || ''
+const DEMO_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-demo-trial'
+
+// Secretos compartidos para proteger los webhooks (validados en n8n)
+const DEMO_SECRET = 'ot_demo_sk_a1b2c3d4e5'
+const FORM_SECRET = 'ot_form_sk_f6g7h8i9j0'
+
 interface LandingProps {
   loginUrl?: string
 }
@@ -422,14 +429,18 @@ function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
         {/* Content */}
         <article id="octopustool-content" className="reveal-on-scroll scroll-mt-24">
           <h2 className="font-display text-3xl font-black leading-[1.05] text-white sm:text-4xl lg:text-5xl">
-            Tu cotizador{' '}
+            Cotizador en Excel{' '}
             <span className="text-tool-highlight">
-              profesional en Excel
+              para pequeños comerciantes
             </span>
           </h2>
 
           <p className="mt-5 max-w-lg text-lg text-white/55">
-            Generá presupuestos profesionales en segundos. Sin instalaciones, sin servidores, sin complicaciones.
+            Para quienes todavía no quieren un sistema, pero necesitan cotizar rápido, calcular bien y enviar presupuestos profesionales.
+          </p>
+
+          <p className="mt-4 text-sm font-semibold tracking-wide text-tool-highlight/80">
+            Simple. Editable. Listo para usar.
           </p>
 
           <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
@@ -441,25 +452,25 @@ function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
             ))}
           </ul>
 
-          <div className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-            <button
-              type="button"
-              onClick={() => openWhatsAppWithMessage('Hola! Me interesa saber sobre OctopusTool.')}
-              className="flex w-fit items-center justify-center gap-2 rounded-xl border border-tool-highlight/30 bg-gradient-to-r from-tool-primary to-tool-accent px-7 py-3.5 text-sm font-semibold text-tool-background shadow-lg shadow-tool-primary/25 transition-all duration-200 hover:scale-[1.02] hover:shadow-tool-accent/30"
-            >
-              Me interesa OctopusTool
-              <ArrowRight className="h-4 w-4" />
-            </button>
-
+          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:items-center">
             <button
               type="button"
               onClick={() => {
                 setDownloadError('')
                 setShowDownloadModal(true)
               }}
-              className="flex w-fit items-center justify-center gap-2 rounded-xl border border-tool-highlight/30 bg-tool-highlight/10 px-7 py-3.5 text-sm font-semibold text-tool-highlight shadow-lg shadow-tool-background/20 transition-all duration-200 hover:scale-[1.02] hover:border-tool-highlight/45 hover:bg-tool-highlight/18 hover:text-tool-highlight"
+              className="flex w-fit items-center justify-center gap-2 rounded-xl border border-tool-highlight/30 bg-gradient-to-r from-tool-primary to-tool-accent px-7 py-3.5 text-sm font-semibold text-tool-background shadow-lg shadow-tool-primary/25 transition-all duration-200 hover:scale-[1.02] hover:shadow-tool-accent/30"
             >
               Descargar Excel
+              <ArrowRight className="h-4 w-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => openWhatsAppWithMessage('Hola! Me interesa saber sobre OctopusTool.')}
+              className="flex w-fit items-center justify-center gap-2 rounded-xl border border-tool-highlight/30 bg-tool-highlight/10 px-7 py-3.5 text-sm font-semibold text-tool-highlight shadow-lg shadow-tool-background/20 transition-all duration-200 hover:scale-[1.02] hover:border-tool-highlight/45 hover:bg-tool-highlight/18 hover:text-tool-highlight"
+            >
+              Pedir cotizador
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -470,7 +481,7 @@ function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
                 type="button"
                 aria-label="Cerrar descarga de OctopusTool"
                 className="absolute inset-0 bg-[#05070a]/80 backdrop-blur-sm"
-                onClick={() => !downloading && setShowDownloadModal(false)}
+                onClick={() => setShowDownloadModal(false)}
               />
 
               <form
@@ -481,7 +492,7 @@ function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
                 <button
                   type="button"
                   aria-label="Cerrar"
-                  onClick={() => !downloading && setShowDownloadModal(false)}
+                  onClick={() => setShowDownloadModal(false)}
                   className="absolute right-4 top-4 rounded-full border border-white/10 bg-white/5 p-2 text-white/60 transition-colors hover:text-white"
                 >
                   <X className="h-4 w-4" />
@@ -527,13 +538,13 @@ function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
         <TiltCard
           tag="article"
           strength={7}
-          className="reveal-on-scroll group relative overflow-hidden rounded-3xl border border-tool-border/25 shadow-2xl shadow-tool-background/40"
+          className="reveal-on-scroll group relative flex overflow-hidden rounded-3xl border border-tool-primary/35 shadow-2xl shadow-tool-primary/15"
         >
-          <div className="absolute -inset-px rounded-3xl bg-gradient-to-r from-tool-primary/12 to-tool-highlight/10 blur-sm transition-opacity duration-500 group-hover:from-tool-primary/20 group-hover:to-tool-highlight/18" />
+          <div className="absolute -inset-px rounded-3xl bg-gradient-to-r from-tool-primary/25 via-tool-accent/15 to-tool-highlight/15 blur-sm transition-opacity duration-500 group-hover:from-tool-primary/35 group-hover:via-tool-accent/25 group-hover:to-tool-highlight/25" />
           <img
-            src="/assets/octopustool.png"
+            src="/assets/octopustool916.png"
             alt="OctopusTool — cotizador profesional en Excel"
-            className="relative w-full rounded-3xl"
+            className="max-h-[400px] w-full rounded-3xl object-contain sm:max-h-[600px]"
           />
         </TiltCard>
         </div>
@@ -545,19 +556,20 @@ function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
 // ========================================
 // OctopusTrack Showcase — Screenshot + HUD frame
 // ========================================
-function OctopusTrackShowcase({ sectionActive = false }: { sectionActive?: boolean }) {
-  const features = [
-    'Acopios por importe',
-    'Facturación Electrónica',
-    'Cotizaciones',
-    'Cuentas corrientes',
-    'Remitos',
-    'Actualización masiva de precios',
-    'Importación y exportación de listas de precio',
-    'Datos en PDF y Excel',
-    'Uso rápido y fácil',
-    'Órdenes de compra',
+function OctopusTrackShowcase({ sectionActive = false, openDemoModal }: { sectionActive?: boolean; openDemoModal?: (product: 'octopustrack' | 'octopusflow') => void }) {
+  const features: FeatureVideoItem[] = [
+    { label: 'Acopios por importe', icon: Package },
+    { label: 'Facturación Electrónica', icon: Receipt, videoUrl: '/assets/facturacion-demo.mp4' },
+    { label: 'Cotizaciones', icon: DollarSign, videoUrl: '/assets/cotizaciones-demo.mp4' },
+    { label: 'Cuentas corrientes', icon: Wallet },
+    { label: 'Remitos', icon: Truck },
+    { label: 'Actualización masiva de precios', icon: RefreshCw },
+    { label: 'Importación y exportación de listas de precio', icon: FileUp },
+    { label: 'Datos en PDF y Excel', icon: FileDown },
+    { label: 'Uso rápido y fácil', icon: Zap },
+    { label: 'Órdenes de compra', icon: ShoppingCart },
   ]
+  const [activeFeature, setActiveFeature] = useState<FeatureVideoItem | null>(null)
 
   return (
     <section id="caracteristicas" className="relative overflow-hidden bg-[#0a0a14] px-4 py-24 sm:px-6 sm:py-32">
@@ -587,11 +599,24 @@ function OctopusTrackShowcase({ sectionActive = false }: { sectionActive?: boole
               Rápido, directo y sin complicaciones. Empezás en minutos y crecés sin cambiar de sistema.
             </p>
 
-            <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+            <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-2 sm:grid-cols-2">
               {features.map((f) => (
-                <li key={f} className="flex items-start gap-3 text-sm text-white/65">
-                  <span className="mt-0.5 shrink-0 font-bold text-primary-500">—</span>
-                  {f}
+                <li key={f.label}>
+                  {f.videoUrl ? (
+                    <button
+                      type="button"
+                      onClick={() => setActiveFeature(f)}
+                      className="flex w-full cursor-pointer items-start gap-3 rounded-xl px-3 py-2 text-left text-sm text-white/65 transition-all duration-200 hover:bg-white/[0.04] hover:text-white"
+                    >
+                      <f.icon className="mt-0.5 h-4 w-4 shrink-0 text-primary-400" />
+                      <span>{f.label}</span>
+                    </button>
+                  ) : (
+                    <div className="flex items-start gap-3 rounded-xl px-3 py-2 text-sm text-white/40">
+                      <f.icon className="mt-0.5 h-4 w-4 shrink-0 text-primary-400/50" />
+                      <span>{f.label}</span>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
@@ -605,40 +630,31 @@ function OctopusTrackShowcase({ sectionActive = false }: { sectionActive?: boole
                 Me interesa OctopusTrack
                 <ArrowRight className="h-4 w-4" />
               </button>
-              <a
-                href="https://app.octopustrack.shop"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => openDemoModal?.('octopustrack')}
                 className="flex w-fit items-center justify-center gap-2 rounded-xl border border-primary-400/30 bg-primary-500/10 px-7 py-3.5 text-sm font-semibold text-primary-200 shadow-lg shadow-primary-950/20 transition-all duration-200 hover:scale-[1.02] hover:border-primary-300/45 hover:bg-primary-500/18 hover:text-white"
               >
                 Probar demo 7 días
                 <ArrowRight className="h-4 w-4" />
-              </a>
+              </button>
             </div>
           </div>
 
           {/* OctopusTrack screenshot — HUD frame */}
-          <TiltCard strength={7} className="reveal-on-scroll group relative lg:mt-10">
+          <TiltCard strength={7} className="reveal-on-scroll group relative flex lg:mt-10">
             <div className="absolute -inset-px rounded-3xl bg-primary-600/15 blur-sm transition-opacity duration-500 group-hover:bg-primary-500/22" />
 
-            <div className="relative overflow-hidden rounded-3xl border border-primary-500/20 bg-[#0d0a1a] shadow-2xl shadow-primary-950/60">
-              {/* Corner brackets */}
-              <span className="absolute left-3 top-3 z-10 block h-6 w-6 border-l-2 border-t-2 border-primary-400/50" />
-              <span className="absolute right-3 top-3 z-10 block h-6 w-6 border-r-2 border-t-2 border-primary-400/50" />
-              <span className="absolute bottom-10 left-3 z-10 block h-6 w-6 border-b-2 border-l-2 border-primary-400/50" />
-              <span className="absolute bottom-10 right-3 z-10 block h-6 w-6 border-b-2 border-r-2 border-primary-400/50" />
-
-              {/* Scanlines */}
-              <div className="pointer-events-none absolute inset-0 z-10 [background-image:repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(255,255,255,0.007)_3px,rgba(255,255,255,0.007)_4px)]" />
+            <div className="relative flex w-full flex-col overflow-hidden rounded-3xl border border-primary-500/20 bg-[#0d0a1a] shadow-2xl shadow-primary-950/60">
 
               <img
-                src="/assets/octopustrack.png"
+                src="/assets/octopustrack916.png"
                 alt="Panel de OctopusTrack"
-                className="w-full"
+                className="max-h-[400px] w-full object-contain sm:max-h-[600px]"
               />
 
               {/* Status bar */}
-              <div className="flex items-center gap-2.5 border-t border-primary-500/10 bg-[#0a0814]/80 px-4 py-2.5 backdrop-blur-sm">
+              <div className="flex shrink-0 items-center gap-2.5 border-t border-primary-500/10 bg-[#0a0814]/80 px-4 py-2.5 backdrop-blur-sm">
                 <span className="relative flex h-2 w-2 shrink-0">
                   <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-primary-400" />
@@ -650,6 +666,8 @@ function OctopusTrackShowcase({ sectionActive = false }: { sectionActive?: boole
           </TiltCard>
         </div>
       </div>
+
+      <FeatureVideoModal feature={activeFeature} onClose={() => setActiveFeature(null)} />
     </section>
   )
 }
@@ -657,7 +675,7 @@ function OctopusTrackShowcase({ sectionActive = false }: { sectionActive?: boole
 // ========================================
 // OctopusFlow — New product for freelancers
 // ========================================
-function OctopusFlowSection({ sectionActive = false }: { sectionActive?: boolean }) {
+function OctopusFlowSection({ sectionActive = false, openDemoModal }: { sectionActive?: boolean; openDemoModal?: (product: 'octopustrack' | 'octopusflow') => void }) {
   const features = [
     'Creá presupuestos profesionales en minutos',
     'Compartí por link directo o PDF con tu cliente',
@@ -692,6 +710,7 @@ function OctopusFlowSection({ sectionActive = false }: { sectionActive?: boolean
             <AnimatedTentacleLogo className="h-[52px] w-[52px]" alt="OctopusFlow" />
           </span>
           <div>
+            <p className="text-xs font-semibold text-blue-400">Sistema activo</p>
             <p className="font-display text-xl font-black text-white">OctopusFlow</p>
           </div>
         </div>
@@ -725,15 +744,14 @@ function OctopusFlowSection({ sectionActive = false }: { sectionActive?: boolean
                 Me interesa OctopusFlow
                 <ArrowRight className="h-4 w-4" />
               </button>
-              <a
-                href="https://login-flow.octopustrack.shop"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => openDemoModal?.('octopusflow')}
                 className="flex w-fit items-center justify-center gap-2 rounded-xl border border-blue-400/30 bg-blue-500/10 px-7 py-3.5 text-sm font-semibold text-blue-200 shadow-lg shadow-blue-950/20 transition-all duration-200 hover:scale-[1.02] hover:border-blue-300/45 hover:bg-blue-500/18 hover:text-white"
               >
                 Probar demo 7 días
                 <ArrowRight className="h-4 w-4" />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -741,13 +759,13 @@ function OctopusFlowSection({ sectionActive = false }: { sectionActive?: boolean
           <TiltCard
             tag="article"
             strength={7}
-            className="reveal-on-scroll group relative overflow-hidden rounded-3xl border border-blue-500/15 shadow-2xl shadow-blue-950/40"
+            className="reveal-on-scroll group relative flex overflow-hidden rounded-3xl border border-blue-500/15 shadow-2xl shadow-blue-950/40"
           >
             <div className="absolute -inset-px rounded-3xl bg-blue-600/10 blur-sm transition-opacity duration-500 group-hover:bg-blue-500/18" />
             <img
-              src="/assets/octopusflow.png"
+                src="/assets/octopusflow916.png"
               alt="OctopusFlow — sistema de presupuestos"
-              className="relative w-full rounded-3xl"
+              className="max-h-[400px] w-full rounded-3xl object-contain sm:max-h-[600px]"
             />
           </TiltCard>
         </div>
@@ -776,6 +794,7 @@ function ContactForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          _secret: FORM_SECRET,
           email: email.trim(),
           message: message.trim(),
           source: 'landing-contact-form',
@@ -1041,6 +1060,60 @@ function LandingContent({ loginUrl }: { loginUrl: string }) {
   useVisitorTracking()
   const headerSection = useHeaderSection()
 
+  const [demoModal, setDemoModal] = useState<{
+    open: boolean
+    product: 'octopustrack' | 'octopusflow'
+    email: string
+    loading: boolean
+    sent: boolean
+  }>({
+    open: false,
+    product: 'octopustrack',
+    email: '',
+    loading: false,
+    sent: false,
+  })
+
+  const openDemoModal = (product: 'octopustrack' | 'octopusflow') => {
+    setDemoModal({ open: true, product, email: '', loading: false, sent: false })
+  }
+
+  const closeDemoModal = () => {
+    setDemoModal(prev => ({ ...prev, open: false }))
+  }
+
+  const submitDemo = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!demoModal.email.trim()) return
+    setDemoModal(prev => ({ ...prev, loading: true }))
+
+    const search = new URLSearchParams(window.location.search)
+
+    try {
+      await fetch(DEMO_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          _secret: DEMO_SECRET,
+          email: demoModal.email.trim(),
+          demo_type: demoModal.product,
+          source: 'landing',
+          page_url: window.location.href,
+          referrer: document.referrer || '',
+          user_agent: navigator.userAgent,
+          utm_source: search.get('utm_source') || '',
+          utm_medium: search.get('utm_medium') || '',
+          utm_campaign: search.get('utm_campaign') || '',
+          created_at: new Date().toISOString(),
+        }),
+      })
+    } catch {
+      // Silently — el usuario ve success igual
+    }
+
+    setDemoModal(prev => ({ ...prev, loading: false, sent: true }))
+  }
+
   return (
     <>
       <Header loginUrl={loginUrl} section={headerSection} />
@@ -1048,11 +1121,87 @@ function LandingContent({ loginUrl }: { loginUrl: string }) {
       <main>
         <Hero />
         <ExcelOffer sectionActive={headerSection === 'tool'} />
-        <OctopusFlowSection sectionActive={headerSection === 'flow'} />
-        <OctopusTrackShowcase sectionActive={headerSection === 'track'} />
+        <OctopusFlowSection sectionActive={headerSection === 'flow'} openDemoModal={openDemoModal} />
+        <OctopusTrackShowcase sectionActive={headerSection === 'track'} openDemoModal={openDemoModal} />
         <ContactForm />
       </main>
       <Footer />
+
+      {/* Modal de solicitud de demo */}
+      {demoModal.open && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={closeDemoModal}
+        >
+          <div
+            className="relative w-full max-w-md rounded-2xl border border-primary-500/20 bg-[#111226] p-8 shadow-2xl shadow-primary-950/60"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={closeDemoModal}
+              className="absolute right-4 top-4 text-white/40 hover:text-white transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {demoModal.sent ? (
+              <>
+                <div className="mb-2 text-xs font-semibold tracking-widest text-primary-400 uppercase">
+                  Solicitud enviada
+                </div>
+                <h3 className="mb-1 text-2xl font-bold text-white font-display">
+                  ¡Te vamos a dar acceso pronto!
+                </h3>
+                <p className="mt-4 text-sm text-gray-400 leading-relaxed">
+                  Revisá tu correo <strong className="text-white">{demoModal.email}</strong> en los próximos minutos.
+                  Cuando activemos tu demo, te va a llegar un mail con el link para ingresar a{' '}
+                  <strong className="text-white">
+                    {demoModal.product === 'octopusflow' ? 'OctopusFlow' : 'OctopusTrack'}
+                  </strong>.
+                </p>
+                <button
+                  onClick={closeDemoModal}
+                  className="mt-6 w-full rounded-xl bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-all duration-200 hover:bg-primary-500"
+                >
+                  Entendido
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="mb-2 text-xs font-semibold tracking-widest text-primary-400 uppercase">
+                  Prueba 7 días
+                </div>
+                <h3 className="mb-1 text-2xl font-bold text-white font-display">
+                  {demoModal.product === 'octopusflow' ? 'OctopusFlow' : 'OctopusTrack'}
+                </h3>
+                <p className="mb-6 text-sm text-gray-400">
+                  Dejanos tu correo y te avisamos cuando tengas el demo listo.
+                </p>
+
+                <form onSubmit={submitDemo} className="space-y-4">
+                  <input
+                    type="email"
+                    required
+                    placeholder="tu@correo.com"
+                    value={demoModal.email}
+                    onChange={e => setDemoModal(prev => ({ ...prev, email: e.target.value }))}
+                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors focus:border-primary-400/50 focus:bg-white/10"
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    disabled={demoModal.loading}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-all duration-200 hover:bg-primary-500 disabled:opacity-50"
+                  >
+                    {demoModal.loading ? 'Enviando…' : 'Solicitar demo'}
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </>
   )
 }
