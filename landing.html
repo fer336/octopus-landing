@@ -7,18 +7,18 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#07070d" />
+    <meta name="theme-color" content="#1a1823" />
 
     <!-- Google / Search Engine -->
     <title>OctopusTrack - ERP para Ferreterías | Gestión de Stock, Ventas y Facturación ARCA</title>
-    <meta name="description" content="Cotizá en Excel por $5 USD o gestioná tu negocio completo con OctopusTrack desde $20 USD/mes. Stock, ventas, clientes y facturación electrónica ARCA para ferreterías y comercios." />
+    <meta name="description" content="OctopusTrack - Sistema de gestión integral para ferreterías, sanitarios y corralones. Stock, ventas, clientes, cuentas corrientes y facturación electrónica ARCA." />
     <link rel="canonical" href="https://octopustrack.shop/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="OctopusTrack" />
     <meta property="og:title" content="OctopusTrack ERP" />
-    <meta property="og:description" content="Impulsa tu negocio con OctopusTrack ERP. El sistema de gestión que necesita tu comercio." />
+    <meta property="og:description" content="Gestioná stock, ventas, clientes y facturación electrónica ARCA para ferreterías y comercios. Simple, rápido y sin complicaciones." />
     <meta property="og:url" content="https://octopustrack.shop/" />
     <meta property="og:image" content="https://octopustrack.shop/images/og/og-image-1200x630.jpg?v=1.0.4" />
     <meta property="og:image:secure_url" content="https://octopustrack.shop/images/og/og-image-1200x630.jpg?v=1.0.4" />
@@ -31,12 +31,45 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="OctopusTrack ERP" />
-    <meta name="twitter:description" content="Impulsa tu negocio con OctopusTrack ERP. El sistema de gestión que necesita tu comercio." />
+    <meta name="twitter:description" content="Gestioná stock, ventas, clientes y facturación electrónica ARCA para ferreterías y comercios. Simple, rápido y sin complicaciones." />
     <meta name="twitter:image" content="https://octopustrack.shop/images/og/og-image-1200x630.jpg?v=1.0.4" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800;900&family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --background: #f0f0f2;
+        --foreground: #121325;
+        --card: #ffffff;
+        --card-foreground: #121325;
+        --primary: #9d84bf;
+        --primary-foreground: #f0f0f2;
+        --secondary: #ece6f6;
+        --muted: #ece6f6;
+        --muted-foreground: #7b6b95;
+        --accent: #d9caeb;
+        --accent-foreground: #121325;
+        --border: #d9caeb;
+        --ring: #5c3a8c;
+      }
+      .dark {
+        --background: #121325;
+        --foreground: #ffffff;
+        --card: #1b1b32;
+        --card-foreground: #ffffff;
+        --primary: #9d84bf;
+        --primary-foreground: #121325;
+        --secondary: #272345;
+        --muted: #272345;
+        --muted-foreground: #b2a6c6;
+        --accent: #3b305a;
+        --accent-foreground: #ffffff;
+        --border: #3b305a;
+        --ring: #9d84bf;
+      }
+      body { background: var(--background); color: var(--foreground); }
+    </style>
 
     <!-- Structured Data — SoftwareApplication: Sistema Web -->
     <script type="application/ld+json">
@@ -50,36 +83,15 @@
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
       "offers": {
-        "@type": "AggregateOffer",
-        "lowPrice": "20",
+        "@type": "Offer",
+        "price": "21",
         "priceCurrency": "USD",
-        "offerCount": "4",
         "availability": "https://schema.org/OnlineOnly"
       },
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.8",
         "ratingCount": "127"
-      }
-    }
-    </script>
-
-    <!-- Structured Data — SoftwareApplication: Cotizador Excel -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "OctopusTool - Cotizador Profesional en Excel",
-      "description": "Cotizador profesional en Excel para ferreterías, sanitarios y corralones. Generá presupuestos en segundos con cálculo automático de precios, margen y descuentos.",
-      "url": "https://octopustrack.shop/#excel-start",
-      "image": "https://octopustrack.shop/images/og/og-image-1200x630.jpg",
-      "applicationCategory": "Spreadsheet",
-      "operatingSystem": "Windows, macOS, Google Sheets",
-      "offers": {
-        "@type": "Offer",
-        "price": "5",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
       }
     }
     </script>
@@ -133,64 +145,39 @@
            React replaces this when JS loads.
            ======================================== -->
 
-      <div class="ssr-landing" style="min-height:100vh;background:#080810;color:#fff;font-family:Figtree,system-ui,sans-serif;">
+      <div class="ssr-landing" style="min-height:100vh;background:var(--background);color:var(--foreground);font-family:Figtree,system-ui,sans-serif;">
 
         <!-- HERO -->
-        <header style="padding:128px 24px 96px;background:#0a0a14;position:relative;overflow:hidden;">
-          <p style="font-size:0.875rem;font-weight:600;color:#c3abdf;margin-bottom:16px;">Herramientas para tu negocio</p>
-          <h1 style="font-size:clamp(2.25rem,5vw,4.25rem);font-weight:800;line-height:1.04;max-width:700px;letter-spacing:-0.02em;font-family:'Bricolage Grotesque',system-ui,sans-serif;">
-            Agilizá tu negocio <span style="color:#c3abdf;">desde hoy.</span>
+        <header style="padding:128px 24px 64px;background:var(--background);position:relative;overflow:hidden;text-align:center;">
+          <p style="font-size:0.875rem;font-weight:600;color:var(--primary);margin-bottom:16px;">Sistema de gestión integral</p>
+          <h1 style="font-size:clamp(2.75rem,6.5vw,5.125rem);font-weight:800;line-height:1.02;max-width:900px;letter-spacing:-0.03em;font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0 auto;color:var(--foreground);">
+            El sistema que <span style="color:var(--primary);">tu comercio necesita</span>
           </h1>
-          <p style="font-size:clamp(1rem,2vw,1.25rem);color:rgba(255,255,255,0.6);max-width:600px;margin:24px auto 0;">
-            Soluciones en Excel listas para usar: cotizá, controlá el stock y gestioná tu negocio sin complicaciones.
-            Cuando llegue el momento escalá a un sistema completo sin empezar de cero. Crecemos con vos.
+          <p style="font-size:clamp(1rem,2vw,1.5rem);color:var(--muted-foreground);max-width:760px;margin:24px auto 0;">
+            Gestioná stock, ventas, clientes y facturación electrónica ARCA en un solo lugar.
           </p>
-          <div style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;">
-            <a href="#excel-start" style="display:inline-block;padding:14px 32px;border-radius:12px;background:#7c5ca8;color:#fff;font-weight:700;text-decoration:none;font-size:1rem;">Cotizá con Excel</a>
-            <a href="#caracteristicas" style="display:inline-block;padding:14px 32px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);color:#fff;font-weight:600;text-decoration:none;font-size:1rem;">Ver sistema completo</a>
+          <p style="font-size:clamp(0.95rem,1.5vw,1.25rem);color:var(--muted-foreground);max-width:760px;margin:8px auto 0;opacity:0.85;">
+            Acopios, Listas de precio personalizadas, Cuentas corrientes.
+          </p>
+          <p style="font-size:clamp(1rem,2vw,1.5rem);color:var(--muted-foreground);max-width:760px;margin:24px auto 0;">
+            Simple, rápido y sin complicaciones.
+          </p>
+          <div style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+            <a href="#caracteristicas" style="display:inline-block;padding:14px 32px;border-radius:12px;background:var(--primary);color:var(--primary-foreground);font-weight:700;text-decoration:none;font-size:1rem;">Ver características</a>
+            <a href="#precios" style="display:inline-block;padding:14px 32px;border-radius:12px;border:1px solid var(--border);color:var(--foreground);font-weight:600;text-decoration:none;font-size:1rem;">Ver planes</a>
           </div>
+          <img src="/assets/dashboard.png" alt="OctopusTrack funcionando en escritorio y celular" style="display:block;width:min(100%,1480px);margin:64px auto 0;border-radius:28px;box-shadow:0 32px 90px rgba(0,0,0,0.45);border:1px solid var(--border);" />
         </header>
 
-        <!-- EXCEL OFFER -->
-        <section id="excel-start" style="padding:80px 24px;background:#0d0d1a;">
-          <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
-            <div>
-              <h2 style="font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;font-family:'Bricolage Grotesque',system-ui,sans-serif;">Tu cotizador profesional en Excel</h2>
-              <p style="color:rgba(255,255,255,0.6);margin-top:16px;font-size:1rem;line-height:1.6;">
-                Dejá de perder tiempo cotizando a mano. Generá presupuestos profesionales en segundos, con todos tus datos y precios actualizados.
-              </p>
-              <h3 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.4);margin-top:32px;">Incluye</h3>
-              <ul style="list-style:none;padding:0;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                <li style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:rgba(255,255,255,0.7);">✓ Excel descargable + Google Sheets</li>
-                <li style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:rgba(255,255,255,0.7);">✓ Cotizador que trabaja en segundos</li>
-                <li style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:rgba(255,255,255,0.7);">✓ Instrucciones paso a paso</li>
-                <li style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:rgba(255,255,255,0.7);">✓ 4 planillas listas para usar</li>
-                <li style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:rgba(255,255,255,0.7);">✓ Configurá tu empresa una vez</li>
-                <li style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:rgba(255,255,255,0.7);">✓ Base de datos de productos</li>
-              </ul>
-              <p style="margin-top:8px;font-size:0.875rem;color:rgba(255,255,255,0.6);">
-                <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#9d84bf;margin-right:8px;"></span>
-                Para personas sin conocimientos técnicos
-              </p>
-              <p style="font-size:0.875rem;color:rgba(255,255,255,0.6);">
-                <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#9d84bf;margin-right:8px;"></span>
-                Para negocios que cotizan todos los días
-              </p>
-              <a href="#precios" style="display:inline-flex;align-items:center;gap:8px;margin-top:32px;font-size:0.875rem;font-weight:600;color:#c3abdf;text-decoration:none;">Ver precio →</a>
-            </div>
-            <div style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);padding:8px;min-height:400px;display:flex;align-items:center;justify-content:center;">
-              <p style="color:rgba(255,255,255,0.4);font-size:0.875rem;">Cotizador OctopusTool — Capturas del producto</p>
-            </div>
-          </div>
-        </section>
+
 
         <!-- FEATURES -->
-        <section id="caracteristicas" style="padding:96px 24px;background:#0a0a14;">
+        <section id="caracteristicas" style="padding:96px 24px;background:var(--background);">
           <div style="max-width:1200px;margin:0 auto;">
-            <h2 style="font-size:clamp(1.5rem,3vw,2.75rem);font-weight:700;font-family:'Bricolage Grotesque',system-ui,sans-serif;">
-              Sistema completo para <span style="color:#c3abdf;">hacer crecer tu negocio</span>
+            <h2 style="font-size:clamp(1.5rem,3vw,2.75rem);font-weight:700;font-family:'Bricolage Grotesque',system-ui,sans-serif;color:var(--foreground);">
+              Sistema completo para <span style="color:var(--primary);">hacer crecer tu negocio</span>
             </h2>
-            <p style="text-align:center;color:rgba(255,255,255,0.5);max-width:600px;margin:12px auto 0;font-size:1rem;">
+            <p style="text-align:center;color:var(--muted-foreground);max-width:600px;margin:12px auto 0;font-size:1rem;">
               Una solución diseñada para todo tipo de comercios que quieren escalar sus ventas.
             </p>
 
@@ -198,132 +185,111 @@
               <!-- Feature 1: Ventas -->
               <article style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
                 <div>
-                  <p style="font-size:1.125rem;color:rgba(255,255,255,0.8);">Centralizá todo tu proceso de ventas en una única pantalla, diseñadas para operar rápido, sin errores y sin cambiar de entorno.</p>
+                  <p style="font-size:1.125rem;color:var(--foreground);">Centralizá todo tu proceso de ventas en una única pantalla, diseñadas para operar rápido, sin errores y sin cambiar de entorno.</p>
                   <ul style="list-style:none;padding:0;margin-top:16px;">
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Gestión unificada: cotizaciones, remitos, facturación y retiros de cuentas corrientes</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Carga ágil con atajos de teclado optimizados</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Comprobantes profesionales con datos del cliente</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Gestión de borradores</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Gestión unificada: cotizaciones, remitos, facturación y retiros de cuentas corrientes</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Carga ágil con atajos de teclado optimizados</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Comprobantes profesionales con datos del cliente</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Gestión de borradores</li>
                   </ul>
                 </div>
-                <div style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);min-height:300px;"></div>
+                <img src="/assets/ventas-cajas.png" alt="Pantalla de ventas de OctopusTrack" style="width:100%;height:auto;border-radius:24px;border:1px solid var(--border);background:var(--card);" />
               </article>
 
               <!-- Feature 2: Catálogo -->
               <article style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
                 <div style="order:2;">
-                  <p style="font-size:1.125rem;color:rgba(255,255,255,0.8);">Control total de tus productos, precios y stock en un solo lugar.</p>
+                  <p style="font-size:1.125rem;color:var(--foreground);">Control total de tus productos, precios y stock en un solo lugar.</p>
                   <ul style="list-style:none;padding:0;margin-top:16px;">
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Carga flexible: productos manuales o importación desde Excel</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Backups completos: exportá e importá tu base</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Actualización masiva de precios por categorías</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Inventario inteligente con reportes</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Carga flexible: productos manuales o importación desde Excel</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Backups completos: exportá e importá tu base</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Listas de precio por cliente, cuenta u obra</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Actualización masiva sin perder precios anteriores</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Inventario inteligente con reportes</li>
                   </ul>
                 </div>
-                <div style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);min-height:300px;"></div>
+                <img src="/assets/catalogo-inventario.png" alt="Pantalla de catálogo e inventario de OctopusTrack" style="width:100%;height:auto;border-radius:24px;border:1px solid var(--border);background:var(--card);" />
               </article>
 
               <!-- Feature 3: Contactos -->
               <article style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
                 <div>
-                  <p style="font-size:1.125rem;color:rgba(255,255,255,0.8);">Gestión centralizada de todos tus contactos y su relación en el negocio.</p>
+                  <p style="font-size:1.125rem;color:var(--foreground);">Gestión centralizada de todos tus contactos y su relación en el negocio.</p>
                   <ul style="list-style:none;padding:0;margin-top:16px;">
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Clientes con autorizaciones: un cliente puede habilitar a terceros</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Categorías para organizar tu catálogo</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Proveedores: administrá tu red</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Clientes con autorizaciones: un cliente puede habilitar a terceros</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Categorías para organizar tu catálogo</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Proveedores: administrá tu red</li>
                   </ul>
                 </div>
-                <div style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);min-height:300px;"></div>
+                <img src="/assets/Contacto-categorias.png" alt="Pantalla de contactos y categorías de OctopusTrack" style="width:100%;height:auto;border-radius:24px;border:1px solid var(--border);background:var(--card);" />
               </article>
 
               <!-- Feature 4: Reportes -->
               <article style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
                 <div style="order:2;">
-                  <p style="font-size:1.125rem;color:rgba(255,255,255,0.8);">Tomá decisiones con información clara, en tiempo real.</p>
+                  <p style="font-size:1.125rem;color:var(--foreground);">Tomá decisiones con información clara, en tiempo real.</p>
                   <ul style="list-style:none;padding:0;margin-top:16px;">
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Ventas por período con resúmenes y comparativas</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Productos más vendidos</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Estado de stock y detección de bajo stock</li>
-                    <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);margin-bottom:8px;">✓ Cuentas corrientes con saldos y antigüedad</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Ventas por período con resúmenes y comparativas</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Productos más vendidos</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Estado de stock y detección de bajo stock</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Cuentas corrientes con saldos y antigüedad</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Acopios por importe, obra o edificio</li>
+                    <li style="display:flex;gap:8px;color:var(--muted-foreground);margin-bottom:8px;">✓ Remitos con lista de precio congelada</li>
                   </ul>
                 </div>
-                <div style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);min-height:300px;"></div>
+                <img src="/assets/reportes.png" alt="Pantalla de reportes de OctopusTrack" style="width:100%;height:auto;border-radius:24px;border:1px solid var(--border);background:var(--card);" />
               </article>
             </div>
           </div>
         </section>
 
-        <!-- PLANS / PRICING -->
-        <section id="precios" style="padding:96px 24px;background:#0d0d1a;">
+        <!-- PRICING -->
+        <section id="precios" style="padding:96px 24px;background:var(--background);">
           <div style="max-width:1200px;margin:0 auto;">
-            <h2 style="text-align:center;font-size:clamp(1.5rem,3vw,2.75rem);font-weight:700;font-family:'Bricolage Grotesque',system-ui,sans-serif;">
-              Elegí tu punto de partida
+            <h2 style="text-align:center;font-size:clamp(1.5rem,3vw,2.75rem);font-weight:700;font-family:Geist,system-ui,sans-serif;color:var(--foreground);">
+              Plan simple, sin sorpresas
             </h2>
-            <p style="text-align:center;color:rgba(255,255,255,0.5);max-width:500px;margin:12px auto 0;">Elegí el plan que mejor se adapte a las necesidades de tu negocio.</p>
+            <p style="text-align:center;color:var(--muted-foreground);max-width:500px;margin:12px auto 0;">El plan que necesitás para tu negocio. Sin contratos ni costos ocultos.</p>
 
-            <div style="margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin-left:auto;margin-right:auto;">
-              <!-- OctopusTool $5 -->
-              <article style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);padding:24px;background:rgba(255,255,255,0.03);">
-                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.4);">OctopusTool</p>
-                <p style="font-size:0.875rem;color:rgba(255,255,255,0.5);margin-top:4px;">Para empezar ordenado</p>
-                <p style="font-size:2.5rem;font-weight:700;margin-top:16px;">$5 <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);font-weight:400;">USD/mes</span></p>
-                <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:24px 0;" />
+            <div style="margin-top:48px;display:flex;justify-content:center;">
+              <article style="border-radius:24px;border:1px solid var(--border);padding:24px;background:var(--card);max-width:380px;width:100%;position:relative;">
+                <span style="position:absolute;top:-12px;left:32px;background:var(--primary);padding:4px 16px;border-radius:999px;font-size:0.75rem;font-weight:700;color:var(--primary-foreground);">Más elegido</span>
+                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted-foreground);">OctopusTrack</p>
+                <div style="margin-top:8px;display:flex;align-items:baseline;gap:6px;">
+                  <span style="font-size:2.5rem;font-weight:700;color:var(--foreground);">$21</span>
+                  <span style="font-size:0.875rem;color:var(--muted-foreground);">USD/mes</span>
+                </div>
+                <hr style="border:none;border-top:1px solid var(--border);margin:24px 0;" />
                 <ul style="list-style:none;padding:0;">
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Hasta 1.000 productos</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Cotizaciones</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Clientes y proveedores</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;">✓ Control de stock e inventario</li>
+                  <li style="display:flex;gap:8px;color:var(--muted-foreground);font-size:0.875rem;margin-bottom:12px;">✓ Stock y ventas</li>
+                  <li style="display:flex;gap:8px;color:var(--muted-foreground);font-size:0.875rem;margin-bottom:12px;">✓ Facturación electrónica ARCA</li>
+                  <li style="display:flex;gap:8px;color:var(--muted-foreground);font-size:0.875rem;margin-bottom:12px;">✓ Cuentas corrientes</li>
+                  <li style="display:flex;gap:8px;color:var(--muted-foreground);font-size:0.875rem;margin-bottom:12px;">✓ Listas de precio y acopios</li>
+                  <li style="display:flex;gap:8px;color:var(--muted-foreground);font-size:0.875rem;">✓ Remitos y más</li>
                 </ul>
-              </article>
-
-              <!-- OctopusTrack $20 -->
-              <article style="border-radius:24px;border:1px solid rgba(124,92,168,0.35);padding:24px;background:rgba(92,58,140,0.12);transform:scale(1.05);position:relative;">
-                <span style="position:absolute;top:-12px;left:32px;background:#7c5ca8;padding:4px 16px;border-radius:999px;font-size:0.75rem;font-weight:700;color:#fff;">Sistema completo</span>
-                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#c3abdf;">OctopusTrack</p>
-                <p style="font-size:0.875rem;color:rgba(255,255,255,0.5);margin-top:4px;">Para crecer con fuerza</p>
-                <p style="font-size:2.5rem;font-weight:700;margin-top:16px;">$12 <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);font-weight:400;">USD/mes</span></p>
-                <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:24px 0;" />
-                <ul style="list-style:none;padding:0;">
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Hasta 5.000 productos</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Todo lo de Básico</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Actualización de precios</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Cuentas corrientes</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;">✓ Soporte por tickets</li>
-                </ul>
-              </article>
-
-              <!-- placeholder (SSR uses 2 cards in React version) -->
-              <article style="border-radius:24px;border:1px solid rgba(255,255,255,0.1);padding:24px;background:rgba(255,255,255,0.03);">
-                <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.4);">Completo</p>
-                <p style="font-size:0.875rem;color:rgba(255,255,255,0.5);margin-top:4px;">Para escalar de verdad</p>
-                <p style="font-size:2.5rem;font-weight:700;margin-top:16px;">$21 <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);font-weight:400;">USD/mes</span></p>
-                <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:24px 0;" />
-                <ul style="list-style:none;padding:0;">
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Productos ilimitados</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Todo lo de Negocio</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Facturación Electrónica ARCA</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:8px;">✓ Reportes avanzados</li>
-                  <li style="display:flex;gap:8px;color:rgba(255,255,255,0.7);font-size:0.875rem;">✓ Soporte continuo</li>
-                </ul>
+                <a href="https://wa.me/5492254596618?text=Hola!%20Quiero%20probar%20OctopusTrack"
+                   style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border-radius:12px;border:1px solid var(--ring);background:var(--primary);padding:12px 0;font-size:0.875rem;font-weight:600;color:var(--primary-foreground);text-decoration:none;margin-top:32px;">
+                  Probar demo
+                  →</a>
               </article>
             </div>
           </div>
         </section>
 
         <!-- FOOTER -->
-        <footer style="border-top:1px solid rgba(255,255,255,0.05);background:#080810;padding:48px 24px;text-align:center;">
+        <footer style="border-top:1px solid var(--border);background:var(--background);padding:48px 24px;text-align:center;">
           <nav>
-            <a href="/politicas-privacidad.html" style="color:rgba(255,255,255,0.6);font-size:0.875rem;text-decoration:underline;text-underline-offset:4px;">Política de privacidad</a>
-            <span style="color:rgba(255,255,255,0.2);margin:0 12px;">•</span>
-            <a href="/politicas-seguridad.html" style="color:rgba(255,255,255,0.6);font-size:0.875rem;text-decoration:underline;text-underline-offset:4px;">Política de seguridad</a>
+            <a href="/politicas-privacidad.html" style="color:var(--muted-foreground);font-size:0.875rem;text-decoration:underline;text-underline-offset:4px;">Política de privacidad</a>
+            <span style="color:var(--border);margin:0 12px;">•</span>
+            <a href="/politicas-seguridad.html" style="color:var(--muted-foreground);font-size:0.875rem;text-decoration:underline;text-underline-offset:4px;">Política de seguridad</a>
           </nav>
-          <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:16px;">
-            Contacto: <a href="https://wa.me/5492254596618" style="color:#c3abdf;">WhatsApp</a>
+          <p style="color:var(--muted-foreground);font-size:0.75rem;margin-top:16px;">
+            Contacto: <a href="https://wa.me/5492254596618" style="color:var(--primary);">WhatsApp</a>
           </p>
         </footer>
 
         <!-- Floating WhatsApp -->
-        <a href="https://wa.me/5492254596618" target="_blank" rel="noopener noreferrer" style="position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:#7c5ca8;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(124,92,168,0.4);text-decoration:none;z-index:50;font-size:1.25rem;">💬</a>
+        <a href="https://wa.me/5492254596618" target="_blank" rel="noopener noreferrer" style="position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--primary);color:var(--primary-foreground);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(169,149,201,0.35);text-decoration:none;z-index:50;font-size:1.25rem;">💬</a>
       </div>
 
       <!-- END SSR CONTENT -->

@@ -1,41 +1,28 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowRight, CheckCircle2, Menu, X, MessageCircle, Package, Receipt, DollarSign, Wallet, Truck, RefreshCw, FileUp, FileDown, Zap, ShoppingCart } from 'lucide-react'
-import FeatureVideoModal, { type FeatureVideoItem } from '../components/FeatureVideoModal'
+import { useEffect, useMemo, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type HTMLAttributes, type MouseEvent as ReactMouseEvent, type RefObject } from 'react'
+import { ArrowRight, CheckCircle2, Menu, X, MessageCircle, Package, Receipt, DollarSign, Wallet, Truck, RefreshCw, FileText, Wrench, Wheat, Warehouse, Droplets, Sun, Moon, Magnet } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from '../components/ui/Button'
 import AnimatedTentacleLogo from '../components/ui/AnimatedTentacleLogo'
+import { TextDisperse } from '../components/ui/text-disperse'
 
 const WHATSAPP_URL = 'https://wa.me/5492254596618'
 const ASSET_WEBHOOK_URL = import.meta.env.VITE_LANDING_ASSET_WEBHOOK_URL || '#webhook-no-configured'
-const FORM_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-landing-contacto'
-const MP_CHECKOUT_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-mp'
+const FORM_WEBHOOK_URL = import.meta.env.VITE_FORM_WEBHOOK_URL || ''
 const VISITOR_WEBHOOK_URL = import.meta.env.VITE_VISITOR_WEBHOOK_URL || ''
-const DEMO_WEBHOOK_URL = 'https://n8nw.qeva.xyz/webhook/octopus-demo-trial'
-
-// Secretos compartidos para proteger los webhooks (validados en n8n)
-const DEMO_SECRET = 'ot_demo_sk_a1b2c3d4e5'
-const FORM_SECRET = 'ot_form_sk_f6g7h8i9j0'
+const DEMO_WEBHOOK_URL = import.meta.env.VITE_DEMO_WEBHOOK_URL || ''
+const DEMO_SECRET = import.meta.env.VITE_DEMO_SECRET || ''
+const FORM_SECRET = import.meta.env.VITE_FORM_SECRET || ''
 
 interface LandingProps {
   loginUrl?: string
 }
 
-function normalizeWhatsappLink(input: string) {
-  const trimmed = input.trim()
-  if (!trimmed) return WHATSAPP_URL
-  if (trimmed.startsWith('http')) return trimmed
+type ThemeMode = 'light' | 'night'
 
-  const digits = trimmed.replace(/\D/g, '')
-  if (!digits) return WHATSAPP_URL
-  return `https://wa.me/${digits}`
-}
-
-function openWhatsAppWithMessage(message: string) {
-  const target = normalizeWhatsappLink(WHATSAPP_URL)
-  const separator = target.includes('?') ? '&' : '?'
-  const finalUrl = `${target}${separator}text=${encodeURIComponent(message)}`
-  window.open(finalUrl, '_blank', 'noopener,noreferrer')
+function getInitialTheme(): ThemeMode {
+  if (typeof window === 'undefined') return 'light'
+  return window.localStorage.getItem('octopustrack-theme') === 'night' ? 'night' : 'light'
 }
 
 function scrollToId(id: string, event?: { preventDefault?: () => void }, desktopOffset = 90, mobileOffset = 82) {
@@ -164,6 +151,7 @@ function TiltCard({
 }
 
 
+
 function shouldShowThankYou() {
   const params = new URLSearchParams(window.location.search)
   const purchase = params.get('purchase')
@@ -183,31 +171,19 @@ function buildAssetWebhookUrl(format: 'excel' | 'sheets') {
 // ========================================
 // Header — scroll-driven: shows product name when in product section
 // ========================================
-function Header({ loginUrl, section = 'none' }: { loginUrl: string; section?: HeaderSection }) {
+function Header({ section = 'none', theme, onToggleTheme }: { section?: HeaderSection; theme: ThemeMode; onToggleTheme: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const isBlue = section === 'flow'
-  const isGreen = section === 'tool'
   const showProduct = section !== 'none'
 
-  const productLabel = section === 'flow' ? 'OctopusFlow' : section === 'tool' ? 'OctopusTool' : 'OctopusTrack'
-  const headerChrome = 'border-white/5 bg-[#0d0d1a]/60'
-  const activeTextColor = isBlue ? 'text-blue-200' : isGreen ? 'text-tool-highlight' : 'text-primary-300'
-  const menuChrome = 'border-white/5 bg-[#0d0d1a]/95'
-  const activeButton = isBlue
-    ? 'bg-blue-600 text-white shadow-blue-500/20 hover:bg-blue-500'
-    : isGreen
-      ? 'bg-tool-primary text-white shadow-tool-primary/25 hover:bg-tool-accent'
-      : 'bg-primary-600 text-white shadow-primary-700/20 hover:bg-primary-500'
-  const menuButtonChrome = isBlue
-    ? 'border-blue-400/30 bg-blue-500/10 text-white/80 hover:text-white hover:bg-blue-500/20'
-    : isGreen
-      ? 'border-tool-highlight/30 bg-tool-highlight/10 text-white/80 hover:text-white hover:bg-tool-highlight/20'
-      : 'border-white/10 bg-white/5 text-white/80 hover:text-white hover:bg-white/10'
+  const productLabel = 'OctopusTrack'
+  const headerChrome = 'border-border/60 bg-background/75'
+  const activeTextColor = 'text-primary'
+  const menuChrome = 'border-border/60 bg-background/95'
+  const activeButton = 'bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/90'
+  const menuButtonChrome = 'border-border/70 bg-card/70 text-muted-foreground hover:bg-card hover:text-foreground'
 
   const menuItems = [
-    { label: 'OctopusTool', id: 'excel-start', scrollTargetId: 'octopustool-content', desktopOffset: 126, mobileOffset: 104 },
-    { label: 'OctopusFlow', id: 'octopusflow', scrollTargetId: 'octopusflow-content', desktopOffset: 126, mobileOffset: 104 },
     { label: 'OctopusTrack', id: 'caracteristicas', scrollTargetId: 'octopustrack-content', desktopOffset: 126, mobileOffset: 104 },
     { label: 'Contacto', id: 'contacto' },
   ]
@@ -219,14 +195,8 @@ function Header({ loginUrl, section = 'none' }: { loginUrl: string; section?: He
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo + sliding product name */}
         <a href="#inicio" className="flex items-center gap-3">
-          <span
-            className="inline-flex shrink-0 overflow-visible"
-            style={{
-              filter: isBlue ? 'hue-rotate(310deg) saturate(1.4) brightness(1.1)' : 'none',
-              transition: 'filter 0.6s ease',
-            }}
-          >
-            <AnimatedTentacleLogo className="h-[52px] w-[52px]" alt="OctopusTrack" palette={isGreen ? 'tool' : 'default'} />
+          <span className="inline-flex shrink-0 overflow-visible" style={{ transition: 'filter 0.6s ease' }}>
+            <AnimatedTentacleLogo className="h-[52px] w-[52px]" alt="OctopusTrack" />
           </span>
 
           {/* Product name — unfurls like a tentacle when the active section changes */}
@@ -235,7 +205,7 @@ function Header({ loginUrl, section = 'none' }: { loginUrl: string; section?: He
             style={{ maxWidth: showProduct ? '180px' : '0px', opacity: showProduct ? 1 : 0 }}
           >
             <span key={section} className="header-product-label-wrap block whitespace-nowrap">
-              <span className={`header-product-label block font-display text-[17px] font-black leading-tight transition-colors duration-500 ${activeTextColor}`}>
+              <span className={`header-product-label block text-[17px] font-bold leading-tight tracking-tight transition-colors duration-500 ${activeTextColor}`}>
                 {productLabel}
               </span>
             </span>
@@ -245,15 +215,27 @@ function Header({ loginUrl, section = 'none' }: { loginUrl: string; section?: He
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => (window.location.href = loginUrl)}
-            className={`hidden rounded-lg px-3 py-1.5 text-sm font-semibold shadow-lg transition-all duration-500 hover:scale-[1.03] sm:block ${activeButton}`}
+            onClick={onToggleTheme}
+            aria-label={theme === 'night' ? 'Cambiar a modo claro' : 'Cambiar a modo noche'}
+            title={theme === 'night' ? 'Modo claro' : 'Modo noche'}
+            className={`relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border transition-all duration-500 hover:scale-[1.03] ${menuButtonChrome}`}
           >
-            Apps
+            <span className="absolute inset-0 bg-primary/10 opacity-0 transition-opacity duration-300 hover:opacity-100" />
+            {theme === 'night' ? <Sun className="relative z-10 h-4 w-4" /> : <Moon className="relative z-10 h-4 w-4" />}
           </button>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`hidden rounded-lg px-3 sm:inline-flex items-center justify-center gap-2 py-1.5 text-sm font-semibold shadow-lg transition-all duration-500 hover:scale-[1.03] ${activeButton}`}
+          >
+            <MessageCircle className="h-4 w-4" />
+            Demo
+          </a>
           <button
             type="button"
             aria-label="Abrir menú"
-            className={`relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border text-white/80 transition-all duration-500 hover:text-white ${menuButtonChrome}`}
+            className={`relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border transition-all duration-500 ${menuButtonChrome}`}
             onClick={() => setMenuOpen((prev) => !prev)}
           >
             <span className={`absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.18),transparent_55%)] transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0'}`} />
@@ -270,7 +252,7 @@ function Header({ loginUrl, section = 'none' }: { loginUrl: string; section?: He
       >
         <nav className="relative mx-auto flex w-full max-w-7xl flex-col gap-2 overflow-hidden px-4 py-4 sm:px-6 sm:py-5">
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:28px_28px] opacity-40" />
-          <div className="pointer-events-none absolute right-6 top-0 h-28 w-28 rounded-full bg-primary-500/18 blur-3xl" />
+              <div className="pointer-events-none absolute right-6 top-0 h-28 w-28 rounded-full bg-primary-500/18 blur-3xl" />
           {menuItems.map((item, index) => (
             <a
               key={item.label}
@@ -279,22 +261,25 @@ function Header({ loginUrl, section = 'none' }: { loginUrl: string; section?: He
                 setMenuOpen(false)
                 scrollToId(item.scrollTargetId ?? item.id, event, item.desktopOffset ?? 94, item.mobileOffset ?? 86)
               }}
-              className={`group relative flex translate-y-0 items-center justify-between overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.035] px-4 py-3 text-sm font-semibold text-white/72 shadow-lg shadow-black/10 transition-all duration-500 hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.07] hover:text-white ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
+              className={`group relative flex translate-y-0 items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
               style={{ transitionDelay: menuOpen ? `${index * 45}ms` : '0ms' }}
             >
               <span className="relative z-10 flex items-center gap-3">
-                <span className={`h-1.5 w-1.5 rounded-full transition-transform duration-300 group-hover:scale-150 ${item.label === 'OctopusFlow' ? 'bg-blue-400' : item.label === 'OctopusTool' ? 'bg-tool-highlight' : 'bg-primary-400'}`} />
+                <span className="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150" />
                 {item.label}
               </span>
-              <span className="relative z-10 text-xs font-mono text-white/25 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white/50">0{index + 1}</span>
-              <span className={`absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${item.label === 'OctopusFlow' ? 'bg-blue-400/70' : item.label === 'OctopusTool' ? 'bg-tool-highlight/70' : 'bg-primary-400/70'}`} />
+              <span className="relative z-10 text-xs font-mono text-muted-foreground/60 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-muted-foreground">0{index + 1}</span>
+              <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-primary/70 transition-transform duration-500 group-hover:scale-x-100" />
             </a>
           ))}
           <a
-            href={loginUrl}
-            className={`relative mt-2 overflow-hidden rounded-xl px-4 py-3 text-center text-sm font-semibold text-white shadow-lg transition-all duration-500 hover:-translate-y-0.5 ${activeButton}`}
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`relative mt-2 flex items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-3 text-center text-sm font-semibold shadow-lg transition-all duration-500 hover:-translate-y-0.5 ${activeButton}`}
           >
-            Apps
+            <MessageCircle className="h-4 w-4" />
+            Demo
           </a>
         </nav>
       </div>
@@ -305,248 +290,293 @@ function Header({ loginUrl, section = 'none' }: { loginUrl: string; section?: He
 // ========================================
 // Hero
 // ========================================
-function Hero() {
+const gridLayerStyle: CSSProperties = {
+  backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
+  backgroundSize: '40px 40px',
+}
+
+const activeGridLayerStyle: CSSProperties = {
+  ...gridLayerStyle,
+  maskImage: 'radial-gradient(320px circle at var(--grid-mask-x, 50%) var(--grid-mask-y, 35%), black, transparent 72%)',
+  WebkitMaskImage: 'radial-gradient(320px circle at var(--grid-mask-x, 50%) var(--grid-mask-y, 35%), black, transparent 72%)',
+}
+
+function InfiniteGridBackdrop({ gridRef }: { gridRef: RefObject<HTMLDivElement> }) {
   return (
-    <section id="inicio" className="relative overflow-hidden bg-[#0a0a14] px-4 pb-24 pt-24 sm:px-6 sm:pt-32 sm:pb-36">
-      {/* Subtle grid */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_70%_at_10%_20%,black_5%,transparent_85%)]" />
+    <div
+      ref={gridRef}
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden [--grid-mask-x:50%] [--grid-mask-y:35%]"
+    >
+      <div className="infinite-grid-drift absolute inset-0 text-primary-700 opacity-[0.08]" style={gridLayerStyle} />
+      <div className="infinite-grid-drift absolute inset-0 text-primary-300 opacity-45" style={activeGridLayerStyle} />
 
-      {/* Subtle violet glow */}
-      <div className="pointer-events-none absolute bottom-0 left-[-5%] h-[280px] w-[560px] rounded-full bg-primary-700/15 blur-[90px]" />
-
-      <div className="relative z-10 mx-auto max-w-5xl animate-fade-in-up">
-        <p className="text-sm font-semibold tracking-wide text-primary-400">Ahorrá tiempo, vendé más</p>
-
-        <h1 className="mt-5 font-display text-[44px] font-black leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[76px]">
-          Tu negocio necesita
-          <br />
-          <span className="text-primary-300">una herramienta que se adapte a vos.</span>
-        </h1>
-
-        <p className="mt-8 max-w-3xl text-xl leading-relaxed text-white/60 sm:text-2xl">
-          Tenemos 3 soluciones para profesionales independientes y comerciantes que quieren trabajar más rápido y ordenado.
-        </p>
-
-        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/42 sm:text-xl">
-          Empezá simple, profesionalizá tu gestión y escalá cuando tu operación crezca.
-        </p>
+      <div className="absolute inset-0">
+        <div className="absolute right-[-18%] top-[-20%] h-[42%] w-[42%] rounded-full bg-primary-500/30 blur-[120px]" />
+        <div className="absolute right-[8%] top-[-8%] h-[22%] w-[22%] rounded-full bg-primary-700/24 blur-[96px]" />
+        <div className="absolute bottom-[-22%] left-[-12%] h-[44%] w-[44%] rounded-full bg-primary-300/24 blur-[130px]" />
       </div>
-    </section>
+    </div>
   )
 }
 
-// ========================================
-// ExcelOffer — Feature showcase (pricing moved to end)
-// ========================================
-function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
-  const features = [
-    'Excel descargable + Google Sheets',
-    'Cotizador que trabaja en segundos',
-    '4 planillas listas para usar',
-    'Base de datos de productos',
-    'Configurá tu empresa una vez',
-    'Instrucciones paso a paso',
-    'Sin instalaciones ni servidores',
-    'Para negocios que cotizan todos los días',
-  ]
-  const [showDownloadModal, setShowDownloadModal] = useState(false)
-  const [downloadEmail, setDownloadEmail] = useState('')
-  const [downloading, setDownloading] = useState(false)
-  const [downloadError, setDownloadError] = useState('')
+function Hero() {
+  const gridRef = useRef<HTMLDivElement>(null)
 
-  const handleDownload = (event?: React.FormEvent) => {
-    event?.preventDefault()
-    const email = downloadEmail.trim()
-    if (!email || downloading) return
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setDownloadError('Ingresá un correo válido para continuar.')
-      return
-    }
+  const handleHeroMouseMove = (event: ReactMouseEvent<HTMLElement>) => {
+    const target = gridRef.current
+    if (!target) return
 
-    if (!MP_CHECKOUT_WEBHOOK_URL) {
-      setDownloadError('No pudimos iniciar la descarga. Escribinos por WhatsApp y te ayudamos.')
-      return
-    }
+    const { left, top } = event.currentTarget.getBoundingClientRect()
+    target.style.setProperty('--grid-mask-x', `${event.clientX - left}px`)
+    target.style.setProperty('--grid-mask-y', `${event.clientY - top}px`)
+  }
 
-    setDownloading(true)
-    setDownloadError('')
+  const handleHeroMouseLeave = () => {
+    const target = gridRef.current
+    if (!target) return
 
-    const params = new URLSearchParams(window.location.search)
-
-    // Build a dynamic form for a real browser POST — avoids CORS
-    const form = document.createElement('form')
-    form.method = 'POST'
-    form.action = MP_CHECKOUT_WEBHOOK_URL
-
-    const fields: Record<string, string> = {
-      email,
-      product: 'OctopusTool',
-      precio: '6',
-      format: 'excel',
-      source: 'landing-download',
-      page_url: window.location.href,
-      created_at: new Date().toISOString(),
-      referrer: document.referrer || '',
-      utm_source: params.get('utm_source') || '',
-      utm_medium: params.get('utm_medium') || '',
-      utm_campaign: params.get('utm_campaign') || '',
-    }
-
-    Object.entries(fields).forEach(([key, value]) => {
-      if (!value) return
-      const input = document.createElement('input')
-      input.type = 'hidden'
-      input.name = key
-      input.value = value
-      form.appendChild(input)
-    })
-
-    document.body.appendChild(form)
-    form.submit()
+    target.style.setProperty('--grid-mask-x', '50%')
+    target.style.setProperty('--grid-mask-y', '35%')
   }
 
   return (
-    <section id="excel-start" className="relative overflow-hidden bg-[#07090f] px-4 py-24 sm:px-6 sm:py-32">
-      <div className="pointer-events-none absolute -top-20 left-[15%] h-[400px] w-[600px] rounded-full bg-tool-primary/18 blur-[100px]" />
-      <div className="pointer-events-none absolute bottom-0 right-[5%] h-[300px] w-[400px] rounded-full bg-tool-surface/22 blur-[80px]" />
-      <div className="pointer-events-none absolute inset-0 [background-image:radial-gradient(circle,rgba(126,207,134,0.06)_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_60%_at_85%_30%,black_5%,transparent_80%)]" />
+    <section
+      id="inicio"
+      onMouseMove={handleHeroMouseMove}
+      onMouseLeave={handleHeroMouseLeave}
+      className="relative overflow-hidden bg-background px-4 pb-20 pt-24 sm:px-6 sm:pt-32 lg:pb-28"
+    >
+      <InfiniteGridBackdrop gridRef={gridRef} />
+
+      <div className="relative z-10 mx-auto max-w-5xl animate-fade-in-up text-center">
+        <p className="text-sm font-semibold tracking-wide text-primary">Ahorrá tiempo, vendé más</p>
+        <h1 className="mx-auto mt-5 max-w-4xl font-display text-[44px] font-black leading-[1.02] tracking-tight text-foreground sm:text-6xl lg:text-[82px]">
+          El sistema que{' '}
+          <span className="text-primary">tu comercio necesita</span>
+        </h1>
+        <p className="mx-auto mt-8 max-w-3xl text-xl leading-relaxed text-muted-foreground sm:text-2xl">
+          Gestioná stock, ventas, clientes y facturación electrónica ARCA en un solo lugar.
+        </p>
+        <p className="mx-auto mt-2 max-w-3xl text-lg leading-relaxed text-muted-foreground/85 sm:text-xl">
+          Acopios, Listas de precio personalizadas, Cuentas corrientes.
+        </p>
+        <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground/75 sm:text-xl">
+          Simple, rápido y sin complicaciones. En minutos empezás, sin límites escalás.
+        </p>
+      </div>
+
+      <div className="relative z-10 mx-auto mt-12 max-w-[1480px] sm:mt-16 lg:mt-20">
+        <div className="pointer-events-none absolute inset-x-12 -top-8 h-24 rounded-full bg-primary-500/20 blur-[70px]" />
+        <img
+          src="/assets/dashboard.png"
+          alt="OctopusTrack funcionando en escritorio y celular"
+          className="relative mx-auto w-full rounded-[28px] shadow-2xl shadow-background/60 ring-1 ring-border/80"
+          loading="eager"
+        />
+      </div>
+    </section>
+  )
+}
+
+// ========================================
+// OctopusTrack Showcase — restored zig-zag image narrative
+// ========================================
+function OctopusTrackShowcase() {
+  const features = [
+    {
+      image: '/assets/ventas-cajas.png',
+      description: 'Centralizá todo tu proceso de ventas en una única pantalla, diseñada para operar rápido, sin errores y sin cambiar de entorno.',
+      lines: [
+        'Cotizaciones, remitos, facturación y retiros de cuentas corrientes en un solo lugar.',
+        'Carga ágil de productos con atajos pensados para mostrador.',
+        'Comprobantes profesionales con datos del cliente y detalle completo.',
+        'Seguimiento claro entre presupuestos, remitos y facturas.',
+      ],
+    },
+    {
+      image: '/assets/catalogo-inventario.png',
+      description: 'Control total de productos, precios y stock sin depender de planillas sueltas.',
+      lines: [
+        'Carga manual o importación desde Excel.',
+        'Actualización masiva de precios por categorías y listas.',
+        'Inventario más claro para controlar stock físico y reposición.',
+        'Optimización de compras con costos reales.',
+      ],
+    },
+    {
+      image: '/assets/lista_de_precios.webp',
+      description: 'Listas de precios por cliente para cuentas corrientes, acopios y acuerdos comerciales.',
+      lines: [
+        'Precios especiales por cliente, obra o convenio.',
+        'Márgenes ajustados sin modificar el precio base del producto.',
+        'Aplicación automática en ventas, presupuestos y pedidos.',
+        'Control de vigencia para mantener listas actualizadas.',
+      ],
+    },
+    {
+      image: '/assets/Contacto-categorias.png',
+      description: 'Ordená clientes, proveedores, autorizados y categorías para que cada operación salga más rápido.',
+      lines: [
+        'Clientes con terceros autorizados para retirar o comprar.',
+        'Categorías para organizar el catálogo sin mezclar productos.',
+        'Proveedores centralizados para compras y reposición.',
+        'Datos comerciales listos para vender mejor.',
+      ],
+    },
+    {
+      image: '/assets/reportes.png',
+      description: 'Tomá decisiones con información clara, actualizada y fácil de compartir.',
+      lines: [
+        'Ventas por período con resúmenes y comparativas.',
+        'Productos más vendidos para saber qué mueve el negocio.',
+        'Estado de stock y alertas de productos bajos.',
+        'Cuentas corrientes con saldos y antigüedad.',
+      ],
+    },
+  ]
+
+  return (
+    <section id="caracteristicas" className="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
+      <div className="pointer-events-none absolute left-[-18%] top-[8%] h-[520px] w-[520px] rounded-full bg-primary-300/18 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-[18%] right-[-12%] h-[620px] w-[620px] rounded-full bg-primary-700/10 blur-[130px]" />
 
       <div className="relative mx-auto w-full max-w-6xl">
-        <div
-          className="mb-12 flex items-center gap-4 transition-opacity duration-500"
-          style={{ opacity: sectionActive ? 0 : 1, pointerEvents: sectionActive ? 'none' : 'auto' }}
-        >
-          <span className="inline-flex h-14 w-14 shrink-0 overflow-visible">
-            <AnimatedTentacleLogo className="h-[52px] w-[52px]" alt="OctopusTool" palette="tool" />
-          </span>
-          <div>
-            <p className="text-xs font-semibold text-tool-highlight">Cotizador Excel</p>
-            <p className="font-display text-xl font-black text-white">OctopusTool</p>
-          </div>
+        <div id="octopustrack-content" className="reveal-on-scroll scroll-mt-24 text-center">
+          <p className="mx-auto mb-5 max-w-2xl text-base font-medium text-primary/80 sm:text-lg">
+            Cuando tu comercio crece, necesitás orden real: ventas, stock, clientes, precios y reportes trabajando juntos.
+          </p>
+          <h2 className="mx-auto max-w-3xl font-display text-3xl font-black leading-[1.05] text-foreground sm:text-4xl lg:text-5xl">
+            Sistema completo para{' '}
+            <span className="text-primary">hacer crecer tu negocio</span>
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
+            Una solución diseñada para comercios que quieren escalar ventas sin perder control operativo.
+          </p>
         </div>
 
-        <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-        {/* Content */}
-        <article id="octopustool-content" className="reveal-on-scroll scroll-mt-24">
-          <h2 className="font-display text-3xl font-black leading-[1.05] text-white sm:text-4xl lg:text-5xl">
-            Cotizador en Excel{' '}
-            <span className="text-tool-highlight">
-              para pequeños comerciantes
-            </span>
+        <div className="mt-14 space-y-20 sm:mt-16 sm:space-y-24">
+          {features.map((feature, index) => (
+            <article
+              id={feature.image.includes('reportes') ? 'octopustrack-reportes' : undefined}
+              key={feature.image}
+              style={{ ['--reveal-delay' as string]: `${index * 90}ms` }}
+              className={`reveal-on-scroll mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-2 lg:gap-14 ${
+                index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''
+              }`}
+            >
+              <TiltCard strength={7} className="relative overflow-hidden rounded-3xl border border-border bg-card/75 p-1 shadow-2xl shadow-primary-950/10 backdrop-blur-sm dark:shadow-black/35">
+                <img
+                  src={feature.image}
+                  alt="Pantalla de OctopusTrack"
+                  className="relative h-auto w-full rounded-2xl"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                />
+              </TiltCard>
+
+              <div className="flex flex-col justify-center">
+                <p className="text-xl font-semibold leading-relaxed text-foreground/85">{feature.description}</p>
+
+                <ul className="mt-6 space-y-3">
+                  {feature.lines.map((line) => (
+                    <li key={line} className="flex items-start gap-3 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                      <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ========================================
+// PainPoints — dolores conocidos del comercio
+// ========================================
+function PainPointCard({ pain }: { pain: { icon: typeof DollarSign; title: string; description: string } }) {
+  const [hasOrdered, setHasOrdered] = useState(false)
+
+  return (
+    <MagnetizeCard
+      className="group rounded-2xl bg-card/70 p-6 ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:bg-card hover:shadow-2xl hover:shadow-primary/10"
+      particleCount={10}
+      attractRadius={28}
+      onMouseEnter={() => setHasOrdered(true)}
+      onTouchStart={() => setHasOrdered(true)}
+    >
+      <pain.icon className="mb-4 h-6 w-6 text-primary" />
+      <h3 className="text-lg font-medium text-foreground transition-transform duration-300 group-hover:translate-x-0.5">
+        <TextDisperse className="gap-x-1" dispersed={!hasOrdered}>{pain.title}</TextDisperse>
+      </h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{pain.description}</p>
+    </MagnetizeCard>
+  )
+}
+
+function PainPoints() {
+  const pains = [
+    {
+      icon: DollarSign,
+      title: 'No sabés rápido quién te debe',
+      description: 'Las cuentas corrientes se mezclan y perdés el control de los pagos.',
+    },
+    {
+      icon: Package,
+      title: 'El stock no siempre coincide',
+      description: 'Lo que decís que tenés no es lo que hay en el depósito.',
+    },
+    {
+      icon: RefreshCw,
+      title: 'Los precios cambian y después no hay vuelta atrás',
+      description: 'Necesitás manejar listas distintas sin romper cuentas corrientes ni operaciones viejas.',
+    },
+    {
+      icon: FileText,
+      title: 'Cada cliente puede tener una lista distinta',
+      description: 'Mayorista, minorista, obra o convenio: si todo vive en una sola planilla, se mezcla.',
+    },
+    {
+      icon: Receipt,
+      title: 'Hacer facturas desde la página de ARCA te demora tiempo',
+      description: 'Entrar, cargar datos y volver al sistema te corta el ritmo de venta.',
+    },
+    {
+      icon: Package,
+      title: 'Los acopios quedan atados a mensajes sueltos',
+      description: 'Acopiás por obra o edificio, pero después cuesta remitir con el precio congelado.',
+    },
+    {
+      icon: FileText,
+      title: 'Los presupuestos quedan perdidos entre mensajes',
+      description: 'Se te pierden los presupuestos en WhatsApp o mail y no les das seguimiento.',
+    },
+    {
+      icon: Wallet,
+      title: 'La cuenta corriente la llevás en cuaderno',
+      description: 'Saber saldos, vencimientos y deudas es una tarea manual que atrasa.',
+    },
+  ]
+
+  return (
+    <section id="dolores" className="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
+      <div className="section-container">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Si tu negocio creció, el cuaderno y la planilla se quedan cortos
           </h2>
-
-          <p className="mt-5 max-w-lg text-lg text-white/55">
-            Para quienes todavía no quieren un sistema, pero necesitan cotizar rápido, calcular bien y enviar presupuestos profesionales.
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            Así de desordenado se ve de afuera tu negocio. Con un simple cambio, lo ordenamos.
           </p>
-
-          <p className="mt-4 text-sm font-semibold tracking-wide text-tool-highlight/80">
-            Simple. Editable. Listo para usar.
-          </p>
-
-          <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
-              {features.map((f) => (
-                <li key={f} className="flex items-start gap-3 text-sm text-white/65">
-                <span className="mt-0.5 shrink-0 font-bold text-tool-accent">—</span>
-                {f}
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:items-center">
-            <button
-              type="button"
-              onClick={() => {
-                setDownloadError('')
-                setShowDownloadModal(true)
-              }}
-              className="flex w-fit items-center justify-center gap-2 rounded-xl border border-tool-highlight/30 bg-gradient-to-r from-tool-primary to-tool-accent px-7 py-3.5 text-sm font-semibold text-tool-background shadow-lg shadow-tool-primary/25 transition-all duration-200 hover:scale-[1.02] hover:shadow-tool-accent/30"
-            >
-              Descargar Excel
-              <ArrowRight className="h-4 w-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => openWhatsAppWithMessage('Hola! Me interesa saber sobre OctopusTool.')}
-              className="flex w-fit items-center justify-center gap-2 rounded-xl border border-tool-highlight/30 bg-tool-highlight/10 px-7 py-3.5 text-sm font-semibold text-tool-highlight shadow-lg shadow-tool-background/20 transition-all duration-200 hover:scale-[1.02] hover:border-tool-highlight/45 hover:bg-tool-highlight/18 hover:text-tool-highlight"
-            >
-              Pedir cotizador
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-
-          {showDownloadModal && (
-            <div className="fixed inset-0 z-[70] flex items-center justify-center px-4">
-              <button
-                type="button"
-                aria-label="Cerrar descarga de OctopusTool"
-                className="absolute inset-0 bg-[#05070a]/80 backdrop-blur-sm"
-                onClick={() => setShowDownloadModal(false)}
-              />
-
-              <form
-                onSubmit={handleDownload}
-                className="relative w-full max-w-md overflow-hidden rounded-3xl border border-tool-highlight/25 bg-[#07100b] p-6 shadow-2xl shadow-tool-background/70"
-              >
-                <div className="pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-tool-primary/20 blur-3xl" />
-                <button
-                  type="button"
-                  aria-label="Cerrar"
-                  onClick={() => setShowDownloadModal(false)}
-                  className="absolute right-4 top-4 rounded-full border border-white/10 bg-white/5 p-2 text-white/60 transition-colors hover:text-white"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-
-                <div className="relative">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-tool-highlight">OctopusTool</p>
-                  <h3 className="mt-3 font-display text-2xl font-black text-white">Descargar Excel</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/55">
-                    Dejanos tu correo para iniciar la compra segura y recibir el acceso al cotizador.
-                  </p>
-
-                  <label htmlFor="octopustool-download-email" className="mt-6 block text-sm font-medium text-white/60">
-                    Correo electrónico
-                  </label>
-                  <input
-                    id="octopustool-download-email"
-                    type="email"
-                    placeholder="tu@email.com"
-                    value={downloadEmail}
-                    onChange={(e) => setDownloadEmail(e.target.value)}
-                    required
-                    className="mt-2 w-full rounded-xl border border-tool-highlight/30 bg-tool-background/30 px-4 py-3 text-sm text-white placeholder:text-white/30 transition-colors focus:border-tool-highlight focus:outline-none focus:ring-1 focus:ring-tool-highlight/40"
-                  />
-
-                  {downloadError && <p className="mt-3 text-sm text-red-300">{downloadError}</p>}
-
-                  <button
-                    type="submit"
-                    disabled={downloading}
-                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-tool-primary px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-tool-primary/25 transition-all duration-200 hover:scale-[1.01] hover:bg-tool-accent disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {downloading ? 'Redirigiendo…' : 'Continuar a descarga'}
-                    {!downloading && <ArrowRight className="h-4 w-4" />}
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-        </article>
-
-        {/* OctopusTool screenshot */}
-        <TiltCard
-          tag="article"
-          strength={7}
-          className="reveal-on-scroll group relative flex overflow-hidden rounded-3xl border border-tool-primary/35 shadow-2xl shadow-tool-primary/15"
-        >
-          <div className="absolute -inset-px rounded-3xl bg-gradient-to-r from-tool-primary/25 via-tool-accent/15 to-tool-highlight/15 blur-sm transition-opacity duration-500 group-hover:from-tool-primary/35 group-hover:via-tool-accent/25 group-hover:to-tool-highlight/25" />
-          <img
-            src="/assets/octopustool916.png"
-            alt="OctopusTool — cotizador profesional en Excel"
-            className="w-full rounded-3xl"
-          />
-        </TiltCard>
+        </div>
+        <div className="mx-auto mt-14 grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {pains.map((pain) => (
+            <PainPointCard key={pain.title} pain={pain} />
+          ))}
         </div>
       </div>
     </section>
@@ -554,220 +584,258 @@ function ExcelOffer({ sectionActive = false }: { sectionActive?: boolean }) {
 }
 
 // ========================================
-// OctopusTrack Showcase — Screenshot + HUD frame
+// Social Proof — Rubros
 // ========================================
-function OctopusTrackShowcase({ sectionActive = false, openDemoModal }: { sectionActive?: boolean; openDemoModal?: (product: 'octopustrack' | 'octopusflow') => void }) {
-  const features: FeatureVideoItem[] = [
-    { label: 'Acopios por importe', icon: Package },
-    { label: 'Facturación Electrónica', icon: Receipt, videoUrl: '/assets/facturacion-demo.mp4' },
-    { label: 'Cotizaciones', icon: DollarSign, videoUrl: '/assets/cotizaciones-demo.mp4' },
-    { label: 'Cuentas corrientes', icon: Wallet },
-    { label: 'Remitos', icon: Truck },
-    { label: 'Actualización masiva de precios', icon: RefreshCw },
-    { label: 'Importación y exportación de listas de precio', icon: FileUp },
-    { label: 'Datos en PDF y Excel', icon: FileDown },
-    { label: 'Uso rápido y fácil', icon: Zap },
-    { label: 'Órdenes de compra', icon: ShoppingCart },
+function SocialProof() {
+  const rubros = [
+    { icon: Wrench, label: 'Ferreterías' },
+    { icon: Warehouse, label: 'Corralones' },
+    { icon: Truck, label: 'Distribuidoras' },
+    { icon: Wheat, label: 'Forrajerías' },
+    { icon: Droplets, label: 'Sanitarios' },
+    { icon: Package, label: 'Mayoristas' },
+    { icon: Wallet, label: 'Electricidad' },
   ]
-  const [activeFeature, setActiveFeature] = useState<FeatureVideoItem | null>(null)
 
   return (
-    <section id="caracteristicas" className="relative overflow-hidden bg-[#0a0a14] px-4 py-24 sm:px-6 sm:py-32">
-      <div className="pointer-events-none absolute left-[55%] top-[10%] h-[500px] w-[500px] rounded-full bg-primary-800/12 blur-[110px]" />
+    <section id="rubros" className="relative overflow-hidden bg-background px-4 py-16 sm:px-6 sm:py-28">
+      {/* Ambient glow */}
+      <div className="pointer-events-none absolute -top-20 left-[20%] h-[400px] w-[600px] rounded-full bg-primary-600/10 blur-[100px]" />
 
-      <div className="relative mx-auto w-full max-w-6xl">
-        {/* Product brand row — fades out when header takes over */}
-        <div
-          className="mb-12 flex items-center gap-4 transition-opacity duration-500"
-          style={{ opacity: sectionActive ? 0 : 1, pointerEvents: sectionActive ? 'none' : 'auto' }}
-        >
-          <AnimatedTentacleLogo className="h-[52px] w-[52px]" alt="OctopusTrack" />
-          <div>
-            <p className="text-xs font-semibold text-primary-400">Sistema ERP</p>
-            <p className="font-display text-xl font-black text-white">OctopusTrack</p>
-          </div>
+      <div className="section-container">
+        <div className="reveal-on-scroll text-center">
+          <h2 className="bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
+            Pensado para comercios que necesitan ordenarse
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Cada rubro tiene sus reglas. Nosotros las conocemos.
+          </p>
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          {/* Content */}
-          <div id="octopustrack-content" className="reveal-on-scroll scroll-mt-24">
-            <h2 className="font-display text-3xl font-black leading-[1.05] text-white sm:text-4xl lg:text-5xl">
-              Todo lo que tu negocio necesita,{' '}
-              <span className="text-primary-300">en un solo lugar</span>
-            </h2>
-            <p className="mt-5 max-w-lg text-base text-white/55">
-              Rápido, directo y sin complicaciones. Empezás en minutos y crecés sin cambiar de sistema.
+        <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
+          {rubros.map((rubro, index) => (
+            <MagnetizeCard
+              key={rubro.label}
+              className="reveal-on-scroll flex min-h-[72px] items-center gap-2.5 rounded-xl bg-card/70 px-3 py-3 ring-1 ring-border transition-all duration-300 hover:bg-card sm:min-h-[88px] sm:gap-3 sm:rounded-2xl sm:p-5"
+              style={{ '--reveal-delay': index * 100 } as React.CSSProperties}
+            >
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/15 sm:h-10 sm:w-10 sm:rounded-xl">
+                <rubro.icon className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
+              </div>
+              <span className="text-[13px] font-medium leading-tight text-foreground/85 sm:text-sm">{rubro.label}</span>
+            </MagnetizeCard>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+interface MagnetParticle {
+  id: number
+  x: number
+  y: number
+}
+
+interface MagnetizeButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  particleCount?: number
+  attractRadius?: number
+}
+
+interface MagnetizeCardProps extends HTMLAttributes<HTMLDivElement> {
+  particleCount?: number
+  attractRadius?: number
+}
+
+function createMagnetParticles(particleCount: number, attractRadius: number): MagnetParticle[] {
+  return Array.from({ length: particleCount }, (_, id) => {
+    const angle = (Math.PI * 2 * id) / particleCount
+    const distance = attractRadius + Math.random() * attractRadius
+
+    return {
+      id,
+      x: Math.cos(angle) * distance,
+      y: Math.sin(angle) * distance,
+    }
+  })
+}
+
+function MagnetizeButton({
+  children,
+  className = '',
+  particleCount = 12,
+  attractRadius = 34,
+  onMouseEnter,
+  onMouseLeave,
+  onTouchStart,
+  onTouchEnd,
+  ...props
+}: MagnetizeButtonProps) {
+  const [isAttracting, setIsAttracting] = useState(false)
+  const [particles, setParticles] = useState<MagnetParticle[]>(() =>
+    createMagnetParticles(particleCount, attractRadius),
+  )
+
+  useEffect(() => {
+    setParticles(createMagnetParticles(particleCount, attractRadius))
+  }, [particleCount, attractRadius])
+
+  return (
+    <button
+      className={`group relative isolate touch-none overflow-visible ${className}`}
+      onMouseEnter={(event) => {
+        setIsAttracting(true)
+        onMouseEnter?.(event)
+      }}
+      onMouseLeave={(event) => {
+        setIsAttracting(false)
+        onMouseLeave?.(event)
+      }}
+      onTouchStart={(event) => {
+        setIsAttracting(true)
+        onTouchStart?.(event)
+      }}
+      onTouchEnd={(event) => {
+        setIsAttracting(false)
+        onTouchEnd?.(event)
+      }}
+      {...props}
+    >
+      <span className="pointer-events-none absolute left-1/2 top-1/2 -z-10 block h-full w-full -translate-x-1/2 -translate-y-1/2 rounded-[inherit] bg-primary/35 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-70" />
+      {particles.map((particle) => (
+        <span
+          key={particle.id}
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-1.5 w-1.5 rounded-full bg-primary-200 shadow-[0_0_16px_rgb(var(--primary-200)/0.7)] transition-[opacity,transform] duration-500 ease-out"
+          style={{
+            opacity: isAttracting ? 0.95 : 0.35,
+            transform: isAttracting
+              ? 'translate3d(-50%, -50%, 0) scale(1.2)'
+              : `translate3d(calc(-50% + ${particle.x}px), calc(-50% + ${particle.y}px), 0) scale(0.85)`,
+          }}
+        />
+      ))}
+      <span className="relative flex w-full items-center justify-center gap-2">
+        <Magnet className={`h-4 w-4 transition-transform duration-300 ${isAttracting ? 'scale-110 rotate-6' : ''}`} />
+        {children}
+      </span>
+    </button>
+  )
+}
+
+function MagnetizeCard({
+  children,
+  className = '',
+  particleCount = 8,
+  attractRadius = 24,
+  onMouseEnter,
+  onMouseLeave,
+  onTouchStart,
+  onTouchEnd,
+  ...props
+}: MagnetizeCardProps) {
+  const [isAttracting, setIsAttracting] = useState(false)
+  const [particles, setParticles] = useState<MagnetParticle[]>(() =>
+    createMagnetParticles(particleCount, attractRadius),
+  )
+
+  useEffect(() => {
+    setParticles(createMagnetParticles(particleCount, attractRadius))
+  }, [particleCount, attractRadius])
+
+  return (
+    <div
+      className={`group relative isolate overflow-visible ${className}`}
+      onMouseEnter={(event) => {
+        setIsAttracting(true)
+        onMouseEnter?.(event)
+      }}
+      onMouseLeave={(event) => {
+        setIsAttracting(false)
+        onMouseLeave?.(event)
+      }}
+      onTouchStart={(event) => {
+        setIsAttracting(true)
+        onTouchStart?.(event)
+      }}
+      onTouchEnd={(event) => {
+        setIsAttracting(false)
+        onTouchEnd?.(event)
+      }}
+      {...props}
+    >
+      <span className="pointer-events-none absolute left-1/2 top-1/2 -z-10 block h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-70" />
+      {particles.map((particle) => (
+        <span
+          key={particle.id}
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-1 w-1 rounded-full bg-primary-300 shadow-[0_0_12px_rgb(var(--primary-300)/0.65)] transition-[opacity,transform] duration-500 ease-out"
+          style={{
+            opacity: isAttracting ? 0.9 : 0.25,
+            transform: isAttracting
+              ? 'translate3d(-50%, -50%, 0) scale(1.25)'
+              : `translate3d(calc(-50% + ${particle.x}px), calc(-50% + ${particle.y}px), 0) scale(0.85)`,
+          }}
+        />
+      ))}
+      {children}
+    </div>
+  )
+}
+
+// ========================================
+// Start Section — split CTA without public pricing
+// ========================================
+function StartInMinutesSection({ openDemoModal }: { openDemoModal?: (product: 'octopustrack') => void }) {
+  return (
+    <section id="precios" className="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
+      <div className="section-container">
+        <div className="reveal-on-scroll overflow-hidden rounded-[28px] border border-primary/20 bg-card shadow-2xl shadow-primary/10 md:grid md:grid-cols-[0.92fr_1.08fr]">
+          <div className="relative overflow-hidden bg-primary px-6 py-10 text-primary-foreground sm:px-10 sm:py-14 lg:px-12 lg:py-16">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary-foreground/15 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 left-8 h-56 w-56 rounded-full bg-background/20 blur-3xl" />
+            <div className="relative">
+              <p className="text-[11px] font-bold uppercase tracking-[0.32em] text-primary-foreground/70">
+                Demo guiada
+              </p>
+              <h2 className="mt-5 max-w-xl font-display text-4xl font-black leading-[0.98] tracking-tight sm:text-5xl lg:text-6xl">
+                Empezá en minutos. Sin complicaciones.
+              </h2>
+            </div>
+          </div>
+
+          <div className="bg-card px-6 py-10 sm:px-10 sm:py-14 lg:px-12 lg:py-16">
+            <p className="max-w-xl text-lg leading-relaxed text-foreground sm:text-xl">
+              Te mostramos cómo ordenar stock, ventas, listas de precio, cuentas corrientes y facturación sin cambiar la forma en que trabaja tu comercio.
             </p>
 
-            <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-2 sm:grid-cols-2">
-              {features.map((f) => (
-                <li key={f.label}>
-                  {f.videoUrl ? (
-                    <button
-                      type="button"
-                      onClick={() => setActiveFeature(f)}
-                      className="flex w-full cursor-pointer items-start gap-3 rounded-xl px-3 py-2 text-left text-sm text-white/65 transition-all duration-200 hover:bg-white/[0.04] hover:text-white"
-                    >
-                      <f.icon className="mt-0.5 h-4 w-4 shrink-0 text-primary-400" />
-                      <span>{f.label}</span>
-                    </button>
-                  ) : (
-                    <div className="flex items-start gap-3 rounded-xl px-3 py-2 text-sm text-white/40">
-                      <f.icon className="mt-0.5 h-4 w-4 shrink-0 text-primary-400/50" />
-                      <span>{f.label}</span>
-                    </div>
-                  )}
-                </li>
+            <div className="mt-8 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
+              {['Sin tarjeta', 'Sin contratos largos', 'Acompañamiento real', 'Configurado para tu rubro'].map((item) => (
+                <div key={item} className="flex items-center gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
+                  <span>{item}</span>
+                </div>
               ))}
-            </ul>
+            </div>
 
-            <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                onClick={() => openWhatsAppWithMessage('Hola! Me interesa saber sobre OctopusTrack.')}
-                className="flex w-fit items-center justify-center gap-2 rounded-xl border border-primary-500/30 bg-primary-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-all duration-200 hover:scale-[1.02] hover:bg-primary-500"
-              >
-                Me interesa OctopusTrack
-                <ArrowRight className="h-4 w-4" />
-              </button>
-              <button
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <MagnetizeButton
                 type="button"
                 onClick={() => openDemoModal?.('octopustrack')}
-                className="flex w-fit items-center justify-center gap-2 rounded-xl border border-primary-400/30 bg-primary-500/10 px-7 py-3.5 text-sm font-semibold text-primary-200 shadow-lg shadow-primary-950/20 transition-all duration-200 hover:scale-[1.02] hover:border-primary-300/45 hover:bg-primary-500/18 hover:text-white"
+                className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:bg-primary/90 sm:min-w-[210px]"
               >
-                Probar demo 7 días
-                <ArrowRight className="h-4 w-4" />
-              </button>
+                Probar demo
+              </MagnetizeButton>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl border border-border bg-background/40 px-6 py-3.5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-background"
+              >
+                Hablar por WhatsApp
+                <MessageCircle className="h-4 w-4" />
+              </a>
             </div>
           </div>
-
-          {/* OctopusTrack screenshot — HUD frame */}
-          <TiltCard strength={7} className="reveal-on-scroll group relative flex lg:mt-10">
-            <div className="absolute -inset-px rounded-3xl bg-primary-600/15 blur-sm transition-opacity duration-500 group-hover:bg-primary-500/22" />
-
-            <div className="relative flex w-full flex-col overflow-hidden rounded-3xl border border-primary-500/20 bg-[#0d0a1a] shadow-2xl shadow-primary-950/60">
-
-              <img
-                src="/assets/octopustrack916.png"
-                alt="Panel de OctopusTrack"
-                className="w-full"
-              />
-
-              {/* Status bar */}
-              <div className="flex shrink-0 items-center gap-2.5 border-t border-primary-500/10 bg-[#0a0814]/80 px-4 py-2.5 backdrop-blur-sm">
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-primary-400" />
-                </span>
-                <span className="font-mono text-[11px] text-primary-400/60">Sistema activo</span>
-                <span className="ml-auto font-mono text-[11px] text-white/15">OctopusTrack v1.4.29</span>
-              </div>
-            </div>
-          </TiltCard>
-        </div>
-      </div>
-
-      <FeatureVideoModal feature={activeFeature} onClose={() => setActiveFeature(null)} />
-    </section>
-  )
-}
-
-// ========================================
-// OctopusFlow — New product for freelancers
-// ========================================
-function OctopusFlowSection({ sectionActive = false, openDemoModal }: { sectionActive?: boolean; openDemoModal?: (product: 'octopustrack' | 'octopusflow') => void }) {
-  const features = [
-    'Creá presupuestos profesionales en minutos',
-    'Compartí por link directo o PDF con tu cliente',
-    'Seguimiento de estado: enviado, aceptado, rechazado',
-    'Historial completo por cliente',
-    'Tu marca en cada presupuesto',
-  ]
-
-  const handleWhatsApp = () => {
-    openWhatsAppWithMessage('Hola! Me interesa saber sobre OctopusFlow.')
-  }
-
-  return (
-    <section id="octopusflow" className="relative overflow-hidden bg-[#07090f] px-4 py-24 sm:px-6 sm:py-32">
-      {/* Blue ambient glows */}
-      <div className="pointer-events-none absolute -top-20 left-[15%] h-[400px] w-[600px] rounded-full bg-blue-800/12 blur-[100px]" />
-      <div className="pointer-events-none absolute bottom-0 right-[5%] h-[300px] w-[400px] rounded-full bg-blue-900/10 blur-[80px]" />
-
-      {/* Subtle blue dot grid on the right */}
-      <div className="pointer-events-none absolute inset-0 [background-image:radial-gradient(circle,rgba(59,130,246,0.06)_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_60%_at_85%_30%,black_5%,transparent_80%)]" />
-
-      <div className="relative mx-auto w-full max-w-6xl">
-        {/* Product brand row — fades out when header takes over */}
-        <div
-          className="mb-12 flex items-center gap-4 transition-opacity duration-500"
-          style={{ opacity: sectionActive ? 0 : 1, pointerEvents: sectionActive ? 'none' : 'auto' }}
-        >
-          <span
-            className="inline-flex h-14 w-14 shrink-0 overflow-visible"
-            style={{ filter: 'hue-rotate(310deg) saturate(1.4) brightness(1.1)' }}
-          >
-            <AnimatedTentacleLogo className="h-[52px] w-[52px]" alt="OctopusFlow" />
-          </span>
-          <div>
-            <p className="text-xs font-semibold text-blue-400">Sistema activo</p>
-            <p className="font-display text-xl font-black text-white">OctopusFlow</p>
-          </div>
-        </div>
-
-        <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-          {/* Content */}
-          <div id="octopusflow-content" className="reveal-on-scroll scroll-mt-24">
-            <h2 className="font-display text-3xl font-black leading-[1.05] text-white sm:text-4xl lg:text-5xl">
-              Presupuestos para{' '}
-              <span className="text-blue-300">independientes</span>
-            </h2>
-            <p className="mt-5 max-w-lg text-lg text-white/55">
-              Si trabajás por tu cuenta, OctopusFlow es tu herramienta. Creá presupuestos profesionales, mandáselos a tus clientes y cerrá más trabajos, sin complicaciones.
-            </p>
-
-            <ul className="mt-8 space-y-3">
-              {features.map((f) => (
-                <li key={f} className="flex items-start gap-3 text-base text-white/65">
-                  <span className="mt-0.5 shrink-0 font-bold text-blue-500">—</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                onClick={handleWhatsApp}
-                className="flex w-fit items-center justify-center gap-2 rounded-xl border border-blue-500/30 bg-blue-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-200 hover:scale-[1.02] hover:bg-blue-500"
-              >
-                Me interesa OctopusFlow
-                <ArrowRight className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => openDemoModal?.('octopusflow')}
-                className="flex w-fit items-center justify-center gap-2 rounded-xl border border-blue-400/30 bg-blue-500/10 px-7 py-3.5 text-sm font-semibold text-blue-200 shadow-lg shadow-blue-950/20 transition-all duration-200 hover:scale-[1.02] hover:border-blue-300/45 hover:bg-blue-500/18 hover:text-white"
-              >
-                Probar demo 7 días
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* OctopusFlow screenshot */}
-          <TiltCard
-            tag="article"
-            strength={7}
-            className="reveal-on-scroll group relative flex overflow-hidden rounded-3xl border border-blue-500/15 shadow-2xl shadow-blue-950/40"
-          >
-            <div className="absolute -inset-px rounded-3xl bg-blue-600/10 blur-sm transition-opacity duration-500 group-hover:bg-blue-500/18" />
-            <img
-                src="/assets/octopusflow916.png"
-              alt="OctopusFlow — sistema de presupuestos"
-            className="w-full rounded-3xl"
-            />
-          </TiltCard>
         </div>
       </div>
     </section>
@@ -816,88 +884,109 @@ function ContactForm() {
   }
 
   return (
-    <section id="contacto" className="relative overflow-hidden bg-[#07070f] px-4 py-24 sm:px-6 sm:py-32">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-primary-800/10 blur-[110px]" />
-
-      <div className="relative mx-auto w-full max-w-xl">
-        {status === 'sent' ? (
-          <div className="text-center">
-            <CheckCircle2 className="mx-auto mb-6 h-14 w-14 text-primary-400" />
-            <h2 className="font-display text-3xl font-black text-white">Listo, te contactamos.</h2>
-            <p className="mx-auto mt-4 max-w-sm text-base text-white/50">
-              Revisá tu correo. Te respondemos con el plan que mejor se adapta a tu negocio.
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="mb-12 text-center">
-              <h2 className="font-display text-3xl font-black text-white sm:text-4xl lg:text-5xl">
-                ¿Querés saber más?{' '}
-                <span className="text-primary-300">Escribinos.</span>
-              </h2>
-              <p className="mx-auto mt-4 max-w-md text-base text-white/50">
-                Dejanos tu correo y contanos qué necesita tu negocio. Te respondemos con el precio y el plan exacto para vos.
+    <section id="contacto" className="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
+      <div className="section-container">
+        <div className="mx-auto w-full max-w-xl">
+          {status === 'sent' ? (
+            <div className="text-center">
+              {/* Animated checkmark SVG (Task 4.4) */}
+              <svg className="mx-auto mb-6 h-14 w-14 text-primary" viewBox="0 0 52 52" fill="none" aria-hidden="true">
+                  <circle
+                    className="checkmark-circle"
+                    cx="26"
+                    cy="26"
+                    r="24"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className="checkmark-path"
+                    d="M14 27l7 7 16-16"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground">Listo, te contactamos.</h2>
+              <p className="mx-auto mt-4 max-w-sm text-base text-muted-foreground">
+                Revisá tu correo. Te respondemos con el plan que mejor se adapta a tu negocio.
               </p>
             </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="cf-email" className="mb-2 block text-sm font-medium text-white/55">
-                  Correo electrónico
-                </label>
-                <input
-                  id="cf-email"
-                  type="email"
-                  placeholder="tu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/25 focus:border-primary-400 focus:bg-white/8 focus:outline-none focus:ring-1 focus:ring-primary-500 transition-colors"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="cf-message" className="mb-2 block text-sm font-medium text-white/55">
-                  ¿Qué necesita tu negocio?
-                </label>
-                <textarea
-                  id="cf-message"
-                  rows={4}
-                  placeholder="Ej: tengo una ferretería, cotizo todos los días y quiero manejar el stock y las cuentas corrientes..."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  required
-                  className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/25 focus:border-primary-400 focus:bg-white/8 focus:outline-none focus:ring-1 focus:ring-primary-500 transition-colors"
-                />
-              </div>
-
-              {status === 'error' && (
-                <p className="text-sm text-red-400">
-                  Algo salió mal. Intentá de nuevo o escribinos por{' '}
-                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="underline">WhatsApp</a>.
+          ) : (
+            <>
+              <div className="mb-12 text-center">
+                <h2 className="bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
+                  ¿Querés saber más? Escribinos.
+                </h2>
+                <p className="mx-auto mt-4 max-w-md text-base text-muted-foreground">
+                  Dejanos tu correo y contanos qué necesita tu negocio. Te respondemos a la brevedad.
                 </p>
-              )}
+              </div>
 
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full gap-2"
-                isLoading={status === 'loading'}
-                disabled={!isValid}
-              >
-                Enviar consulta
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="cf-email" className="mb-2 block text-sm font-medium text-muted-foreground">
+                    Correo electrónico
+                  </label>
+                  <input
+                    id="cf-email"
+                    name="email"
+                    type="email"
+                    placeholder="tu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full rounded-xl border border-border bg-card/70 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all duration-300 focus:border-ring focus:bg-card focus:outline-none focus:ring-1 focus:ring-ring/40"
+                  />
+                </div>
 
-              <p className="text-center text-xs text-white/25">
-                O escribinos directo por{' '}
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary-400 transition-colors hover:text-primary-300">
-                  WhatsApp
-                </a>
-              </p>
-            </form>
-          </>
-        )}
+                <div>
+                  <label htmlFor="cf-message" className="mb-2 block text-sm font-medium text-muted-foreground">
+                    ¿Qué necesita tu negocio?
+                  </label>
+                  <textarea
+                    id="cf-message"
+                    name="message"
+                    rows={4}
+                    placeholder="Ej: tengo una ferretería, cotizo todos los días y quiero manejar el stock y las cuentas corrientes..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                    className="w-full resize-none rounded-xl border border-border bg-card/70 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all duration-300 focus:border-ring focus:bg-card focus:outline-none focus:ring-1 focus:ring-ring/40"
+                  />
+                </div>
+
+                {status === 'error' && (
+                  <p key={Date.now()} className="animate-shake text-sm text-destructive">
+                    Algo salió mal. Intentá de nuevo o escribinos por{' '}
+                    <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="underline">WhatsApp</a>.
+                  </p>
+                )}
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className={`w-full gap-2 ${isValid && status === 'idle' ? 'animate-pulse-subtle' : ''}`}
+                  isLoading={status === 'loading'}
+                  disabled={!isValid}
+                >
+                  Enviar consulta
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+
+                <p className="text-center text-xs text-muted-foreground">
+                  O escribinos directo por{' '}
+                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary transition-colors hover:text-primary/80">
+                    WhatsApp
+                  </a>
+                </p>
+              </form>
+            </>
+          )}
+        </div>
       </div>
     </section>
   )
@@ -908,28 +997,28 @@ function ContactForm() {
 // ========================================
 function Footer() {
   return (
-    <footer id="contacto" className="border-t border-white/5 bg-[#080810] px-4 py-12 sm:px-6 sm:py-16">
+    <footer id="contacto" className="border-t border-border bg-background px-4 py-12 sm:px-6 sm:py-16">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-center gap-6">
         <nav aria-label="Enlaces legales" className="flex flex-wrap items-center justify-center gap-4 text-sm">
           <a
             href="/politicas-privacidad.html"
-            className="text-white/60 underline underline-offset-4 transition-colors hover:text-white"
+            className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
           >
             Política de privacidad
           </a>
-          <span className="text-white/20" aria-hidden="true">
+          <span className="text-muted-foreground/40" aria-hidden="true">
             •
           </span>
           <a
             href="/politicas-seguridad.html"
-            className="text-white/60 underline underline-offset-4 transition-colors hover:text-white"
+            className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
           >
             Política de seguridad
           </a>
         </nav>
-        <p className="text-xs text-white/25">
+        <p className="text-xs text-muted-foreground">
           Contacto:{' '}
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary-400 transition-colors hover:text-primary-300">
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary transition-colors hover:text-primary/80">
             WhatsApp
           </a>
         </p>
@@ -941,22 +1030,14 @@ function Footer() {
 // ========================================
 // Floating Contact Button
 // ========================================
-function FloatingContactButton({ section = 'none' }: { section?: HeaderSection }) {
-  const isBlue = section === 'flow'
-  const isGreen = section === 'tool'
-  const buttonChrome = isBlue
-    ? 'border-blue-400/40 bg-blue-600 shadow-blue-500/25 hover:bg-blue-500'
-    : isGreen
-      ? 'border-tool-highlight/40 bg-tool-primary shadow-tool-primary/25 hover:bg-tool-accent'
-      : 'border-primary-600/40 bg-primary-600 shadow-primary-700/25 hover:bg-primary-500'
-
+function FloatingContactButton() {
   return (
     <a
       href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Comunicate con nosotros por WhatsApp"
-      className={`fixed bottom-6 right-6 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border text-white shadow-xl transition-all duration-500 hover:scale-105 ${buttonChrome}`}
+      className="fixed bottom-6 right-6 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 transition-all duration-500 hover:scale-105 hover:bg-primary/90"
     >
         <MessageCircle className="h-5 w-5" />
     </a>
@@ -966,17 +1047,17 @@ function FloatingContactButton({ section = 'none' }: { section?: HeaderSection }
 // ========================================
 // ThankYouPage — Premium after purchase
 // ========================================
-function ThankYouPage() {
+function ThankYouPage({ theme }: { theme: ThemeMode }) {
   return (
-    <div className="min-h-screen bg-[#080810]">
+    <div className={`${theme === 'night' ? 'dark ' : ''}min-h-screen bg-background text-foreground`}>
       <div className="mx-auto flex min-h-screen w-full max-w-4xl items-center px-4 py-12 sm:px-6">
-        <section className="w-full rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-2xl">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary-500/20">
-            <CheckCircle2 className="h-8 w-8 text-primary-400" />
+        <section className="w-full rounded-3xl bg-card/80 p-8 text-center shadow-2xl ring-1 ring-border">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20">
+            <CheckCircle2 className="h-8 w-8 text-primary" />
           </div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-primary-400">Pago confirmado</p>
-          <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Tu cotizador ya está listo</h1>
-          <p className="mx-auto mt-4 max-w-lg text-base text-white/60">
+          <p className="text-sm font-semibold tracking-widest text-primary uppercase">Pago confirmado</p>
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Tu cotizador ya está listo</h1>
+          <p className="mx-auto mt-4 max-w-lg text-base text-muted-foreground">
             Acá tenés acceso inmediato al archivo Excel y Google Sheets. Descargalo y empezá a usar tu nuevo cotizador.
           </p>
 
@@ -995,10 +1076,10 @@ function ThankYouPage() {
             </a>
           </div>
 
-          <div className="mt-10 rounded-xl bg-white/5 p-4">
-            <p className="text-sm text-white/50">
+          <div className="mt-10 rounded-xl bg-muted/40 p-4">
+            <p className="text-sm text-muted-foreground">
               ¿Necesitás ayuda?{' '}
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary-400 underline hover:text-primary-300">
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80">
                 Escribinos por WhatsApp
               </a>
             </p>
@@ -1012,19 +1093,16 @@ function ThankYouPage() {
 // ========================================
 // Main Landing Component
 // ========================================
-type HeaderSection = 'none' | 'tool' | 'track' | 'flow'
+type HeaderSection = 'none' | 'track'
 
 function useHeaderSection(): HeaderSection {
   const [section, setSection] = useState<HeaderSection>('none')
 
   useEffect(() => {
-    const targets: Array<{ key: HeaderSection; element: HTMLElement | null }> = [
-      { key: 'tool', element: document.getElementById('octopustool-content') },
-      { key: 'flow', element: document.getElementById('octopusflow-content') },
-      { key: 'track', element: document.getElementById('octopustrack-content') },
-    ]
+    const trackSection = document.getElementById('caracteristicas')
+    const reportesMarker = document.getElementById('octopustrack-reportes')
 
-    if (targets.some(({ element }) => !element)) return
+    if (!trackSection || !reportesMarker) return
 
     let frame = 0
 
@@ -1032,12 +1110,12 @@ function useHeaderSection(): HeaderSection {
       cancelAnimationFrame(frame)
       frame = requestAnimationFrame(() => {
         const activationLine = Math.min(window.innerHeight * 0.28, 190)
-        const activeTarget = targets.find(({ element }) => {
-          const rect = element!.getBoundingClientRect()
-          return rect.top <= activationLine && rect.bottom >= activationLine
-        })
+        const sectionRect = trackSection.getBoundingClientRect()
+        const reportesRect = reportesMarker.getBoundingClientRect()
+        const isBeforeReportes = reportesRect.top > activationLine
+        const isInsideTrackIntro = sectionRect.top <= activationLine && sectionRect.bottom >= activationLine
 
-        setSection(activeTarget?.key ?? 'none')
+        setSection(isInsideTrackIntro && isBeforeReportes ? 'track' : 'none')
       })
     }
 
@@ -1055,27 +1133,240 @@ function useHeaderSection(): HeaderSection {
   return section
 }
 
-function LandingContent({ loginUrl }: { loginUrl: string }) {
+// Clip-path reveal for device frames — GSAP ScrollTrigger from inset(100%) to inset(0)
+function useDeviceFrameReveal() {
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    gsap.registerPlugin(ScrollTrigger)
+
+    const frames = gsap.utils.toArray<HTMLElement>('.device-frame-reveal')
+    if (!frames.length) return
+
+    frames.forEach((el, i) => {
+      gsap.fromTo(
+        el,
+        { clipPath: 'inset(0 0 100% 0)' },
+        {
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 1.2,
+          ease: 'power3.inOut',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            once: true,
+            id: `device-reveal-${i}`,
+          },
+        },
+      )
+    })
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => {
+        if (t.vars.id?.startsWith('device-reveal-')) t.kill()
+      })
+    }
+  }, [])
+}
+
+// Stagger entrance for feature list items — GSAP with per-item delay
+function useStaggerEntrance() {
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    gsap.registerPlugin(ScrollTrigger)
+
+    const lists = gsap.utils.toArray<HTMLElement>('.stagger-list')
+    if (!lists.length) return
+
+    lists.forEach((list, i) => {
+      const items = list.querySelectorAll<HTMLElement>('.stagger-item')
+      if (!items.length) return
+
+      const stagger = items.length >= 10 ? 0.04 : 0.06
+
+      gsap.fromTo(
+        items,
+        { opacity: 0, y: 20, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.5,
+          stagger,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: list,
+            start: 'top 85%',
+            once: true,
+            id: `stagger-list-${i}`,
+          },
+        },
+      )
+    })
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => {
+        if (t.vars.id?.startsWith('stagger-list-')) t.kill()
+      })
+    }
+  }, [])
+}
+
+// ========================================
+// Hero Canvas Particle Background (Task 4.1)
+// ========================================
+
+// ========================================
+// Section Divider (Task 4.3)
+// ========================================
+function SectionDivider({ from, to }: { from: string; to: string }) {
+  return (
+    <div
+      className="section-divider"
+      style={{ background: `linear-gradient(to bottom, ${from}, ${to})` }}
+      aria-hidden="true"
+    />
+  )
+}
+
+// ========================================
+// Scroll Progress Bar — thin line at top of viewport
+// ========================================
+function ScrollProgressBar() {
+  const barRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const bar = barRef.current
+    if (!bar || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    gsap.registerPlugin(ScrollTrigger)
+
+    gsap.to(bar, {
+      scaleX: 1,
+      ease: 'none',
+      scrollTrigger: {
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0,
+        id: 'scroll-progress-bar',
+      },
+    })
+
+    return () => ScrollTrigger.getById('scroll-progress-bar')?.kill()
+  }, [])
+
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[200] h-[2px]" aria-hidden="true">
+      <div
+        ref={barRef}
+        className="h-full origin-left scale-x-0 bg-primary-400"
+        style={{ willChange: 'transform' }}
+      />
+    </div>
+  )
+}
+
+// ========================================
+// Marquee Ticker — horizontal infinite scroll strip
+// ========================================
+function MarqueeTicker({
+  items,
+  duration = 38,
+  reversed = false,
+}: {
+  items: string[]
+  duration?: number
+  reversed?: boolean
+}) {
+  const doubled = [...items, ...items]
+
+  return (
+    <div
+      className="overflow-hidden border-y border-border bg-background py-3"
+      aria-hidden="true"
+    >
+      <div
+        className={reversed ? 'animate-marquee-rtl' : 'animate-marquee-ltr'}
+        style={
+          {
+            '--marquee-duration': `${duration}s`,
+            display: 'flex',
+            gap: 0,
+          } as React.CSSProperties
+        }
+      >
+        {doubled.map((item, i) => (
+          <span
+            key={i}
+            className="flex shrink-0 items-center gap-5 px-5 text-[11px] font-bold tracking-[0.22em] uppercase text-muted-foreground/35"
+          >
+            {item}
+            <span className="h-1 w-1 shrink-0 rounded-full bg-primary-500/30" />
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ========================================
+// Big Text Banner — horizontal parallax text strip
+// ========================================
+function BigTextBanner() {
+  const items = [
+    'Stock',
+    'Ventas',
+    'Facturación',
+    'Clientes',
+    'Listas de precio',
+    'Acopios',
+    'Remitos',
+    'Cuentas corrientes',
+  ]
+  const text = items.join(' · ')
+
+  return (
+    <div className="overflow-hidden bg-background py-12 sm:py-16" aria-hidden="true">
+      <div
+        className="animate-marquee-big flex items-center whitespace-nowrap will-change-transform"
+        style={{ '--marquee-duration': '34s' } as React.CSSProperties}
+      >
+        {[text, text].map((chunk, index) => (
+          <span
+            key={index}
+            className="shrink-0 px-8 font-bold text-foreground/5 select-none"
+            style={{ fontSize: 'clamp(56px, 8.5vw, 120px)', lineHeight: 1 }}
+          >
+            {chunk} ·
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTheme: () => void }) {
   useScrollReveal()
   useVisitorTracking()
+  useDeviceFrameReveal()
+  useStaggerEntrance()
   const headerSection = useHeaderSection()
 
   const [demoModal, setDemoModal] = useState<{
     open: boolean
-    product: 'octopustrack' | 'octopusflow'
     email: string
     loading: boolean
     sent: boolean
   }>({
     open: false,
-    product: 'octopustrack',
     email: '',
     loading: false,
     sent: false,
   })
 
-  const openDemoModal = (product: 'octopustrack' | 'octopusflow') => {
-    setDemoModal({ open: true, product, email: '', loading: false, sent: false })
+  const openDemoModal = () => {
+    setDemoModal({ open: true, email: '', loading: false, sent: false })
   }
 
   const closeDemoModal = () => {
@@ -1096,7 +1387,7 @@ function LandingContent({ loginUrl }: { loginUrl: string }) {
         body: JSON.stringify({
           _secret: DEMO_SECRET,
           email: demoModal.email.trim(),
-          demo_type: demoModal.product,
+          demo_type: 'octopustrack',
           source: 'landing',
           page_url: window.location.href,
           referrer: document.referrer || '',
@@ -1114,15 +1405,33 @@ function LandingContent({ loginUrl }: { loginUrl: string }) {
     setDemoModal(prev => ({ ...prev, loading: false, sent: true }))
   }
 
+  const industriasTicker = [
+    'Ferreterías', 'Corralones', 'Distribuidoras', 'Forrajerías',
+    'Sanitarios', 'Mayoristas', 'Electricidad',
+  ]
+
   return (
     <>
-      <Header loginUrl={loginUrl} section={headerSection} />
-      <FloatingContactButton section={headerSection} />
+      <ScrollProgressBar />
+      <Header section={headerSection} theme={theme} onToggleTheme={onToggleTheme} />
+      <FloatingContactButton />
       <main>
         <Hero />
-        <ExcelOffer sectionActive={headerSection === 'tool'} />
-        <OctopusFlowSection sectionActive={headerSection === 'flow'} openDemoModal={openDemoModal} />
-        <OctopusTrackShowcase sectionActive={headerSection === 'track'} openDemoModal={openDemoModal} />
+        <SectionDivider from="transparent" to="rgb(var(--background))" />
+        <PainPoints />
+        <MarqueeTicker items={industriasTicker} duration={42} />
+        <SectionDivider from="transparent" to="rgb(var(--background))" />
+        <OctopusTrackShowcase />
+        <BigTextBanner />
+        <MarqueeTicker
+          items={['Stock', 'Ventas', 'Facturación ARCA', 'Cuentas corrientes', 'Listas de precio', 'Acopios', 'Órdenes de compra']}
+          duration={28}
+          reversed
+        />
+        <SectionDivider from="rgb(var(--background))" to="rgb(var(--background))" />
+        <SocialProof />
+        <SectionDivider from="transparent" to="rgb(var(--background))" />
+        <StartInMinutesSection openDemoModal={openDemoModal} />
         <ContactForm />
       </main>
       <Footer />
@@ -1130,51 +1439,49 @@ function LandingContent({ loginUrl }: { loginUrl: string }) {
       {/* Modal de solicitud de demo */}
       {demoModal.open && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
           onClick={closeDemoModal}
         >
           <div
-            className="relative w-full max-w-md rounded-2xl border border-primary-500/20 bg-[#111226] p-8 shadow-2xl shadow-primary-950/60"
+            className="relative w-full max-w-md rounded-2xl bg-card p-8 shadow-2xl ring-1 ring-border"
             onClick={e => e.stopPropagation()}
           >
             <button
               onClick={closeDemoModal}
-              className="absolute right-4 top-4 text-white/40 hover:text-white transition-colors"
+              className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground"
             >
               <X className="h-5 w-5" />
             </button>
 
             {demoModal.sent ? (
               <>
-                <div className="mb-2 text-xs font-semibold tracking-widest text-primary-400 uppercase">
+                <div className="mb-2 text-xs font-semibold tracking-widest text-primary uppercase">
                   Solicitud enviada
                 </div>
-                <h3 className="mb-1 text-2xl font-bold text-white font-display">
+                <h3 className="mb-1 text-2xl font-bold text-foreground">
                   ¡Te vamos a dar acceso pronto!
                 </h3>
-                <p className="mt-4 text-sm text-gray-400 leading-relaxed">
-                  Revisá tu correo <strong className="text-white">{demoModal.email}</strong> en los próximos minutos.
+                <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                  Revisá tu correo <strong className="text-foreground">{demoModal.email}</strong> en los próximos minutos.
                   Cuando activemos tu demo, te va a llegar un mail con el link para ingresar a{' '}
-                  <strong className="text-white">
-                    {demoModal.product === 'octopusflow' ? 'OctopusFlow' : 'OctopusTrack'}
-                  </strong>.
+                  <strong className="text-foreground">OctopusTrack</strong>.
                 </p>
                 <button
                   onClick={closeDemoModal}
-                  className="mt-6 w-full rounded-xl bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-all duration-200 hover:bg-primary-500"
+                  className="mt-6 w-full rounded-lg border border-border bg-muted px-6 py-3 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground"
                 >
                   Entendido
                 </button>
               </>
             ) : (
               <>
-                <div className="mb-2 text-xs font-semibold tracking-widest text-primary-400 uppercase">
+                <div className="mb-2 text-xs font-semibold tracking-widest text-primary uppercase">
                   Prueba 7 días
                 </div>
-                <h3 className="mb-1 text-2xl font-bold text-white font-display">
-                  {demoModal.product === 'octopusflow' ? 'OctopusFlow' : 'OctopusTrack'}
+                <h3 className="mb-1 text-2xl font-bold text-foreground">
+                  OctopusTrack
                 </h3>
-                <p className="mb-6 text-sm text-gray-400">
+                <p className="mb-6 text-sm text-muted-foreground">
                   Dejanos tu correo y te avisamos cuando tengas el demo listo.
                 </p>
 
@@ -1185,13 +1492,13 @@ function LandingContent({ loginUrl }: { loginUrl: string }) {
                     placeholder="tu@correo.com"
                     value={demoModal.email}
                     onChange={e => setDemoModal(prev => ({ ...prev, email: e.target.value }))}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors focus:border-primary-400/50 focus:bg-white/10"
+                    className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-colors focus:border-ring focus:bg-card"
                     autoFocus
                   />
                   <button
                     type="submit"
                     disabled={demoModal.loading}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/20 transition-all duration-200 hover:bg-primary-500 disabled:opacity-50"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-muted px-6 py-3 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground disabled:opacity-50"
                   >
                     {demoModal.loading ? 'Enviando…' : 'Solicitar demo'}
                     <ArrowRight className="h-4 w-4" />
@@ -1206,13 +1513,23 @@ function LandingContent({ loginUrl }: { loginUrl: string }) {
   )
 }
 
-export default function Landing({ loginUrl = '/acceder' }: LandingProps) {
+export default function Landing({ loginUrl: _loginUrl }: LandingProps) {
   const isThankYou = useMemo(() => shouldShowThankYou(), [])
-  if (isThankYou) return <ThankYouPage />
+  const [theme, setTheme] = useState<ThemeMode>(() => getInitialTheme())
+
+  useEffect(() => {
+    window.localStorage.setItem('octopustrack-theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme((current) => current === 'night' ? 'light' : 'night')
+  }
+
+  if (isThankYou) return <ThankYouPage theme={theme} />
 
   return (
-    <div className="min-h-screen bg-[#080810] text-white">
-      <LandingContent loginUrl={loginUrl} />
+    <div className={`${theme === 'night' ? 'dark ' : ''}min-h-screen bg-background text-foreground`}>
+      <LandingContent theme={theme} onToggleTheme={toggleTheme} />
     </div>
   )
 }

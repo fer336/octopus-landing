@@ -93,7 +93,7 @@ export default function FeatureVideoModal({ feature, onClose }: FeatureVideoModa
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[80] flex items-center justify-center bg-[#05070a]/85 px-4 backdrop-blur-md"
+      className="fixed inset-0 z-[80] flex items-center justify-center bg-background/85 px-4 backdrop-blur-md"
       onClick={(e) => {
         if (e.target === overlayRef.current) handleClose()
       }}
@@ -106,13 +106,13 @@ export default function FeatureVideoModal({ feature, onClose }: FeatureVideoModa
 
       <div
         ref={cardRef}
-        className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-[#0d0f1a] shadow-2xl shadow-black/60"
+        className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-border bg-card shadow-2xl shadow-background/60"
       >
         {/* Close button */}
         <button
           type="button"
           onClick={handleClose}
-          className="absolute right-4 top-4 z-20 rounded-full border border-white/10 bg-black/50 p-2 text-white/50 backdrop-blur-sm transition-colors hover:border-white/20 hover:text-white"
+          className="absolute right-4 top-4 z-20 rounded-full border border-border bg-background/70 p-2 text-muted-foreground backdrop-blur-sm transition-colors hover:border-ring hover:text-foreground"
         >
           <X className="h-5 w-5" />
         </button>
@@ -129,20 +129,20 @@ export default function FeatureVideoModal({ feature, onClose }: FeatureVideoModa
           />
         ) : (
           /* Placeholder — no video yet */
-          <div className="flex aspect-video w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#0a0c14] to-[#080a10]">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-              <feature.icon className="h-7 w-7 text-primary-400/50" />
+          <div className="flex aspect-video w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-background to-muted">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-card/70">
+              <feature.icon className="h-7 w-7 text-primary/60" />
             </div>
             <div className="text-center">
-              <p className="text-base font-semibold text-white/30">Video en preparación</p>
-              <p className="mt-1 text-sm text-white/15">{feature.label}</p>
+              <p className="text-base font-semibold text-muted-foreground">Video en preparación</p>
+              <p className="mt-1 text-sm text-muted-foreground/55">{feature.label}</p>
             </div>
           </div>
         )}
 
         {/* Footer label */}
-        <div className="border-t border-white/5 px-6 py-4">
-          <p className="text-sm font-medium text-white/70">{feature.label}</p>
+        <div className="border-t border-border px-6 py-4">
+          <p className="text-sm font-medium text-foreground/80">{feature.label}</p>
         </div>
       </div>
     </div>

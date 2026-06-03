@@ -25,19 +25,19 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
+      'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed'
 
     const variants = {
       primary:
-        'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 dark:focus:ring-offset-gray-900',
+        'bg-primary text-primary-foreground hover:bg-primary/90',
       secondary:
-        'bg-primary-100 text-primary-900 hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-100 dark:hover:bg-primary-800 focus:ring-primary-500',
+        'bg-secondary text-secondary-foreground hover:bg-secondary/85',
       outline:
-        'border border-primary-300 text-primary-800 hover:bg-primary-50 dark:border-primary-700 dark:text-primary-200 dark:hover:bg-primary-900/40 focus:ring-primary-500',
+        'border border-border bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
       ghost:
-        'text-primary-800 hover:bg-primary-100 dark:text-primary-200 dark:hover:bg-primary-900/40 focus:ring-primary-500',
+        'text-foreground hover:bg-accent hover:text-accent-foreground',
       danger:
-        'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 dark:focus:ring-offset-gray-900',
+        'bg-destructive text-destructive-foreground hover:bg-destructive/90',
     }
 
     const sizes = {
