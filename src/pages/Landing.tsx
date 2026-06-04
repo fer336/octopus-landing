@@ -366,7 +366,7 @@ function Hero() {
         </p>
       </div>
 
-      <div className="relative z-10 mx-auto mt-12 max-w-[1480px] sm:mt-16 lg:mt-20">
+      <div className="relative z-10 mx-auto mt-10 w-full max-w-[1180px] sm:mt-14 lg:mt-16">
         <div className="pointer-events-none absolute inset-x-12 -top-8 h-24 rounded-full bg-primary-500/20 blur-[70px]" />
         <img
           src="/assets/dashboard.png"
