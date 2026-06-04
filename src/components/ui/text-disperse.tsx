@@ -56,7 +56,7 @@ export function TextDisperse({
 			}
 
 			return (
-				<span aria-hidden="true" className="inline-flex whitespace-nowrap" key={`word-${token}-${tokenIndex}`}>
+				<span aria-hidden="true" className="inline-flex max-w-full whitespace-nowrap" key={`word-${token}-${tokenIndex}`}>
 					{token.split('').map((char) => {
 						const currentIndex = characterIndex
 						const transform = transforms[currentIndex % transforms.length]
@@ -108,7 +108,7 @@ export function TextDisperse({
 		<span
 			aria-label={children}
 			className={cn(
-				'relative inline-flex flex-wrap items-baseline leading-relaxed',
+				'relative inline-flex max-w-full flex-wrap items-baseline leading-relaxed',
 				className,
 			)}
 			onMouseEnter={manageMouseEnter}

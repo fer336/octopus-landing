@@ -359,7 +359,7 @@ function Hero() {
           Gestioná stock, ventas, clientes y facturación electrónica ARCA en un solo lugar.
         </p>
         <p className="mx-auto mt-2 max-w-3xl text-lg leading-relaxed text-muted-foreground/85 sm:text-xl">
-          Acopios, Listas de precio personalizadas, Cuentas corrientes.
+          Acopios, listas de precio personalizadas y cuentas corrientes.
         </p>
         <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground/75 sm:text-xl">
           Simple, rápido y sin complicaciones. En minutos empezás, sin límites escalás.
@@ -369,7 +369,7 @@ function Hero() {
       <div className="relative z-10 mx-auto mt-10 w-full max-w-[1180px] sm:mt-14 lg:mt-16">
         <div className="pointer-events-none absolute inset-x-12 -top-8 h-24 rounded-full bg-primary-500/20 blur-[70px]" />
         <img
-          src="/assets/dashboard.png"
+          src="/assets/dashboard-1200.webp"
           alt="OctopusTrack funcionando en escritorio y celular"
           className="relative mx-auto w-full rounded-[28px] shadow-2xl shadow-background/60 ring-1 ring-border/80"
           loading="eager"
@@ -385,7 +385,7 @@ function Hero() {
 function OctopusTrackShowcase() {
   const features = [
     {
-      image: '/assets/ventas-cajas.png',
+      image: '/assets/ventas-cajas-1200.webp',
       description: 'Centralizá todo tu proceso de ventas en una única pantalla, diseñada para operar rápido, sin errores y sin cambiar de entorno.',
       lines: [
         'Cotizaciones, remitos, facturación y retiros de cuentas corrientes en un solo lugar.',
@@ -395,7 +395,7 @@ function OctopusTrackShowcase() {
       ],
     },
     {
-      image: '/assets/catalogo-inventario.png',
+      image: '/assets/catalogo-inventario-1200.webp',
       description: 'Control total de productos, precios y stock sin depender de planillas sueltas.',
       lines: [
         'Carga manual o importación desde Excel.',
@@ -405,7 +405,7 @@ function OctopusTrackShowcase() {
       ],
     },
     {
-      image: '/assets/lista_de_precios.webp',
+      image: '/assets/lista_de_precios-1200.webp',
       description: 'Listas de precios por cliente para cuentas corrientes, acopios y acuerdos comerciales.',
       lines: [
         'Precios especiales por cliente, obra o convenio.',
@@ -415,7 +415,7 @@ function OctopusTrackShowcase() {
       ],
     },
     {
-      image: '/assets/Contacto-categorias.png',
+      image: '/assets/Contacto-categorias-1200.webp',
       description: 'Ordená clientes, proveedores, autorizados y categorías para que cada operación salga más rápido.',
       lines: [
         'Clientes con terceros autorizados para retirar o comprar.',
@@ -425,7 +425,7 @@ function OctopusTrackShowcase() {
       ],
     },
     {
-      image: '/assets/reportes.png',
+      image: '/assets/reportes-1200.webp',
       description: 'Tomá decisiones con información clara, actualizada y fácil de compartir.',
       lines: [
         'Ventas por período con resúmenes y comparativas.',
@@ -557,8 +557,8 @@ function PainPointCard({ pain }: { pain: { icon: typeof DollarSign; title: strin
           />
         ))}
         <pain.icon className="mb-4 h-6 w-6 shrink-0 text-primary" />
-        <h3 className="text-lg font-medium leading-relaxed text-foreground transition-transform duration-300 group-hover:translate-x-0.5">
-          <TextDisperse className="gap-x-1" dispersed={!hasOrdered}>{pain.title}</TextDisperse>
+        <h3 className="min-w-0 text-lg font-medium leading-relaxed text-foreground transition-transform duration-300 group-hover:translate-x-0.5">
+          <TextDisperse className="w-full gap-x-1" dispersed={!hasOrdered}>{pain.title}</TextDisperse>
         </h3>
         <p className="mt-auto pt-4 text-sm leading-relaxed text-muted-foreground">{pain.description}</p>
       </MagnetizeCard>
@@ -570,8 +570,8 @@ function PainPoints() {
   const pains = [
     {
       icon: DollarSign,
-      title: 'No sabés rápido quién te debe',
-      description: 'Las cuentas corrientes se mezclan y perdés el control de los pagos.',
+      title: 'Perdés de vista quién te debe',
+      description: 'Entre ventas y cuentas corrientes, los pagos pendientes se vuelven difíciles de seguir.',
     },
     {
       icon: Package,
@@ -585,8 +585,8 @@ function PainPoints() {
     },
     {
       icon: FileText,
-      title: 'Cada cliente puede tener una lista distinta',
-      description: 'Mayorista, minorista, obra o convenio: si todo vive en una sola planilla, se mezcla.',
+      title: 'Obras y convenios sin mezclar',
+      description: 'Si cada comercio, obra o convenio tiene condiciones distintas, una sola planilla lo mezcla todo.',
     },
     {
       icon: Receipt,
