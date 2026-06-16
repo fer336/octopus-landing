@@ -8,11 +8,10 @@ import { TextDisperse } from '../components/ui/text-disperse'
 
 const WHATSAPP_URL = 'https://wa.me/5492254596618'
 const ASSET_WEBHOOK_URL = import.meta.env.VITE_LANDING_ASSET_WEBHOOK_URL || '#webhook-no-configured'
-const FORM_WEBHOOK_URL = import.meta.env.VITE_FORM_WEBHOOK_URL || ''
 const VISITOR_WEBHOOK_URL = import.meta.env.VITE_VISITOR_WEBHOOK_URL || ''
-const DEMO_WEBHOOK_URL = import.meta.env.VITE_DEMO_WEBHOOK_URL || ''
-const DEMO_SECRET = import.meta.env.VITE_DEMO_SECRET || ''
-const FORM_SECRET = import.meta.env.VITE_FORM_SECRET || ''
+// Form and demo post to Cloudflare Worker proxy — secrets live in the Worker, not the browser
+const CONTACT_API = '/api/contacto'
+const DEMO_API = '/api/demo'
 
 interface LandingProps {
   loginUrl?: string
@@ -906,11 +905,10 @@ function ContactForm() {
     setStatus('loading')
     try {
       const params = new URLSearchParams(window.location.search)
-      await fetch(FORM_WEBHOOK_URL, {
+      const res = await fetch(CONTACT_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          _secret: FORM_SECRET,
           email: email.trim(),
           message: message.trim(),
           source: 'landing-contact-form',
@@ -925,6 +923,7 @@ function ContactForm() {
           created_at: new Date().toISOString(),
         }),
       })
+      if (!res.ok) throw new Error('HTTP error')
       setStatus('sent')
     } catch {
       setStatus('error')
@@ -1406,15 +1405,17 @@ function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTh
     email: string
     loading: boolean
     sent: boolean
+    error: boolean
   }>({
     open: false,
     email: '',
     loading: false,
     sent: false,
+    error: false,
   })
 
   const openDemoModal = () => {
-    setDemoModal({ open: true, email: '', loading: false, sent: false })
+    setDemoModal({ open: true, email: '', loading: false, sent: false, error: false })
   }
 
   const closeDemoModal = () => {
@@ -1429,11 +1430,10 @@ function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTh
     const search = new URLSearchParams(window.location.search)
 
     try {
-      await fetch(DEMO_WEBHOOK_URL, {
+      const res = await fetch(DEMO_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          _secret: DEMO_SECRET,
           email: demoModal.email.trim(),
           demo_type: 'octopustrack',
           source: 'landing',
@@ -1446,11 +1446,11 @@ function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTh
           created_at: new Date().toISOString(),
         }),
       })
+      if (!res.ok) throw new Error('HTTP error')
+      setDemoModal(prev => ({ ...prev, loading: false, sent: true }))
     } catch {
-      // Silently — el usuario ve success igual
+      setDemoModal(prev => ({ ...prev, loading: false, error: true }))
     }
-
-    setDemoModal(prev => ({ ...prev, loading: false, sent: true }))
   }
 
   const industriasTicker = [
@@ -1534,6 +1534,12 @@ function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTh
                 </p>
 
                 <form onSubmit={submitDemo} className="space-y-4">
+                  {demoModal.error && (
+                    <p className="text-sm text-destructive">
+                      Algo salió mal. Intentá de nuevo o escribinos por{' '}
+                      <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="underline">WhatsApp</a>.
+                    </p>
+                  )}
                   <input
                     type="email"
                     required

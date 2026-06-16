@@ -47,3 +47,12 @@ Variables esperadas en GitHub Actions:
 - `VITE_LANDING_CHECKOUT_URL` como variable opcional.
 - `VITE_LANDING_MP_CHECKOUT_WEBHOOK_URL` como variable opcional.
 - `VITE_LANDING_ASSET_WEBHOOK_URL` como variable opcional.
+- `VITE_VISITOR_WEBHOOK_URL` como variable opcional.
+
+## Cloudflare Worker Proxy
+
+Las rutas `/api/contacto` y `/api/demo` son servidas por el Worker `octopustrack-landing-proxy`,
+que redirige las solicitudes a n8n agregando los secrets internamente.
+
+**No se necesitan `VITE_FORM_SECRET` ni `VITE_DEMO_SECRET`** en el build de Vite.
+Los secrets de n8n viven exclusivamente en el Worker de Cloudflare, no en GitHub Actions ni en el frontend.
