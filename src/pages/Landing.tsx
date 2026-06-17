@@ -444,6 +444,16 @@ function OctopusTrackShowcase() {
         'Cuentas corrientes con saldos y antigüedad.',
       ],
     },
+    {
+      image: '/assets/octopustrack-meli-1200.webp',
+      description: 'Publicá tus productos en MercadoLibre directo desde OctopusTrack.',
+      lines: [
+        'Subí tus productos del sistema a MercadoLibre con un solo clic.',
+        'Sincronizá stock y precios automáticamente entre ambas plataformas.',
+        'Administrá tus publicaciones sin salir de OctopusTrack.',
+        'Llegá a miles de compradores sin duplicar trabajo.',
+      ],
+    },
   ]
 
   return (
