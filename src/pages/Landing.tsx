@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type HTMLAttributes, type MouseEvent as ReactMouseEvent, type RefObject } from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, Menu, X, MessageCircle, Package, Receipt, DollarSign, Wallet, Truck, RefreshCw, FileText, Wrench, Wheat, Warehouse, Droplets, Sun, Moon, Magnet } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from '../components/ui/Button'
 import AnimatedTentacleLogo from '../components/ui/AnimatedTentacleLogo'
+import DemoModal, { type DemoProduct } from '../components/DemoModal'
 import { TextDisperse } from '../components/ui/text-disperse'
 
 const WHATSAPP_URL = 'https://wa.me/5492254596618'
@@ -11,7 +13,6 @@ const ASSET_WEBHOOK_URL = import.meta.env.VITE_LANDING_ASSET_WEBHOOK_URL || '#we
 const VISITOR_WEBHOOK_URL = import.meta.env.VITE_VISITOR_WEBHOOK_URL || ''
 // Form and demo post to Cloudflare Worker proxy — secrets live in the Worker, not the browser
 const CONTACT_API = '/api/contacto'
-const DEMO_API = '/api/demo'
 
 interface LandingProps {
   loginUrl?: string
@@ -271,6 +272,16 @@ function Header({ section = 'none', theme, onToggleTheme }: { section?: HeaderSe
               <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-primary/70 transition-transform duration-500 group-hover:scale-x-100" />
             </a>
           ))}
+          <Link
+            to="/octopusflow"
+            className="group relative flex items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground"
+          >
+            <span className="relative z-10 flex items-center gap-3">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150" />
+              OctopusFlow
+            </span>
+            <span className="relative z-10 font-mono text-xs text-muted-foreground/60">Nuevo</span>
+          </Link>
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -832,7 +843,7 @@ function MagnetizeCard({
 // ========================================
 // Start Section — split CTA without public pricing
 // ========================================
-function StartInMinutesSection({ openDemoModal }: { openDemoModal?: (product: 'octopustrack') => void }) {
+function StartInMinutesSection({ openDemoModal }: { openDemoModal?: () => void }) {
   return (
     <section id="precios" className="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
       <div className="section-container">
@@ -867,7 +878,7 @@ function StartInMinutesSection({ openDemoModal }: { openDemoModal?: (product: 'o
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <MagnetizeButton
                 type="button"
-                onClick={() => openDemoModal?.('octopustrack')}
+                onClick={() => openDemoModal?.()}
                 className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:bg-primary/90 sm:min-w-[210px]"
               >
                 Probar demo
@@ -1393,6 +1404,48 @@ function BigTextBanner() {
   )
 }
 
+// ========================================
+// OctopusFlow Cross-Sell — small banner for independent professionals
+// ========================================
+function OctopusFlowCrossSell() {
+  return (
+    <section className="relative overflow-hidden bg-background px-4 py-16 sm:px-6 sm:py-20">
+      <div className="reveal-on-scroll mx-auto max-w-4xl">
+        <div className="overflow-hidden rounded-2xl border border-border/60 bg-card/60 p-6 sm:p-10 lg:p-12">
+          <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+            <div className="flex shrink-0 items-center justify-center">
+              <img
+                src="/images/logos/logo-header1.svg"
+                alt="OctopusFlow"
+                className="h-16 w-16 rounded-full ring-2 ring-primary/30 sm:h-20 sm:w-20"
+              />
+            </div>
+            <div className="flex-1">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-1">
+                OctopusFlow
+              </p>
+              <h3 className="text-xl font-bold text-foreground sm:text-2xl">
+                Sistema para profesionales independientes
+              </h3>
+              <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+                Creá presupuestos profesionales, compartilos por WhatsApp al instante y guardá todos tus clientes.
+                Pensado para electricistas, plomeros, gasistas y más.
+              </p>
+            </div>
+            <Link
+              to="/octopusflow"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-200 hover:scale-[1.02] hover:bg-primary/90"
+            >
+              Obtener OctopusFlow
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTheme: () => void }) {
   useScrollReveal()
   useVisitorTracking()
@@ -1400,58 +1453,15 @@ function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTh
   useStaggerEntrance()
   const headerSection = useHeaderSection()
 
-  const [demoModal, setDemoModal] = useState<{
-    open: boolean
-    email: string
-    loading: boolean
-    sent: boolean
-    error: boolean
-  }>({
-    open: false,
-    email: '',
-    loading: false,
-    sent: false,
-    error: false,
-  })
+  const [demoOpen, setDemoOpen] = useState(false)
 
-  const openDemoModal = () => {
-    setDemoModal({ open: true, email: '', loading: false, sent: false, error: false })
-  }
+  const openDemoModal = () => setDemoOpen(true)
+  const closeDemoModal = () => setDemoOpen(false)
 
-  const closeDemoModal = () => {
-    setDemoModal(prev => ({ ...prev, open: false }))
-  }
-
-  const submitDemo = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!demoModal.email.trim()) return
-    setDemoModal(prev => ({ ...prev, loading: true }))
-
-    const search = new URLSearchParams(window.location.search)
-
-    try {
-      const res = await fetch(DEMO_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: demoModal.email.trim(),
-          demo_type: 'octopustrack',
-          source: 'landing',
-          page_url: window.location.href,
-          referrer: document.referrer || '',
-          user_agent: navigator.userAgent,
-          utm_source: search.get('utm_source') || '',
-          utm_medium: search.get('utm_medium') || '',
-          utm_campaign: search.get('utm_campaign') || '',
-          created_at: new Date().toISOString(),
-        }),
-      })
-      if (!res.ok) throw new Error('HTTP error')
-      setDemoModal(prev => ({ ...prev, loading: false, sent: true }))
-    } catch {
-      setDemoModal(prev => ({ ...prev, loading: false, error: true }))
-    }
-  }
+  const demoProduct: DemoProduct = useMemo(() => ({
+    type: 'octopustrack',
+    name: 'OctopusTrack',
+  }), [])
 
   const industriasTicker = [
     'Ferreterías', 'Corralones', 'Distribuidoras', 'Forrajerías',
@@ -1480,89 +1490,12 @@ function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTh
         <SocialProof />
         <SectionDivider from="transparent" to="rgb(var(--background))" />
         <StartInMinutesSection openDemoModal={openDemoModal} />
+        <OctopusFlowCrossSell />
         <ContactForm />
       </main>
       <Footer />
 
-      {/* Modal de solicitud de demo */}
-      {demoModal.open && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
-          onClick={closeDemoModal}
-        >
-          <div
-            className="relative w-full max-w-md rounded-2xl bg-card p-8 shadow-2xl ring-1 ring-border"
-            onClick={e => e.stopPropagation()}
-          >
-            <button
-              onClick={closeDemoModal}
-              className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            {demoModal.sent ? (
-              <>
-                <div className="mb-2 text-xs font-semibold tracking-widest text-primary uppercase">
-                  Solicitud enviada
-                </div>
-                <h3 className="mb-1 text-2xl font-bold text-foreground">
-                  ¡Te vamos a dar acceso pronto!
-                </h3>
-                <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-                  Revisá tu correo <strong className="text-foreground">{demoModal.email}</strong> en los próximos minutos.
-                  Cuando activemos tu demo, te va a llegar un mail con el link para ingresar a{' '}
-                  <strong className="text-foreground">OctopusTrack</strong>.
-                </p>
-                <button
-                  onClick={closeDemoModal}
-                  className="mt-6 w-full rounded-lg border border-border bg-muted px-6 py-3 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground"
-                >
-                  Entendido
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="mb-2 text-xs font-semibold tracking-widest text-primary uppercase">
-                  Prueba 7 días
-                </div>
-                <h3 className="mb-1 text-2xl font-bold text-foreground">
-                  OctopusTrack
-                </h3>
-                <p className="mb-6 text-sm text-muted-foreground">
-                  Dejanos tu correo y te avisamos cuando tengas el demo listo.
-                </p>
-
-                <form onSubmit={submitDemo} className="space-y-4">
-                  {demoModal.error && (
-                    <p className="text-sm text-destructive">
-                      Algo salió mal. Intentá de nuevo o escribinos por{' '}
-                      <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="underline">WhatsApp</a>.
-                    </p>
-                  )}
-                  <input
-                    type="email"
-                    required
-                    placeholder="tu@correo.com"
-                    value={demoModal.email}
-                    onChange={e => setDemoModal(prev => ({ ...prev, email: e.target.value }))}
-                    className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-colors focus:border-ring focus:bg-card"
-                    autoFocus
-                  />
-                  <button
-                    type="submit"
-                    disabled={demoModal.loading}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-muted px-6 py-3 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground disabled:opacity-50"
-                  >
-                    {demoModal.loading ? 'Enviando…' : 'Solicitar demo'}
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </form>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      <DemoModal product={demoProduct} open={demoOpen} onClose={closeDemoModal} />
     </>
   )
 }
