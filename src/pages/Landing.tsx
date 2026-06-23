@@ -704,12 +704,12 @@ function SocialProof() {
           </p>
         </div>
 
-        {/* ── Orbital pentagon — sm+ ───────────────────────────────── */}
-        <div className="relative mx-auto hidden aspect-square w-full max-w-[520px] sm:block">
+        {/* ── Orbital pentagon — all screen sizes ─────────────────── */}
+        <div className="relative mx-auto aspect-square w-full max-w-[340px] sm:max-w-[520px]">
 
           {/* Static background: orbit ring + inner glow ring */}
           <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r={R}  fill="none" stroke="oklch(68% 0.14 290)" strokeWidth="0.18" strokeOpacity="0.22" strokeDasharray="1 1.4" />
+            <circle cx="50" cy="50" r={R} fill="none" stroke="oklch(68% 0.14 290)" strokeWidth="0.18" strokeOpacity="0.22" strokeDasharray="1 1.4" />
             <circle cx="50" cy="50" r="11" fill="none" stroke="oklch(68% 0.14 290)" strokeWidth="0.22" strokeOpacity="0.18" />
             <circle cx="50" cy="50" r="11" fill="oklch(68% 0.14 290 / 0.06)" />
           </svg>
@@ -718,7 +718,6 @@ function SocialProof() {
           <div className={`rubros-ring absolute inset-0${paused ? ' paused' : ''}`}>
 
             <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100">
-              {/* Pentagram star lines */}
               {starLines.map((l, i) => (
                 <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
                   stroke="oklch(68% 0.18 290)" strokeWidth="0.3"
@@ -726,7 +725,6 @@ function SocialProof() {
                   style={{ transition: 'stroke-opacity 0.4s' }}
                 />
               ))}
-              {/* Spokes */}
               {positions.map((p, i) => (
                 <line key={`sp-${i}`} x1="50" y1="50" x2={p.x} y2={p.y}
                   stroke="oklch(68% 0.18 290)" strokeWidth="0.18"
@@ -750,21 +748,22 @@ function SocialProof() {
                   onMouseLeave={() => setActiveIndex(null)}
                 >
                   <div className={[
-                    'flex min-w-[112px] flex-col items-center gap-1.5 rounded-2xl px-3 py-2.5 select-none cursor-default',
+                    'flex w-[78px] flex-col items-center gap-1 rounded-xl px-2 py-2 select-none cursor-default',
+                    'sm:w-[112px] sm:gap-1.5 sm:rounded-2xl sm:px-3 sm:py-2.5',
                     'ring-1 backdrop-blur-sm transition-all duration-300',
                     activeIndex === i
                       ? 'bg-primary/12 ring-primary/50 shadow-xl shadow-primary/20 scale-110'
                       : 'bg-card/80 ring-border/50',
                   ].join(' ')}>
                     <div className={[
-                      'flex h-9 w-9 items-center justify-center rounded-xl transition-colors duration-300',
+                      'flex h-7 w-7 items-center justify-center rounded-lg sm:h-9 sm:w-9 sm:rounded-xl transition-colors duration-300',
                       activeIndex === i ? 'bg-primary/22' : 'bg-primary/12',
                     ].join(' ')}>
-                      <rubro.icon className="h-[18px] w-[18px] text-primary" />
+                      <rubro.icon className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px] text-primary" />
                     </div>
-                    <span className="text-[12px] font-semibold leading-tight text-foreground/90 whitespace-nowrap">{rubro.label}</span>
+                    <span className="text-[10px] sm:text-[12px] font-semibold leading-tight text-foreground/90 text-center whitespace-nowrap">{rubro.label}</span>
                     {activeIndex === i && (
-                      <span className="text-[10px] leading-snug text-muted-foreground text-center">{rubro.detail}</span>
+                      <span className="hidden sm:block text-[10px] leading-snug text-muted-foreground text-center">{rubro.detail}</span>
                     )}
                   </div>
                 </div>
@@ -774,27 +773,11 @@ function SocialProof() {
 
           {/* Center hub — never rotates */}
           <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
-            <div className="flex flex-col items-center gap-1 rounded-2xl bg-card/90 px-4 py-3 ring-2 ring-primary/30 shadow-lg shadow-primary/10 backdrop-blur-sm">
-              <AnimatedTentacleLogo className="h-8 w-8" />
-              <span className="text-[9px] font-bold tracking-[0.18em] text-primary uppercase">OctopusTrack</span>
+            <div className="flex flex-col items-center gap-1 rounded-xl sm:rounded-2xl bg-card/90 px-2.5 py-2 sm:px-4 sm:py-3 ring-2 ring-primary/30 shadow-lg shadow-primary/10 backdrop-blur-sm">
+              <AnimatedTentacleLogo className="h-6 w-6 sm:h-8 sm:w-8" />
+              <span className="text-[7px] sm:text-[9px] font-bold tracking-[0.18em] text-primary uppercase">OctopusTrack</span>
             </div>
           </div>
-        </div>
-
-        {/* ── Mobile fallback: 2-col grid ─────────────────────────── */}
-        <div className="grid grid-cols-2 gap-3 sm:hidden">
-          {rubros.map((rubro, i) => (
-            <div
-              key={rubro.label}
-              className="flex min-h-[76px] items-center gap-2.5 rounded-xl bg-card/70 px-3 py-3 ring-1 ring-border"
-              style={{ '--reveal-delay': i * 80 } as CSSProperties}
-            >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/15">
-                <rubro.icon className="h-4 w-4 text-primary" />
-              </div>
-              <span className="text-[13px] font-medium leading-tight text-foreground/85">{rubro.label}</span>
-            </div>
-          ))}
         </div>
       </div>
     </section>
