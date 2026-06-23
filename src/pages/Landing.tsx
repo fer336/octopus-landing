@@ -655,22 +655,48 @@ function PainPoints() {
 // Social Proof — Rubros
 // ========================================
 function SocialProof() {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
+
   const rubros = [
-    { icon: Wrench, label: 'Ferreterías' },
-    { icon: Truck, label: 'Distribuidoras' },
-    { icon: Wheat, label: 'Forrajerías' },
-    { icon: Droplets, label: 'Sanitarios' },
-    { icon: Wallet, label: 'Electricidad' },
+    { icon: Wrench,   label: 'Ferreterías',   detail: 'Stock y presupuestos al instante' },
+    { icon: Truck,    label: 'Distribuidoras', detail: 'Rutas, clientes y cobranzas' },
+    { icon: Wheat,    label: 'Forrajerías',    detail: 'Granel, bolsas y acopios' },
+    { icon: Droplets, label: 'Sanitarios',     detail: 'Cuentas corrientes y pedidos' },
+    { icon: Wallet,   label: 'Electricidad',   detail: 'Presupuestos y materiales' },
   ]
+
+  const N = rubros.length
+  const R = 38 // orbit radius in SVG viewBox units (0–100)
+
+  const positions = rubros.map((_, i) => {
+    const angle = -Math.PI / 2 + (2 * Math.PI * i) / N
+    return { x: 50 + R * Math.cos(angle), y: 50 + R * Math.sin(angle) }
+  })
+
+  // Pentagram: each vertex connects to vertex+2 (star pattern)
+  const starLines = positions.map((from, i) => {
+    const to = positions[(i + 2) % N]
+    return { x1: from.x, y1: from.y, x2: to.x, y2: to.y }
+  })
+
+  const paused = activeIndex !== null
 
   return (
     <section id="rubros" className="relative overflow-hidden bg-background px-4 py-16 sm:px-6 sm:py-28">
-      {/* Ambient glow */}
-      <div className="pointer-events-none absolute -top-20 left-[20%] h-[400px] w-[600px] rounded-full bg-primary-600/10 blur-[100px]" />
+      <style>{`
+        @keyframes orbit-spin    { to { transform: rotate(360deg);  } }
+        @keyframes counter-spin  { to { transform: translate(-50%, -50%) rotate(-360deg); } }
+        .rubros-ring             { animation: orbit-spin   28s linear infinite; transform-origin: center; }
+        .rubros-ring.paused      { animation-play-state: paused; }
+        .rubros-node-inner       { animation: counter-spin 28s linear infinite; transform: translate(-50%, -50%); transform-origin: 50% 50%; }
+        .rubros-ring.paused .rubros-node-inner { animation-play-state: paused; }
+      `}</style>
+
+      <div className="pointer-events-none absolute -top-24 left-1/4 h-[480px] w-[700px] rounded-full bg-primary-600/8 blur-[120px]" />
 
       <div className="section-container">
-        <div className="reveal-on-scroll text-center">
-          <h2 className="bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
+        <div className="reveal-on-scroll mb-12 text-center sm:mb-16">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Pensado para comercios que necesitan ordenarse
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -678,21 +704,98 @@ function SocialProof() {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-6">
-          {rubros.map((rubro, index) => (
-            <MagnetizeCard
-              key={rubro.label}
-              className="reveal-on-scroll flex min-h-[72px] items-center gap-2.5 rounded-xl bg-card/70 px-3 py-3 ring-1 ring-border transition-all duration-300 hover:bg-card sm:min-h-[88px] sm:gap-3 sm:rounded-2xl sm:p-5"
-              style={{ '--reveal-delay': index * 100 } as React.CSSProperties}
-            >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/15 sm:h-10 sm:w-10 sm:rounded-xl">
-                <rubro.icon className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
+        {/* ── Orbital pentagon — sm+ ───────────────────────────────── */}
+        <div className="relative mx-auto hidden aspect-square w-full max-w-[520px] sm:block">
+
+          {/* Static background: orbit ring + inner glow ring */}
+          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r={R}  fill="none" stroke="oklch(68% 0.14 290)" strokeWidth="0.18" strokeOpacity="0.22" strokeDasharray="1 1.4" />
+            <circle cx="50" cy="50" r="11" fill="none" stroke="oklch(68% 0.14 290)" strokeWidth="0.22" strokeOpacity="0.18" />
+            <circle cx="50" cy="50" r="11" fill="oklch(68% 0.14 290 / 0.06)" />
+          </svg>
+
+          {/* Rotating layer: pentagram lines + nodes */}
+          <div className={`rubros-ring absolute inset-0${paused ? ' paused' : ''}`}>
+
+            <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100">
+              {/* Pentagram star lines */}
+              {starLines.map((l, i) => (
+                <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
+                  stroke="oklch(68% 0.18 290)" strokeWidth="0.3"
+                  strokeOpacity={paused ? 0.1 : 0.22}
+                  style={{ transition: 'stroke-opacity 0.4s' }}
+                />
+              ))}
+              {/* Spokes */}
+              {positions.map((p, i) => (
+                <line key={`sp-${i}`} x1="50" y1="50" x2={p.x} y2={p.y}
+                  stroke="oklch(68% 0.18 290)" strokeWidth="0.18"
+                  strokeOpacity={paused ? 0.08 : 0.16}
+                  strokeDasharray="1.2 0.8"
+                  style={{ transition: 'stroke-opacity 0.4s' }}
+                />
+              ))}
+            </svg>
+
+            {/* Orbit nodes */}
+            {rubros.map((rubro, i) => (
+              <div
+                key={rubro.label}
+                className="absolute"
+                style={{ left: `${positions[i].x}%`, top: `${positions[i].y}%` }}
+              >
+                <div
+                  className="rubros-node-inner"
+                  onMouseEnter={() => setActiveIndex(i)}
+                  onMouseLeave={() => setActiveIndex(null)}
+                >
+                  <div className={[
+                    'flex min-w-[112px] flex-col items-center gap-1.5 rounded-2xl px-3 py-2.5 select-none cursor-default',
+                    'ring-1 backdrop-blur-sm transition-all duration-300',
+                    activeIndex === i
+                      ? 'bg-primary/12 ring-primary/50 shadow-xl shadow-primary/20 scale-110'
+                      : 'bg-card/80 ring-border/50',
+                  ].join(' ')}>
+                    <div className={[
+                      'flex h-9 w-9 items-center justify-center rounded-xl transition-colors duration-300',
+                      activeIndex === i ? 'bg-primary/22' : 'bg-primary/12',
+                    ].join(' ')}>
+                      <rubro.icon className="h-[18px] w-[18px] text-primary" />
+                    </div>
+                    <span className="text-[12px] font-semibold leading-tight text-foreground/90 whitespace-nowrap">{rubro.label}</span>
+                    {activeIndex === i && (
+                      <span className="text-[10px] leading-snug text-muted-foreground text-center">{rubro.detail}</span>
+                    )}
+                  </div>
+                </div>
               </div>
-              <span className="text-[13px] font-medium leading-tight text-foreground/85 sm:text-sm">{rubro.label}</span>
-            </MagnetizeCard>
-          ))}
+            ))}
+          </div>
+
+          {/* Center hub — never rotates */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
+            <div className="flex flex-col items-center gap-1 rounded-2xl bg-card/90 px-4 py-3 ring-2 ring-primary/30 shadow-lg shadow-primary/10 backdrop-blur-sm">
+              <AnimatedTentacleLogo className="h-8 w-8" />
+              <span className="text-[9px] font-bold tracking-[0.18em] text-primary uppercase">OctopusTrack</span>
+            </div>
+          </div>
         </div>
 
+        {/* ── Mobile fallback: 2-col grid ─────────────────────────── */}
+        <div className="grid grid-cols-2 gap-3 sm:hidden">
+          {rubros.map((rubro, i) => (
+            <div
+              key={rubro.label}
+              className="flex min-h-[76px] items-center gap-2.5 rounded-xl bg-card/70 px-3 py-3 ring-1 ring-border"
+              style={{ '--reveal-delay': i * 80 } as CSSProperties}
+            >
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/15">
+                <rubro.icon className="h-4 w-4 text-primary" />
+              </div>
+              <span className="text-[13px] font-medium leading-tight text-foreground/85">{rubro.label}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
