@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type HTMLAttributes, type MouseEvent as ReactMouseEvent, type RefObject } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, CheckCircle2, Menu, X, MessageCircle, Package, Receipt, DollarSign, Wallet, Truck, RefreshCw, FileText, Wrench, Wheat, Warehouse, Droplets, Sun, Moon, Magnet } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Menu, X, MessageCircle, Package, Receipt, DollarSign, Wallet, Truck, RefreshCw, FileText, Wrench, Wheat, Droplets, Sun, Moon, Magnet } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from '../components/ui/Button'
@@ -362,11 +362,11 @@ function Hero() {
       <div className="relative z-10 mx-auto max-w-5xl animate-fade-in-up text-center">
         <p className="text-sm font-semibold tracking-wide text-primary">Ahorrá tiempo, vendé más</p>
         <h1 className="mx-auto mt-5 max-w-4xl font-display text-[44px] font-black leading-[1.02] tracking-tight text-foreground sm:text-6xl lg:text-[82px]">
-          El sistema que{' '}
-          <span className="text-primary">tu comercio necesita</span>
+          El sistema de gestión para{' '}
+          <span className="text-primary">ferreterías, sanitarios y comercios técnicos</span>
         </h1>
         <p className="mx-auto mt-8 max-w-3xl text-xl leading-relaxed text-muted-foreground sm:text-2xl">
-          Gestioná stock, ventas, clientes y facturación electrónica ARCA en un solo lugar.
+          que necesitan controlar ventas, stock y cuentas corrientes sin complicarse.
         </p>
         <p className="mx-auto mt-2 max-w-3xl text-lg leading-relaxed text-muted-foreground/85 sm:text-xl">
           Acopios, listas de precio personalizadas y cuentas corrientes.
@@ -657,11 +657,9 @@ function PainPoints() {
 function SocialProof() {
   const rubros = [
     { icon: Wrench, label: 'Ferreterías' },
-    { icon: Warehouse, label: 'Corralones' },
     { icon: Truck, label: 'Distribuidoras' },
     { icon: Wheat, label: 'Forrajerías' },
     { icon: Droplets, label: 'Sanitarios' },
-    { icon: Package, label: 'Mayoristas' },
     { icon: Wallet, label: 'Electricidad' },
   ]
 
@@ -1474,8 +1472,8 @@ function LandingContent({ theme, onToggleTheme }: { theme: ThemeMode; onToggleTh
   }), [])
 
   const industriasTicker = [
-    'Ferreterías', 'Corralones', 'Distribuidoras', 'Forrajerías',
-    'Sanitarios', 'Mayoristas', 'Electricidad',
+    'Ferreterías', 'Distribuidoras', 'Forrajerías',
+    'Sanitarios', 'Electricidad',
   ]
 
   return (

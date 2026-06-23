@@ -1,7 +1,7 @@
 {
   "name": "OctopusTrack ERP",
   "short_name": "OctopusTrack",
-  "description": "Sistema ERP para sanitarios, ferreterias y corralones",
+  "description": "Sistema ERP para sanitarios, ferreterias y distribuidoras",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
