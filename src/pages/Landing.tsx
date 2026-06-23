@@ -363,13 +363,13 @@ function Hero() {
         <p className="text-sm font-semibold tracking-wide text-primary">Ahorrá tiempo, vendé más</p>
         <h1 className="mx-auto mt-5 max-w-4xl font-display text-[44px] font-black leading-[1.02] tracking-tight text-foreground sm:text-6xl lg:text-[82px]">
           El sistema de gestión para{' '}
-          <span className="text-primary">ferreterías, sanitarios y comercios técnicos</span>
+          <span className="text-primary">ferreterías, sanitarios y casas de Electricidad</span>
         </h1>
         <p className="mx-auto mt-8 max-w-3xl text-xl leading-relaxed text-muted-foreground sm:text-2xl">
           que necesitan controlar ventas, stock y cuentas corrientes sin complicarse.
         </p>
         <p className="mx-auto mt-2 max-w-3xl text-lg leading-relaxed text-muted-foreground/85 sm:text-xl">
-          Acopios, listas de precio personalizadas y cuentas corrientes.
+          Acopios, listas de precio personalizadas, Actualización masiva de precios y varias funciones más.
         </p>
         <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground/75 sm:text-xl">
           Simple, rápido y sin complicaciones. En minutos empezás, sin límites escalás.
