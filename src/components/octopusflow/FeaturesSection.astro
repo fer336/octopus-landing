@@ -1,0 +1,69 @@
+---
+// OctopusFlow Features — no hooks, CSS hover only
+// Icons rendered as inline SVG (lucide paths)
+const features = [
+  {
+    iconPath: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
+    title: 'Presupuestos en segundos',
+    description: 'Armá presupuestos profesionales con precios, descripciones y totales. En minutos, no en horas.',
+  },
+  {
+    iconPath: 'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8 M16 6l-4-4-4 4 M12 2v13',
+    title: 'Compartí por WhatsApp al instante',
+    description: 'Enviá el presupuesto como PDF o link directo por WhatsApp. Tu cliente lo ve al toque.',
+  },
+  {
+    iconPath: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
+    title: 'Clientes siempre guardados',
+    description: 'Cada cliente queda registrado con su historial. Re-cotizá sin empezar de cero.',
+  },
+  {
+    iconPath: 'M18 20V10 M12 20V4 M6 20v-6',
+    title: 'Seguimiento de estado',
+    description: 'Sabé qué presupuestos están pendientes, aprobados o vencidos. Nunca más perdés el hilo.',
+  },
+];
+---
+
+<section id="caracteristicas" class="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
+  <div class="pointer-events-none absolute bottom-[18%] right-[-12%] h-[520px] w-[520px] rounded-full bg-primary-700/10 blur-[130px]"></div>
+
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal-on-scroll text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+        Todo lo que necesitás para{' '}
+        <span class="text-primary">presupuestar como profesional</span>
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+        Dejá de improvisar. Con OctopusFlow tenés todo ordenado para cotizar rápido y cerrar más ventas.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {features.map((feature, index) => (
+        <div
+          class="reveal-on-scroll flex flex-col rounded-2xl border border-border bg-card/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-card hover:shadow-xl hover:shadow-primary/5"
+          style={`--reveal-delay: ${index * 100}ms`}
+        >
+          <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-primary"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d={feature.iconPath} />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-foreground">{feature.title}</h3>
+          <p class="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

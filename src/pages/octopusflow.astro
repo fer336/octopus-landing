@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OctopusFlowRoot from '../components/OctopusFlowRoot';
+import PurchaseStatusBanner from '../components/octopusflow/PurchaseStatusBanner';
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'OctopusFlow',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    description:
+      'Sistema de presupuestos para profesionales independientes. Creá, compartí y gestioná presupuestos profesionales desde tu celular y envialos por WhatsApp al instante.',
+    url: 'https://octopustrack.shop/octopusflow',
+    publisher: {
+      '@type': 'Organization',
+      name: 'OctopusTrack',
+      url: 'https://octopustrack.shop',
+    },
+    offers: {
+      '@type': 'Offer',
+      availability: 'https://schema.org/InStock',
+      priceCurrency: 'ARS',
+    },
+  },
+];
+---
+
+<BaseLayout
+  title="OctopusFlow — Presupuestos que cierran ventas"
+  description="Creá presupuestos profesionales desde tu celular y compartílos por WhatsApp al instante. Sin planillas, sin papeles, sin perder clientes."
+  canonicalUrl="https://octopustrack.shop/octopusflow"
+  structuredData={structuredData}
+>
+  <PurchaseStatusBanner client:load />
+  <OctopusFlowRoot client:load />
+</BaseLayout>

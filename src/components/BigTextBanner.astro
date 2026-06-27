@@ -1,0 +1,30 @@
+---
+const items = [
+  'Stock',
+  'Ventas',
+  'Facturación',
+  'Clientes',
+  'Listas de precio',
+  'Acopios',
+  'Remitos',
+  'Cuentas corrientes',
+];
+const text = items.join(' · ');
+const chunks = [text, text];
+---
+
+<div class="overflow-hidden bg-background py-12 sm:py-16" aria-hidden="true">
+  <div
+    class="animate-marquee-big flex items-center whitespace-nowrap will-change-transform"
+    style="--marquee-duration: 34s"
+  >
+    {chunks.map((chunk, index) => (
+      <span
+        class="shrink-0 px-8 font-bold text-foreground/5 select-none"
+        style="font-size: clamp(56px, 8.5vw, 120px); line-height: 1"
+      >
+        {chunk} ·
+      </span>
+    ))}
+  </div>
+</div>

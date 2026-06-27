@@ -1,0 +1,89 @@
+---
+import PolicyLayout from '../layouts/PolicyLayout.astro';
+---
+
+<PolicyLayout
+  title="Política de Privacidad — OctopusTrack"
+  description="Conocé cómo OctopusTrack recopila, usa y protege tus datos personales y comerciales."
+>
+  <div class="topbar" style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;">
+    <a class="back" href="/" style="display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none;font-weight:700;border:1px solid var(--border);padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.02);">
+      ← Volver al sitio
+    </a>
+    <span style="font-size:12px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;">OctopusTrack · Legal</span>
+  </div>
+
+  <header style="border:1px solid var(--border);border-radius:20px;padding:28px;background:linear-gradient(145deg,rgba(157,132,191,0.14),rgba(var(--card)/0.92));box-shadow:0 24px 60px rgba(0,0,0,0.15);margin-bottom:22px;">
+    <span style="font-size:12px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--primary);">Política de Privacidad</span>
+    <h1 style="margin:8px 0 10px;font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.15;">Protegemos tus datos con criterio técnico y responsabilidad real.</h1>
+    <p style="margin:0;color:var(--muted-foreground);">
+      Esta política describe cómo recopilamos, usamos y protegemos información personal y comercial al usar
+      OctopusTrack y sus canales asociados.
+    </p>
+  </header>
+
+  <div style="display:grid;gap:18px;">
+    <section style="border:1px solid var(--border);border-radius:16px;padding:20px;background:rgba(var(--card)/0.76);">
+      <h2>1. Datos que recopilamos</h2>
+      <ul>
+        <li><strong>Identificación:</strong> nombre, email y datos de negocio al registrarte o contactar.</li>
+        <li><strong>Operativos:</strong> eventos de uso, navegación, logs técnicos y métricas de rendimiento.</li>
+        <li><strong>Comerciales:</strong> información que vos cargás para operar (clientes, productos, ventas).</li>
+      </ul>
+    </section>
+
+    <section style="border:1px solid var(--border);border-radius:16px;padding:20px;background:rgba(var(--card)/0.76);">
+      <h2>2. Finalidad del tratamiento</h2>
+      <ul>
+        <li>Prestar el servicio, autenticar usuarios y mantener la estabilidad de la plataforma.</li>
+        <li>Mejorar funciones, detectar errores y fortalecer seguridad.</li>
+        <li>Responder soporte técnico y comunicaciones operativas.</li>
+      </ul>
+    </section>
+
+    <section style="border:1px solid var(--border);border-radius:16px;padding:20px;background:rgba(var(--card)/0.76);">
+      <h2>3. Base legal y consentimiento</h2>
+      <p>
+        Tratamos datos en base a la ejecución del servicio solicitado, obligaciones legales aplicables y, cuando
+        corresponde, consentimiento explícito.
+      </p>
+    </section>
+
+    <section style="border:1px solid var(--border);border-radius:16px;padding:20px;background:rgba(var(--card)/0.76);">
+      <h2>4. Compartición con terceros</h2>
+      <p>
+        Solo compartimos datos con proveedores técnicos necesarios para operar (hosting, correo transaccional,
+        analítica y procesamiento de pagos), bajo acuerdos de confidencialidad y medidas razonables de seguridad.
+      </p>
+    </section>
+
+    <section style="border:1px solid var(--border);border-radius:16px;padding:20px;background:rgba(var(--card)/0.76);">
+      <h2>5. Conservación de información</h2>
+      <p>
+        Conservamos datos durante la vigencia de la relación comercial y el tiempo requerido por obligaciones
+        legales o fines legítimos de auditoría y seguridad.
+      </p>
+    </section>
+
+    <section style="border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:16px;padding:20px;background:rgba(var(--primary)/0.05);">
+      <h2>6. Tus derechos</h2>
+      <p>
+        Podés solicitar acceso, rectificación, actualización o eliminación de tus datos. También podés pedir
+        limitación de tratamiento cuando corresponda.
+      </p>
+    </section>
+
+    <section style="border:1px solid var(--border);border-radius:16px;padding:20px;background:rgba(var(--card)/0.76);">
+      <h2>7. Contacto</h2>
+      <p>
+        Para consultas de privacidad escribinos a <strong>soporte@octopustrack.shop</strong> indicando tu
+        solicitud y datos de contacto.
+      </p>
+    </section>
+  </div>
+
+  <footer style="margin-top:28px;color:var(--muted-foreground);font-size:0.92rem;">
+    Última actualización: 2026-05-02 · Esta política puede actualizarse para reflejar mejoras técnicas o cambios
+    normativos.
+  </footer>
+</PolicyLayout>

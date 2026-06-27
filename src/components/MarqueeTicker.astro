@@ -1,0 +1,26 @@
+---
+interface Props {
+  items: string[];
+  duration?: number;
+  reversed?: boolean;
+}
+const { items, duration = 38, reversed = false } = Astro.props;
+const doubled = [...items, ...items];
+---
+
+<div
+  class="overflow-hidden border-y border-border bg-background py-3"
+  aria-hidden="true"
+>
+  <div
+    class={reversed ? 'animate-marquee-rtl' : 'animate-marquee-ltr'}
+    style={`--marquee-duration: ${duration}s; display: flex; gap: 0;`}
+  >
+    {doubled.map((item) => (
+      <span class="flex shrink-0 items-center gap-5 px-5 text-[11px] font-bold tracking-[0.22em] uppercase text-muted-foreground/35">
+        {item}
+        <span class="h-1 w-1 shrink-0 rounded-full bg-primary-500/30" />
+      </span>
+    ))}
+  </div>
+</div>

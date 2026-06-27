@@ -1,0 +1,139 @@
+---
+import '../styles/globals.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  structuredData?: object[];
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/images/og/og-image-1200x630.jpg',
+  canonicalUrl,
+  structuredData,
+  bodyClass,
+} = Astro.props;
+
+const ogImageAbsolute = ogImage.startsWith('http')
+  ? ogImage
+  : `https://octopustrack.shop${ogImage}`;
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1a1823" />
+
+    <!-- Google / Search Engine -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="OctopusTrack" />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="OctopusTrack" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:image" content={ogImageAbsolute} />
+    <meta property="og:image:secure_url" content={ogImageAbsolute} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="OctopusTrack ERP para ferreterías, sanitarios y distribuidoras" />
+    <meta property="og:locale" content="es_AR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbsolute} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800;900&family=Figtree:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS custom property tokens — inline to prevent FOUC -->
+    <style is:inline>
+      :root {
+        --background: #f0f0f2;
+        --foreground: #121325;
+        --card: #ffffff;
+        --card-foreground: #121325;
+        --primary: #9d84bf;
+        --primary-foreground: #f0f0f2;
+        --secondary: #ece6f6;
+        --muted: #ece6f6;
+        --muted-foreground: #7b6b95;
+        --accent: #d9caeb;
+        --accent-foreground: #121325;
+        --border: #d9caeb;
+        --ring: #5c3a8c;
+      }
+      .dark {
+        --background: #121325;
+        --foreground: #ffffff;
+        --card: #1b1b32;
+        --card-foreground: #ffffff;
+        --primary: #9d84bf;
+        --primary-foreground: #121325;
+        --secondary: #272345;
+        --muted: #272345;
+        --muted-foreground: #b2a6c6;
+        --accent: #3b305a;
+        --accent-foreground: #ffffff;
+        --border: #3b305a;
+        --ring: #9d84bf;
+      }
+      body { background: var(--background); color: var(--foreground); }
+    </style>
+
+    <!-- Structured Data (JSON-LD) -->
+    {
+      structuredData?.map((item) => (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />
+      ))
+    }
+
+    <!-- Theme init — runs before first paint to avoid flash -->
+    <script is:inline>
+      (function () {
+        const theme = localStorage.getItem('theme');
+        if (
+          theme === 'dark' ||
+          (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class={bodyClass}>
+    <slot />
+
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js');
+        });
+      }
+    </script>
+  </body>
+</html>
