@@ -1,0 +1,34 @@
+---
+const WHATSAPP_URL = 'https://wa.me/5492254596618';
+---
+
+<footer id="contacto" class="border-t border-border bg-background px-4 py-12 sm:px-6 sm:py-16">
+  <div class="mx-auto flex w-full max-w-6xl flex-col items-center justify-center gap-6">
+    <nav aria-label="Enlaces legales" class="flex flex-wrap items-center justify-center gap-4 text-sm">
+      <a
+        href="/politicas-privacidad.html"
+        class="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+      >
+        Política de privacidad
+      </a>
+      <span class="text-muted-foreground/40" aria-hidden="true">•</span>
+      <a
+        href="/politicas-seguridad.html"
+        class="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+      >
+        Política de seguridad
+      </a>
+    </nav>
+    <p class="text-xs text-muted-foreground">
+      Contacto:
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-primary transition-colors hover:text-primary/80"
+      >
+        WhatsApp
+      </a>
+    </p>
+  </div>
+</footer>

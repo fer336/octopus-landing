@@ -1,0 +1,64 @@
+---
+// OctopusFlow PainPoints — no hooks, CSS hover only
+// Icons rendered as inline SVG (lucide paths)
+const pains = [
+  {
+    iconPath: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8',
+    title: 'Presupuestos perdidos en WhatsApp',
+    description: 'Entre mensajes de voz y chats, los presupuestos se pierden y no les das seguimiento.',
+  },
+  {
+    iconPath: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z M12 6v6l4 2',
+    title: 'Cotizar te lleva demasiado tiempo',
+    description: 'Buscar precios, armar el texto, mandar foto… cada presupuesto te roba 20 minutos.',
+  },
+  {
+    iconPath: 'M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z M21 21l-4.35-4.35',
+    title: 'Los clientes no quedan registrados',
+    description: 'Cuando necesitás re-cotizar, no encontrás el histórico de lo que le mandaste.',
+  },
+  {
+    iconPath: 'M23 6l-9.5 9.5-5-5L1 18 M17 6h6v6',
+    title: 'No sabés qué presupuesto está vigente',
+    description: 'Aprobaste uno hace meses y ya no recordás los detalles ni el precio pactado.',
+  },
+];
+---
+
+<section id="dolores" class="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
+  <div class="pointer-events-none absolute left-[-18%] top-[8%] h-[420px] w-[420px] rounded-full bg-primary-300/18 blur-[120px]"></div>
+
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal-on-scroll mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        Perdés tiempo y clientes{' '}
+        <span class="text-primary">sin un sistema de presupuestos</span>
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+        Si todavía estás armando presupuestos a mano o por mensajes, esto te pasa todos los días.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-14 grid max-w-5xl gap-5 sm:grid-cols-2">
+      {pains.map((pain) => (
+        <div class="reveal-on-scroll group flex flex-col rounded-2xl bg-card/70 p-6 ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:bg-card hover:shadow-2xl hover:shadow-primary/10">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mb-4 h-6 w-6 shrink-0 text-primary"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d={pain.iconPath} />
+          </svg>
+          <h3 class="text-lg font-medium leading-relaxed text-foreground">{pain.title}</h3>
+          <p class="mt-2 pt-2 text-sm leading-relaxed text-muted-foreground">{pain.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

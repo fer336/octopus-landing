@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnimatedTentacleLogo from '../components/ui/AnimatedTentacleLogo';
+
+const OCTOPUS_TRACK_LOGIN_URL = 'https://app.octopustrack.shop';
+const OCTOPUS_FLOW_LOGIN_URL = import.meta.env.VITE_OCTOPUS_FLOW_LOGIN_URL;
+const DEFAULT_OCTOPUS_FLOW_LOGIN_URL = 'https://login-flow.octopustrack.shop';
+
+const flowLoginUrl =
+  OCTOPUS_FLOW_LOGIN_URL && OCTOPUS_FLOW_LOGIN_URL.trim().length > 0
+    ? OCTOPUS_FLOW_LOGIN_URL.trim()
+    : DEFAULT_OCTOPUS_FLOW_LOGIN_URL;
+
+const products = [
+  {
+    name: 'OctopusTrack',
+    image: '/OC-ERP.png',
+    href: OCTOPUS_TRACK_LOGIN_URL,
+    buttonClass: '',
+  },
+  {
+    name: 'OctopusFlow',
+    image: '/OF-Cotizador.png',
+    href: flowLoginUrl,
+    buttonClass: 'bg-sky-500 hover:bg-sky-600',
+  },
+];
+---
+
+<BaseLayout
+  title="Acceder — OctopusTrack"
+  description="Seleccioná tu producto para iniciar sesión en OctopusTrack o OctopusFlow."
+  bodyClass="bg-[#080810]"
+>
+  <main class="relative min-h-screen overflow-hidden bg-[#080810] px-4 pb-10 pt-24 text-white sm:px-6 sm:pt-28">
+    <div class="pointer-events-none absolute inset-0">
+      <div class="absolute left-1/2 top-[-180px] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-primary-600/15 blur-3xl"></div>
+      <div class="absolute bottom-[-160px] right-[12%] h-[280px] w-[280px] rounded-full bg-violet-500/10 blur-[100px]"></div>
+    </div>
+
+    <header class="animate-fade-in-up fixed left-0 right-0 top-0 z-30 border-b border-white/10 bg-[#0d0d1a]/80 backdrop-blur-2xl">
+      <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+        <a href="/" class="flex items-center gap-2 text-sm font-medium text-white/90 transition hover:text-white">
+          <AnimatedTentacleLogo className="h-[36px] w-[36px]" alt="OctopusTrack" client:load />
+          <span>OctopusTrack</span>
+        </a>
+
+        <a
+          href="/"
+          aria-label="Volver a la web principal"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/20 bg-white/5 text-white/85 transition hover:border-white/35 hover:bg-white/10 hover:text-white"
+        >
+          <!-- ArrowLeft icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <section class="relative z-10 mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-5xl items-center">
+      <div class="w-full">
+        <header class="mb-8 text-center sm:mb-10">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-primary-300/90">Seleccioná tu producto</p>
+          <h1 class="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">¿A qué plataforma querés ingresar?</h1>
+        </header>
+
+        <div class="grid gap-5 sm:gap-6 lg:grid-cols-2">
+          {products.map((product, index) => (
+            <article
+              class="group animate-fade-in-up rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_12px_32px_rgba(8,8,16,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/40 hover:shadow-[0_20px_48px_rgba(41,57,253,0.22)] sm:p-6"
+              style={`animation-delay: ${index === 0 ? '120ms' : '240ms'}`}
+            >
+              <div class="flex h-[260px] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#111122]/85 p-3 sm:h-[320px]">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
+                />
+              </div>
+
+              <div class="mt-4 flex items-center justify-between gap-3">
+                <h2 class="text-lg font-semibold text-white sm:text-xl">{product.name}</h2>
+                <a
+                  href={product.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="shrink-0"
+                >
+                  <button
+                    type="button"
+                    class={`cta-shimmer min-w-[150px] inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03] ${product.buttonClass || 'bg-primary hover:bg-primary/90'}`}
+                  >
+                    Iniciar Sesión
+                  </button>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

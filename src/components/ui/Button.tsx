@@ -2,7 +2,7 @@
  * Componente Button reutilizable.
  * Soporta múltiples variantes, tamaños y estado de carga.
  */
-import { ButtonHTMLAttributes, forwardRef } from 'react'
+import { type ButtonHTMLAttributes, forwardRef } from 'react'
 import { clsx } from 'clsx'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,8 +1,10 @@
 node_modules/
 dist/
 dist-landing/
+.astro/
 .env
 .env.*
 !.env.example
 npm-debug.log*
 .DS_Store
+excalidraw.log

@@ -1,0 +1,17 @@
+---
+interface Props {
+  source: string;
+  className?: string;
+}
+const { source, className = '' } = Astro.props;
+
+const OCTOPUSFLOW_CHECKOUT_API = '/api/octopusflow-checkout';
+---
+
+<form method="post" action={OCTOPUSFLOW_CHECKOUT_API} class="contents">
+  <input type="hidden" name="source" value={source} />
+  <input type="hidden" name="page" value="octopusflow" />
+  <button type="submit" class={className}>
+    <slot />
+  </button>
+</form>
