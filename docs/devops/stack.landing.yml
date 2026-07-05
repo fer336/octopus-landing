@@ -10,12 +10,12 @@ version: "3.9"
 
 services:
   landing:
-    image: ghcr.io/fer336/octopus-landing:1.4.10
+    image: ghcr.io/fer336/octopus-landing:1.4.11
     networks:
       - octopus_net
       - network_public
     environment:
-      - APP_VERSION=1.4.10
+      - APP_VERSION=1.4.11
     deploy:
       replicas: 1
       restart_policy:
@@ -35,7 +35,7 @@ services:
         - "traefik.http.routers.octopus-landing.tls.certresolver=letsencrypt"
         - "traefik.http.services.octopus-landing.loadbalancer.server.port=80"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:80/landing.html"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:80/"]
       interval: 30s
       timeout: 5s
       retries: 3
