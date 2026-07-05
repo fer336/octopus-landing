@@ -7,6 +7,7 @@ interface Props {
   ogImage?: string;
   canonicalUrl?: string;
   structuredData?: object[];
+  robots?: string;
   bodyClass?: string;
 }
 
@@ -16,6 +17,7 @@ const {
   ogImage = '/images/og/og-image-1200x630.jpg',
   canonicalUrl,
   structuredData,
+  robots = 'index, follow',
   bodyClass,
 } = Astro.props;
 
@@ -38,7 +40,7 @@ const ogImageAbsolute = ogImage.startsWith('http')
     <!-- Google / Search Engine -->
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robots} />
     <meta name="author" content="OctopusTrack" />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 

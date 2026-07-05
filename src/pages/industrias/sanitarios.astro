@@ -1,0 +1,110 @@
+---
+import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import type { BreadcrumbItem, FaqItem } from '../../lib/schema';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Industrias', path: '/industrias/' },
+  { name: 'Sanitarios', path: '/industrias/sanitarios/' },
+];
+
+const faqItems: FaqItem[] = [
+  {
+    question: '¿Qué es un ERP para sanitarios?',
+    answer:
+      'Un ERP para sanitarios es un sistema de gestión para comercios que venden grifería, cañerías, conexiones, artefactos y repuestos, integrando presupuestos, stock, ventas, proveedores y facturación.',
+  },
+  {
+    question: '¿Cómo mejora la gestión de presupuestos para obras?',
+    answer:
+      'OctopusTrack ayuda a ordenar pedidos por cliente u obra, convertir presupuestos en ventas y mantener registro de artículos solicitados, entregados y pendientes.',
+  },
+  {
+    question: '¿Permite controlar productos con muchas variantes?',
+    answer:
+      'Sí. El rubro sanitario trabaja con medidas, líneas, terminaciones y compatibilidades; un ERP permite clasificar artículos y reducir errores al buscar o vender repuestos.',
+  },
+  {
+    question: '¿Ayuda a seguir compras a proveedores?',
+    answer:
+      'Sí. Centralizar proveedores permite revisar costos, planificar reposición y mantener disponibilidad de productos críticos para instalaciones y reparaciones.',
+  },
+  {
+    question: '¿Por qué un sanitario necesita más que una planilla?',
+    answer:
+      'Porque los presupuestos cambian, las obras se entregan por etapas y los productos tienen compatibilidades. Un ERP mantiene esa información conectada con ventas, stock y cuentas corrientes.',
+  },
+];
+
+const features = [
+  ['Presupuestos por obra', 'Organización de pedidos para instalaciones, reparaciones y compras por etapas.'],
+  ['Catálogo técnico', 'Clasificación de grifería, cañerías, conexiones, artefactos, repuestos y accesorios.'],
+  ['Control de entregas', 'Seguimiento de artículos vendidos, pendientes y facturados por cliente.'],
+  ['Proveedores', 'Registro de costos y disponibilidad para productos sensibles a reposición.'],
+  ['Cuentas corrientes', 'Gestión de saldos de instaladores, contratistas y clientes recurrentes.'],
+];
+---
+
+<IndustryLayout
+  title="ERP para sanitarios en Argentina — OctopusTrack"
+  description="Sistema ERP para sanitarios: presupuestos por obra, control de stock, proveedores, cuentas corrientes y facturación para comercios del rubro sanitario."
+  canonicalUrl="https://octopustrack.shop/industrias/sanitarios/"
+  breadcrumbs={breadcrumbs}
+  faqItems={faqItems}
+>
+  <header class="mb-10">
+    <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary">Industria sanitaria</p>
+    <h1 class="mb-4 text-3xl font-bold tracking-tight sm:text-5xl">ERP para sanitarios</h1>
+    <p class="max-w-3xl text-lg text-muted-foreground">
+      OctopusTrack organiza presupuestos, productos técnicos, proveedores y cuentas corrientes para comercios sanitarios que venden a instaladores, obras y clientes finales.
+    </p>
+  </header>
+
+  <section class="mb-10 rounded-2xl border border-border bg-card p-6">
+    <h2 class="mb-3 text-2xl font-semibold">¿Qué es un ERP para sanitarios?</h2>
+    <p class="text-muted-foreground">
+      Un ERP para sanitarios es una plataforma que conecta el presupuesto, la venta, el stock y la facturación en un rubro donde cada pedido puede combinar grifería, cañerías, artefactos y repuestos.
+      Su objetivo es evitar pérdidas de información entre el mostrador, el depósito y las entregas parciales de una obra.
+    </p>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-4 text-2xl font-semibold">Comparación de funciones para sanitarios</h2>
+    <div class="overflow-hidden rounded-2xl border border-border bg-card">
+      {features.map(([feature, detail]) => (
+        <div class="grid gap-2 border-b border-border p-4 last:border-b-0 sm:grid-cols-[220px_1fr]">
+          <strong>{feature}</strong>
+          <span class="text-muted-foreground">{detail}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-10 rounded-2xl bg-secondary p-6">
+    <h2 class="mb-3 text-2xl font-semibold">Contexto del mercado sanitario argentino</h2>
+    <p class="text-muted-foreground">
+      Los comercios sanitarios combinan venta minorista, atención a instaladores y abastecimiento para obras. La variación de costos, las entregas parciales y la dependencia de proveedores hacen que presupuestar con datos actualizados sea tan importante como vender rápido.
+    </p>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-4 text-2xl font-semibold">Preguntas frecuentes</h2>
+    <div class="space-y-4">
+      {faqItems.map((item) => (
+        <article class="rounded-2xl border border-border bg-card p-5">
+          <h3 class="mb-2 font-semibold">{item.question}</h3>
+          <p class="text-muted-foreground">{item.answer}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="rounded-2xl border border-border p-6">
+    <h2 class="mb-3 text-2xl font-semibold">También puede interesarte</h2>
+    <div class="flex flex-wrap gap-3">
+      <a class="underline underline-offset-4" href="/industrias/">Ver todas las industrias</a>
+      <a class="underline underline-offset-4" href="/industrias/ferreterias/">ERP para ferreterías</a>
+      <a class="underline underline-offset-4" href="/industrias/electricidad/">ERP para casas de electricidad</a>
+    </div>
+  </section>
+</IndustryLayout>

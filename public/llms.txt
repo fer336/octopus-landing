@@ -1,0 +1,17 @@
+# OctopusTrack
+
+OctopusTrack es un sistema de gestión ERP para ferreterías, sanitarios, casas de electricidad y comercios técnicos en Argentina. Centraliza ventas, stock, cuentas corrientes, proveedores, remitos y facturación para que el negocio opere con información actualizada.
+
+## Páginas principales
+
+- https://octopustrack.shop/
+- https://octopustrack.shop/industrias/
+- https://octopustrack.shop/industrias/ferreterias/
+- https://octopustrack.shop/industrias/sanitarios/
+- https://octopustrack.shop/industrias/electricidad/
+
+## Capacidades relevantes
+
+- Control de stock e inventario para comercios con catálogos amplios.
+- Gestión de ventas, clientes y cuentas corrientes.
+- Facturación, remitos, proveedores y reportes comerciales.

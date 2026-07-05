@@ -1,0 +1,74 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import {
+  softwareApplication,
+  organization,
+  breadcrumbList,
+  faqPage,
+  buildGraph,
+} from '../lib/schema';
+import type { BreadcrumbItem, FaqItem } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl: string;
+  breadcrumbs: BreadcrumbItem[];
+  faqItems?: FaqItem[];
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalUrl,
+  breadcrumbs,
+  faqItems,
+  ogImage,
+} = Astro.props;
+
+const schemaTypes: object[] = [
+  softwareApplication(),
+  organization(),
+  breadcrumbList(breadcrumbs),
+];
+
+if (faqItems && faqItems.length > 0) {
+  schemaTypes.push(faqPage(faqItems));
+}
+
+const graphSchema = buildGraph(schemaTypes);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={canonicalUrl}
+  structuredData={[graphSchema]}
+  ogImage={ogImage}
+>
+  <main class="mx-auto max-w-4xl px-5 py-8 pb-18">
+    <!-- Visual breadcrumb navigation -->
+    <nav aria-label="Breadcrumb" class="mb-6 text-sm text-muted-foreground">
+      {
+        breadcrumbs.map((crumb, i) => (
+          <>
+            {i > 0 && <span class="mx-2 text-muted-foreground/40" aria-hidden="true">/</span>}
+            {i < breadcrumbs.length - 1 ? (
+              <a
+                href={crumb.path}
+                class="underline underline-offset-4 transition-colors hover:text-foreground"
+              >
+                {crumb.name}
+              </a>
+            ) : (
+              <span class="text-foreground" aria-current="page">{crumb.name}</span>
+            )}
+          </>
+        ))
+      }
+    </nav>
+
+    <slot />
+  </main>
+</BaseLayout>
