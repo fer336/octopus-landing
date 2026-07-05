@@ -395,17 +395,24 @@ function FooterInline() {
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-center gap-6">
         <nav aria-label="Enlaces legales" className="flex flex-wrap items-center justify-center gap-4 text-sm">
           <a
-            href="/politicas-privacidad.html"
+            href="/politicas-privacidad"
             className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
           >
             Política de privacidad
           </a>
           <span className="text-muted-foreground/40" aria-hidden="true">•</span>
           <a
-            href="/politicas-seguridad.html"
+            href="/politicas-seguridad"
             className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
           >
             Política de seguridad
+          </a>
+          <span className="text-muted-foreground/40" aria-hidden="true">•</span>
+          <a
+            href="/industrias/"
+            className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+          >
+            Industrias
           </a>
         </nav>
         <p className="text-xs text-muted-foreground">

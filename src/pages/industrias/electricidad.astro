@@ -1,0 +1,110 @@
+---
+import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import type { BreadcrumbItem, FaqItem } from '../../lib/schema';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Industrias', path: '/industrias/' },
+  { name: 'Electricidad', path: '/industrias/electricidad/' },
+];
+
+const faqItems: FaqItem[] = [
+  {
+    question: '¿Qué es un ERP para casas de electricidad?',
+    answer:
+      'Un ERP para casas de electricidad es un sistema de gestión que centraliza ventas, stock, remitos, proveedores, cuentas corrientes y facturación para comercios que venden materiales eléctricos y atienden a instaladores o empresas.',
+  },
+  {
+    question: '¿Cómo ayuda con productos eléctricos de distintas marcas y medidas?',
+    answer:
+      'OctopusTrack permite ordenar cables, térmicas, llaves, luminarias, caños, tableros y accesorios por familia comercial, facilitando la búsqueda y el control de disponibilidad.',
+  },
+  {
+    question: '¿Sirve para vender con remitos y facturación posterior?',
+    answer:
+      'Sí. Es útil para operaciones con instaladores, empresas o mantenimiento donde se requiere registrar entregas, seguir saldos y facturar con trazabilidad.',
+  },
+  {
+    question: '¿Puede controlar stock de productos de alta rotación?',
+    answer:
+      'Sí. La gestión de inventario permite identificar faltantes en cables, protecciones, accesorios e insumos frecuentes para reponer antes de afectar ventas o entregas.',
+  },
+  {
+    question: '¿Qué reportes necesita una casa de electricidad?',
+    answer:
+      'Necesita visibilidad sobre ventas por familia, artículos con bajo stock, cuentas corrientes, proveedores principales y productos que inmovilizan capital en depósito.',
+  },
+];
+
+const features = [
+  ['Stock técnico', 'Control de cables, protecciones, luminarias, tableros, caños y accesorios por familia.'],
+  ['Remitos', 'Registro de entregas para instaladores, empresas y clientes con facturación posterior.'],
+  ['Ventas B2B y mostrador', 'Operación para compras rápidas y pedidos comerciales con seguimiento de cliente.'],
+  ['Reposición crítica', 'Detección de faltantes en productos de alta rotación y materiales esenciales.'],
+  ['Reportes comerciales', 'Lectura de ventas, margen y rotación por línea eléctrica o proveedor.'],
+];
+---
+
+<IndustryLayout
+  title="ERP para casas de electricidad en Argentina — OctopusTrack"
+  description="Sistema ERP para casas de electricidad: stock técnico, remitos, ventas B2B y mostrador, cuentas corrientes, proveedores y facturación."
+  canonicalUrl="https://octopustrack.shop/industrias/electricidad/"
+  breadcrumbs={breadcrumbs}
+  faqItems={faqItems}
+>
+  <header class="mb-10">
+    <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary">Industria eléctrica</p>
+    <h1 class="mb-4 text-3xl font-bold tracking-tight sm:text-5xl">ERP para casas de electricidad</h1>
+    <p class="max-w-3xl text-lg text-muted-foreground">
+      OctopusTrack conecta stock técnico, remitos, cuentas corrientes y reportes para comercios eléctricos que venden a mostrador, instaladores y empresas.
+    </p>
+  </header>
+
+  <section class="mb-10 rounded-2xl border border-border bg-card p-6">
+    <h2 class="mb-3 text-2xl font-semibold">¿Qué es un ERP para casas de electricidad?</h2>
+    <p class="text-muted-foreground">
+      Un ERP para casas de electricidad es un sistema que administra materiales eléctricos, ventas, remitos, proveedores y facturación en un único circuito de trabajo.
+      Ayuda a decidir qué reponer, qué entregar y qué facturar sin perder trazabilidad entre depósito, mostrador y cuentas de clientes profesionales.
+    </p>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-4 text-2xl font-semibold">Funciones relevantes para el rubro eléctrico</h2>
+    <div class="overflow-hidden rounded-2xl border border-border bg-card">
+      {features.map(([feature, detail]) => (
+        <div class="grid gap-2 border-b border-border p-4 last:border-b-0 sm:grid-cols-[220px_1fr]">
+          <strong>{feature}</strong>
+          <span class="text-muted-foreground">{detail}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-10 rounded-2xl bg-secondary p-6">
+    <h2 class="mb-3 text-2xl font-semibold">Contexto del mercado eléctrico argentino</h2>
+    <p class="text-muted-foreground">
+      Las casas de electricidad atienden compras urgentes, pedidos técnicos y reposición para mantenimiento u obra. La disponibilidad de materiales de alta rotación y la trazabilidad de remitos son claves para sostener servicio sin inmovilizar stock innecesario.
+    </p>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-4 text-2xl font-semibold">Preguntas frecuentes</h2>
+    <div class="space-y-4">
+      {faqItems.map((item) => (
+        <article class="rounded-2xl border border-border bg-card p-5">
+          <h3 class="mb-2 font-semibold">{item.question}</h3>
+          <p class="text-muted-foreground">{item.answer}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="rounded-2xl border border-border p-6">
+    <h2 class="mb-3 text-2xl font-semibold">También puede interesarte</h2>
+    <div class="flex flex-wrap gap-3">
+      <a class="underline underline-offset-4" href="/industrias/">Ver todas las industrias</a>
+      <a class="underline underline-offset-4" href="/industrias/ferreterias/">ERP para ferreterías</a>
+      <a class="underline underline-offset-4" href="/industrias/sanitarios/">ERP para sanitarios</a>
+    </div>
+  </section>
+</IndustryLayout>

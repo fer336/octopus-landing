@@ -1,0 +1,110 @@
+---
+import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import type { BreadcrumbItem, FaqItem } from '../../lib/schema';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Industrias', path: '/industrias/' },
+  { name: 'Ferreterías', path: '/industrias/ferreterias/' },
+];
+
+const faqItems: FaqItem[] = [
+  {
+    question: '¿Qué es un ERP para ferreterías?',
+    answer:
+      'Un ERP para ferreterías es un sistema de gestión que centraliza ventas, stock, listas de precios, cuentas corrientes y facturación para administrar productos de alta rotación y miles de artículos por medida, marca o proveedor.',
+  },
+  {
+    question: '¿Cómo ayuda OctopusTrack a controlar el stock ferretero?',
+    answer:
+      'OctopusTrack permite registrar movimientos de inventario, detectar faltantes, ordenar artículos por categoría y consultar existencias antes de vender o presupuestar, reduciendo errores en mostrador y reposición.',
+  },
+  {
+    question: '¿Sirve para manejar cuentas corrientes de clientes frecuentes?',
+    answer:
+      'Sí. La gestión de cuentas corrientes permite seguir saldos, pagos y ventas financiadas a clientes habituales, obras o gremios que compran de forma recurrente.',
+  },
+  {
+    question: '¿Puede usarse con varias listas de precios?',
+    answer:
+      'Sí. Es útil para ferreterías que trabajan con precios minoristas, mayoristas, por proveedor o por segmento de cliente, manteniendo el control comercial sin depender de planillas separadas.',
+  },
+  {
+    question: '¿Qué diferencia a un ERP ferretero de una caja simple?',
+    answer:
+      'Una caja registra cobros; un ERP ferretero conecta la venta con inventario, clientes, proveedores, facturación y reportes para decidir qué comprar, qué margen deja cada línea y dónde se pierde stock.',
+  },
+];
+
+const features = [
+  ['Inventario por rubro', 'Tornillería, herramientas, pinturas, bulonería y accesorios ordenados por familias comerciales.'],
+  ['Ventas de mostrador', 'Registro rápido de operaciones frecuentes con control de stock al momento de vender.'],
+  ['Listas de precio', 'Manejo de precios por proveedor, cliente o tipo de compra sin duplicar productos.'],
+  ['Cuentas corrientes', 'Seguimiento de saldos para clientes habituales, gremios y pequeñas obras.'],
+  ['Reposición', 'Información para detectar artículos críticos y planificar compras con menos improvisación.'],
+];
+---
+
+<IndustryLayout
+  title="ERP para ferreterías en Argentina — OctopusTrack"
+  description="Sistema ERP para ferreterías: control de stock, ventas de mostrador, listas de precios, cuentas corrientes y facturación en una sola plataforma."
+  canonicalUrl="https://octopustrack.shop/industrias/ferreterias/"
+  breadcrumbs={breadcrumbs}
+  faqItems={faqItems}
+>
+  <header class="mb-10">
+    <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary">Industria ferretera</p>
+    <h1 class="mb-4 text-3xl font-bold tracking-tight sm:text-5xl">ERP para ferreterías</h1>
+    <p class="max-w-3xl text-lg text-muted-foreground">
+      OctopusTrack ayuda a ferreterías a vender, facturar y reponer con información clara sobre stock, clientes y márgenes.
+    </p>
+  </header>
+
+  <section class="mb-10 rounded-2xl border border-border bg-card p-6">
+    <h2 class="mb-3 text-2xl font-semibold">¿Qué es un ERP para ferreterías?</h2>
+    <p class="text-muted-foreground">
+      Un ERP para ferreterías es un sistema de gestión que une ventas, inventario, cuentas corrientes, proveedores y facturación para operar miles de artículos sin depender de planillas dispersas.
+      En una ferretería, el valor está en saber qué producto está disponible, a qué precio venderlo y cuándo reponerlo antes de perder una venta.
+    </p>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-4 text-2xl font-semibold">Funciones clave para el mostrador ferretero</h2>
+    <div class="overflow-hidden rounded-2xl border border-border bg-card">
+      {features.map(([feature, detail]) => (
+        <div class="grid gap-2 border-b border-border p-4 last:border-b-0 sm:grid-cols-[220px_1fr]">
+          <strong>{feature}</strong>
+          <span class="text-muted-foreground">{detail}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-10 rounded-2xl bg-secondary p-6">
+    <h2 class="mb-3 text-2xl font-semibold">Contexto del mercado ferretero argentino</h2>
+    <p class="text-muted-foreground">
+      Las ferreterías argentinas suelen trabajar con catálogos amplios, alta variación de precios y compras frecuentes a múltiples proveedores. Esa combinación exige control de stock actualizado y trazabilidad de precios para sostener margen sin frenar la atención en mostrador.
+    </p>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="mb-4 text-2xl font-semibold">Preguntas frecuentes</h2>
+    <div class="space-y-4">
+      {faqItems.map((item) => (
+        <article class="rounded-2xl border border-border bg-card p-5">
+          <h3 class="mb-2 font-semibold">{item.question}</h3>
+          <p class="text-muted-foreground">{item.answer}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="rounded-2xl border border-border p-6">
+    <h2 class="mb-3 text-2xl font-semibold">También puede interesarte</h2>
+    <div class="flex flex-wrap gap-3">
+      <a class="underline underline-offset-4" href="/industrias/">Ver todas las industrias</a>
+      <a class="underline underline-offset-4" href="/industrias/sanitarios/">ERP para sanitarios</a>
+      <a class="underline underline-offset-4" href="/industrias/electricidad/">ERP para casas de electricidad</a>
+    </div>
+  </section>
+</IndustryLayout>

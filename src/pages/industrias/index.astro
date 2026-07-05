@@ -1,0 +1,63 @@
+---
+import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import type { BreadcrumbItem } from '../../lib/schema';
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Industrias', path: '/industrias/' },
+];
+
+const industries = [
+  {
+    title: 'Ferreterías',
+    description:
+      'Control de stock, ventas y cuentas corrientes diseñado para ferreterías. Gestioná miles de SKU con listas de precio flexibles.',
+    href: '/industrias/ferreterias/',
+  },
+  {
+    title: 'Sanitarios',
+    description:
+      'ERP especializado para comercios sanitarios. Manejo de pedidos, presupuestos y facturación adaptado al rubro.',
+    href: '/industrias/sanitarios/',
+  },
+  {
+    title: 'Electricidad',
+    description:
+      'Sistema de gestión para casas de electricidad con control de stock, remitos y gestión de proveedores.',
+    href: '/industrias/electricidad/',
+  },
+];
+---
+
+<IndustryLayout
+  title="Industrias — OctopusTrack"
+  description="OctopusTrack es el sistema de gestión ERP para ferreterías, sanitarios y casas de electricidad en Argentina. Conocé nuestras soluciones por industria."
+  canonicalUrl="https://octopustrack.shop/industrias/"
+  breadcrumbs={breadcrumbs}
+>
+  <h1 class="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
+    Soluciones ERP por industria
+  </h1>
+  <p class="mb-8 text-muted-foreground">
+    OctopusTrack se adapta a la forma de trabajar de cada rubro. Elegí tu industria
+    y descubrí cómo podemos ayudarte a gestionar tu negocio.
+  </p>
+
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      industries.map((industry) => (
+        <a
+          href={industry.href}
+          class="group rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/50"
+        >
+          <h2 class="mb-2 text-xl font-semibold group-hover:text-primary">
+            {industry.title}
+          </h2>
+          <p class="text-sm text-muted-foreground">
+            {industry.description}
+          </p>
+        </a>
+      ))
+    }
+  </div>
+</IndustryLayout>

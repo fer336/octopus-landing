@@ -1,0 +1,52 @@
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Tech stack: Astro 5.18 + React 18.3 islands + TypeScript 5.4 (strict)
+  Styling: Tailwind CSS 3.4 + shadcn/ui (radix-nova, CSS variables) + PostCSS + Autoprefixer
+  Animation: GSAP 3.15 + Framer Motion 12.40
+  Icons: Lucide React
+  Build: Static site (SSG), output to dist/, nginx container
+  CI/CD: GitHub Actions → GHCR → Portainer (tag-triggered push)
+  Infrastructure: Cloudflare Worker proxy for /api/contacto and /api/demo
+  Architecture: Astro pages (src/pages/) with React components (src/components/);
+    shadcn/ui components under src/components/ui/;
+    utility-first with clsx for class merging;
+    env vars via VITE_* (build-time), secrets in Cloudflare Worker only
+  Conventions: No AGENTS.md or CLAUDE.md; PRODUCT.md for brand/product context
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Reference PRODUCT.md and README.md for context
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns (Astro islands, React 18, Tailwind)
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: "npm run build"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
+
+testing:
+  strict_tdd: false
+  reason: No test runner configured. playwright-chromium is in devDependencies but no Playwright config, no test specs, no test files exist. No test script in package.json and no test step in CI.
+  runner: null
+  unit: false
+  integration: false
+  e2e: false
+  coverage: false
+  linter: astro check
+  type_checker: tsc (via astro/tsconfigs/strict)
+  formatter: null
