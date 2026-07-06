@@ -10,12 +10,12 @@ version: "3.9"
 
 services:
   landing:
-    image: ghcr.io/fer336/octopus-landing:1.4.13
+    image: ghcr.io/fer336/octopus-landing:1.4.14
     networks:
       - octopus_net
       - network_public
     environment:
-      - APP_VERSION=1.4.13
+      - APP_VERSION=1.4.14
     deploy:
       replicas: 1
       restart_policy:
