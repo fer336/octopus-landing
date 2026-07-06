@@ -6,4 +6,4 @@ Disallow: /admin.html
 Disallow: /tenant.html
 Disallow: /acceder
 
-Sitemap: https://octopustrack.shop/sitemap-index.xml
+Sitemap: https://octopustrack.shop/sitemap.xml
