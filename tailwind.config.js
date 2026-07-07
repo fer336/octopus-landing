@@ -4,7 +4,7 @@ export default {
     './landing.html',
     './politicas-privacidad.html',
     './politicas-seguridad.html',
-    './src/**/*.{js,ts,jsx,tsx}',
+    './src/**/*.{astro,js,ts,jsx,tsx}',
   ],
   darkMode: 'class',
   theme: {
