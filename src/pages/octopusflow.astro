@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import OctopusFlowRoot from '../components/OctopusFlowRoot';
-import PurchaseStatusBanner from '../components/octopusflow/PurchaseStatusBanner';
+import OctopusFlowRoot from '../components/OctopusFlowRoot.astro';
+import PurchaseStatusBanner from '../components/octopusflow/PurchaseStatusBanner.astro';
 
 const structuredData = [
   {
@@ -33,6 +33,6 @@ const structuredData = [
   canonicalUrl="https://octopustrack.shop/octopusflow"
   structuredData={structuredData}
 >
-  <PurchaseStatusBanner client:load />
-  <OctopusFlowRoot client:load />
+  <PurchaseStatusBanner />
+  <OctopusFlowRoot />
 </BaseLayout>

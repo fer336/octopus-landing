@@ -1,0 +1,60 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section id="inicio" data-grid-hero class="relative overflow-hidden bg-background px-4 pb-20 pt-24 sm:px-6 sm:pt-32 lg:pb-28">
+  <div data-grid-backdrop aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 overflow-hidden [--grid-mask-x:50%] [--grid-mask-y:35%]">
+    <div class="infinite-grid-drift absolute inset-0 text-primary-700 opacity-[0.08]" style="background-image: linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <div class="infinite-grid-drift absolute inset-0 text-primary-300 opacity-45" style="background-image: linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(320px circle at var(--grid-mask-x, 50%) var(--grid-mask-y, 35%), black, transparent 72%); -webkit-mask-image: radial-gradient(320px circle at var(--grid-mask-x, 50%) var(--grid-mask-y, 35%), black, transparent 72%);"></div>
+    <div class="absolute inset-0">
+      <div class="absolute right-[-18%] top-[-20%] h-[42%] w-[42%] rounded-full bg-primary-500/30 blur-[120px]"></div>
+      <div class="absolute right-[8%] top-[-8%] h-[22%] w-[22%] rounded-full bg-primary-700/24 blur-[96px]"></div>
+      <div class="absolute bottom-[-22%] left-[-12%] h-[44%] w-[44%] rounded-full bg-primary-300/24 blur-[130px]"></div>
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-5xl animate-fade-in-up text-center">
+    <p class="text-sm font-semibold tracking-wide text-primary">Ahorrá tiempo, vendé más</p>
+    <h1 class="mx-auto mt-5 max-w-4xl font-display text-[44px] font-black leading-[1.02] tracking-tight text-foreground sm:text-6xl lg:text-[82px]">
+      ERP comercial para <span class="text-primary">venta de mostrador</span>
+    </h1>
+    <p class="mx-auto mt-8 max-w-3xl text-xl leading-relaxed text-muted-foreground sm:text-2xl">
+      OctopusTrack está diseñado para vender rápido, atender clientes sin demoras, controlar stock, facturar, manejar caja y administrar cuentas corrientes desde una plataforma simple, ágil y fácil de aprender.
+    </p>
+    <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <button type="button" data-open-demo-modal class="group relative isolate inline-flex touch-none items-center justify-center gap-2 overflow-visible rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:bg-primary/90 sm:min-w-[180px]">
+        <span class="pointer-events-none absolute left-1/2 top-1/2 -z-10 block h-full w-full -translate-x-1/2 -translate-y-1/2 rounded-[inherit] bg-primary/35 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-70"></span>
+        Probar demo
+        <Icon name="arrowRight" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+      </button>
+      <a data-scroll-target="octopustrack-content" href="#octopustrack-content" class="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card/60 px-7 py-3.5 text-sm font-medium text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-card">
+        Ver venta en acción
+        <Icon name="zap" class="h-4 w-4 text-primary" />
+      </a>
+    </div>
+    <p class="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground/80 sm:text-lg">
+      Ideal para comercios, pymes y distribuidoras que venden productos físicos y necesitan un sistema potente sin perder velocidad en el mostrador.
+    </p>
+  </div>
+
+  <div class="relative z-10 mx-auto mt-10 w-full max-w-[1180px] sm:mt-14 lg:mt-16">
+    <div class="pointer-events-none absolute inset-x-12 -top-8 h-24 rounded-full bg-primary-500/20 blur-[70px]"></div>
+    <img src="/assets/dashboard-1200.webp" alt="OctopusTrack funcionando en escritorio y celular" class="relative mx-auto w-full rounded-[28px] shadow-2xl shadow-background/60 ring-1 ring-border/80" loading="eager" />
+  </div>
+</section>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('[data-grid-hero]');
+  const backdrop = document.querySelector<HTMLElement>('[data-grid-backdrop]');
+  if (hero && backdrop) {
+    hero.addEventListener('mousemove', (event) => {
+      const rect = hero.getBoundingClientRect();
+      backdrop.style.setProperty('--grid-mask-x', `${event.clientX - rect.left}px`);
+      backdrop.style.setProperty('--grid-mask-y', `${event.clientY - rect.top}px`);
+    });
+    hero.addEventListener('mouseleave', () => {
+      backdrop.style.setProperty('--grid-mask-x', '50%');
+      backdrop.style.setProperty('--grid-mask-y', '35%');
+    });
+  }
+</script>

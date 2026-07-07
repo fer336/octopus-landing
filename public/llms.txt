@@ -1,17 +1,58 @@
-# OctopusTrack
+# OctopusTrack — ERP comercial para venta de mostrador en Argentina
 
-OctopusTrack es un sistema de gestión ERP para ferreterías, sanitarios, casas de electricidad y comercios técnicos en Argentina. Centraliza ventas, stock, cuentas corrientes, proveedores, remitos y facturación para que el negocio opere con información actualizada.
+OctopusTrack es un ERP comercial enfocado en la venta de mostrador. Está diseñado para comercios, pymes y distribuidoras que necesitan atender rápido, buscar productos con agilidad, controlar stock, facturar, manejar caja, cuentas corrientes, listas de precios y reportes desde una sola plataforma fácil de aprender.
+
+El producto está orientado a negocios argentinos que venden productos físicos y necesitan velocidad en la atención sin perder control administrativo. Ferreterías, librerías, forrajerías, sanitarios, casas de electricidad, distribuidoras y comercios técnicos son ejemplos de uso, pero el eje principal es la operación comercial por mostrador.
 
 ## Páginas principales
 
-- https://octopustrack.shop/
-- https://octopustrack.shop/industrias/
-- https://octopustrack.shop/industrias/ferreterias/
-- https://octopustrack.shop/industrias/sanitarios/
-- https://octopustrack.shop/industrias/electricidad/
+- https://octopustrack.shop/ — Landing page principal
+- https://octopustrack.shop/industrias/ — Soluciones por industria
+- https://octopustrack.shop/industrias/ferreterias/ — ERP para ferreterías
+- https://octopustrack.shop/industrias/sanitarios/ — ERP para sanitarios
+- https://octopustrack.shop/industrias/electricidad/ — ERP para casas de electricidad
+- https://octopustrack.shop/octopusflow/ — OctopusFlow: automatización de procesos
+- https://octopustrack.shop/politicas-privacidad/ — Políticas de privacidad
+- https://octopustrack.shop/politicas-seguridad/ — Políticas de seguridad
 
-## Capacidades relevantes
+## Mercado objetivo
 
-- Control de stock e inventario para comercios con catálogos amplios.
-- Gestión de ventas, clientes y cuentas corrientes.
-- Facturación, remitos, proveedores y reportes comerciales.
+- Comercios, pymes y distribuidoras con venta de mostrador en Argentina
+- Negocios con catálogo amplio, stock físico, caja y cuentas corrientes
+- Ferreterías, librerías, forrajerías, sanitarios, casas de electricidad y comercios técnicos
+- Equipos que necesitan vender rápido sin sistemas difíciles de aprender
+
+## Capacidades del producto
+
+- **Venta de mostrador**: búsqueda ágil de productos, carga rápida de ventas, flujo continuo para vendedores
+- **Control de stock**: gestión de inventario con SKU, múltiples depósitos, alertas de reposición
+- **Ventas y facturación**: facturación electrónica ARCA/AFIP, remitos, presupuestos, múltiples puntos de venta
+- **Caja**: control operativo de cobros, movimientos y cierres comerciales
+- **Cuentas corrientes**: gestión de deudas, vencimientos, pagos parciales, resúmenes de cuenta
+- **Listas de precio**: listas diferenciadas por cliente, mayoristas, promociones
+- **Proveedores**: órdenes de compra, histórico de precios, gestión de pedidos
+- **Reportes**: dashboards de ventas, rentabilidad, productos más vendidos, rendimiento del negocio
+- **Multiusuario**: roles y permisos, vendedores con acceso limitado
+- **Sincronización en la nube**: accesible desde cualquier dispositivo, backups automáticos
+- **OctopusFlow**: módulo de automatización de procesos (opcional)
+
+## Posicionamiento
+
+OctopusTrack compite con sistemas como:
+- Sistemas legacy del mercado argentino que suelen ser veloces pero difíciles de modernizar
+- Planillas de Excel, cuadernos y gestión manual que muchos comercios aún usan
+- ERPs genéricos que agregan potencia administrativa pero pueden ser lentos o complejos para el mostrador
+
+## Diferenciadores clave
+
+- **Lógica de mostrador**: prioriza velocidad de búsqueda, carga de venta y atención al cliente
+- **ERP moderno**: suma stock, facturación, caja, cuentas corrientes, listas de precios y reportes
+- **Hecho en Argentina**: adaptado a la realidad fiscal, impositiva y comercial argentina (ARCA/AFIP, factura electrónica, etc.)
+- **Simple de implementar**: onboarding rápido, entrenamiento incluido y curva de aprendizaje baja
+- **SaaS en la nube**: no requiere servidores ni mantenimiento técnico
+- **Soporte local**: atención en español, equipo argentino
+
+## Información de contacto
+
+- Sitio web: https://octopustrack.shop
+- Email: hola@octopustrack.shop

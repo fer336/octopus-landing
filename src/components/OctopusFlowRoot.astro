@@ -1,0 +1,80 @@
+---
+import HeaderOF from './octopusflow/HeaderOF.astro';
+import HeroOF from './octopusflow/HeroOF.astro';
+import PainPointsStatic from './octopusflow/PainPointsStatic.astro';
+import FeaturesSection from './octopusflow/FeaturesSection.astro';
+import CtaSection from './octopusflow/CtaSection.astro';
+import FloatingContactButton from './FloatingContactButton.astro';
+import Footer from './Footer.astro';
+---
+
+<div data-theme="octopusflow" class="min-h-screen bg-background text-foreground">
+  <style>
+    [data-theme="octopusflow"] {
+      --primary: 37 99 235;
+      --primary-foreground: 255 255 255;
+      --primary-50: 239 246 255;
+      --primary-100: 219 234 254;
+      --primary-200: 191 219 254;
+      --primary-300: 147 197 253;
+      --primary-400: 96 165 250;
+      --primary-500: 59 130 246;
+      --primary-600: 37 99 235;
+      --primary-700: 29 78 216;
+      --primary-800: 30 64 175;
+      --primary-900: 23 37 84;
+      --primary-950: 15 23 42;
+    }
+    .dark[data-theme="octopusflow"] {
+      --primary: 96 165 250;
+      --primary-foreground: 15 23 42;
+      --primary-50: 15 23 42;
+      --primary-100: 23 37 84;
+      --primary-200: 30 64 175;
+      --primary-300: 29 78 216;
+      --primary-400: 37 99 235;
+      --primary-500: 59 130 246;
+      --primary-600: 96 165 250;
+      --primary-700: 147 197 253;
+      --primary-800: 191 219 254;
+      --primary-900: 219 234 254;
+      --primary-950: 239 246 255;
+    }
+  </style>
+  <HeaderOF />
+  <FloatingContactButton />
+  <main>
+    <HeroOF />
+    <PainPointsStatic />
+    <FeaturesSection />
+    <CtaSection />
+  </main>
+  <Footer />
+</div>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  const visitorWebhookUrl = import.meta.env.VITE_VISITOR_WEBHOOK_URL || '';
+  if (visitorWebhookUrl && !visitorWebhookUrl.startsWith('#')) {
+    const search = new URLSearchParams(window.location.search);
+    const query = new URLSearchParams({
+      page_url: window.location.href,
+      referrer: document.referrer || '',
+      utm_source: search.get('utm_source') || '',
+      utm_medium: search.get('utm_medium') || '',
+      utm_campaign: search.get('utm_campaign') || '',
+      visited_at: new Date().toISOString(),
+    });
+    fetch(`${visitorWebhookUrl}?${query.toString()}`).catch(() => {});
+  }
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll<HTMLElement>('.reveal-on-scroll').forEach((element) => {
+      const rawDelay = element.style.getPropertyValue('--reveal-delay') || getComputedStyle(element).getPropertyValue('--reveal-delay') || '0';
+      gsap.fromTo(element, { opacity: 0, y: 36, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.85, delay: parseFloat(rawDelay) / 1000, ease: 'power3.out', scrollTrigger: { trigger: element, start: 'top 88%', once: true } });
+    });
+  }
+</script>

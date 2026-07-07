@@ -1,0 +1,33 @@
+---
+interface Props {
+  class?: string;
+  className?: string;
+  alt?: string;
+  palette?: 'default' | 'tool';
+}
+
+const { class: classAttr, className, alt = 'OctopusTrack', palette = 'default' } = Astro.props;
+const logoClass = classAttr ?? className ?? 'h-12 w-auto';
+const src = palette === 'tool' ? '/images/logos/logo-header.svg' : '/images/logos/logo-header.svg';
+---
+
+<span class={`animated-tentacle-logo inline-flex overflow-visible ${logoClass}`} aria-label={alt} role="img">
+  <img src={src} alt="" class="h-full w-full object-contain" loading="eager" />
+</span>
+
+<style>
+  .animated-tentacle-logo {
+    animation: tentacle-logo-float 3.8s ease-in-out infinite alternate;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animated-tentacle-logo {
+      animation: none;
+    }
+  }
+
+  @keyframes tentacle-logo-float {
+    from { transform: translateY(0); }
+    to { transform: translateY(-7px); }
+  }
+</style>

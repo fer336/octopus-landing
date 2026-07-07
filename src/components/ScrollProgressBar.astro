@@ -1,0 +1,20 @@
+<div class="fixed top-0 left-0 right-0 z-[200] h-[2px]" aria-hidden="true">
+  <div data-scroll-progress-bar class="h-full origin-left scale-x-0 bg-primary-400" style="will-change: transform"></div>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-scroll-progress-bar]');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (bar && !prefersReducedMotion) {
+    const updateProgress = () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+      bar.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
+    };
+
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+  }
+</script>
