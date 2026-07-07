@@ -3,19 +3,18 @@
 # Ejemplo: https://raw.githubusercontent.com/fer336/octopus-landing/main/docs/devops/stack.landing.yml
 # Fuente activa del stack landing en Portainer.
 # En Portainer: Stack > Git repository o Web editor usando esta URL raw.
-# Producción usa tag inmutable para forzar actualización de Swarm/Portainer.
-# Para rollback, cambiar este tag a una versión numérica anterior.
+# Usa latest automáticamente. Cada tag pusheado se builda y deploya via GitHub Actions webhook.
 
 version: "3.9"
 
 services:
   landing:
-    image: ghcr.io/fer336/octopus-landing:1.4.14
+    image: ghcr.io/fer336/octopus-landing:latest
     networks:
       - octopus_net
       - network_public
     environment:
-      - APP_VERSION=1.4.14
+      - APP_VERSION=latest
     deploy:
       replicas: 1
       restart_policy:
