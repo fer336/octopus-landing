@@ -1,0 +1,113 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  productType: 'octopustrack' | 'octopusflow';
+  productName: string;
+}
+
+const { productType, productName } = Astro.props;
+const WHATSAPP_URL = 'https://wa.me/5492254596618';
+---
+
+<div data-demo-modal data-product-type={productType} data-product-name={productName} class="fixed inset-0 z-[100] hidden items-center justify-center bg-background/80 p-4 backdrop-blur-sm">
+  <div data-demo-dialog class="relative w-full max-w-md rounded-2xl bg-card p-8 shadow-2xl ring-1 ring-border">
+    <button type="button" data-demo-close class="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground" aria-label="Cerrar modal">
+      <Icon name="x" class="h-5 w-5" />
+    </button>
+
+    <div data-demo-success class="hidden">
+      <div class="mb-2 text-xs font-semibold uppercase tracking-widest text-primary">Solicitud enviada</div>
+      <h3 class="mb-1 text-2xl font-bold text-foreground">¡Te vamos a dar acceso pronto!</h3>
+      <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+        Revisá tu correo <strong data-demo-sent-email class="text-foreground"></strong> en los próximos minutos.
+        Cuando activemos tu demo, te va a llegar un mail con el link para ingresar a <strong class="text-foreground">{productName}</strong>.
+      </p>
+      <button type="button" data-demo-close class="mt-6 w-full rounded-lg border border-border bg-muted px-6 py-3 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground">Entendido</button>
+    </div>
+
+    <div data-demo-form-shell>
+      <div class="mb-2 text-xs font-semibold uppercase tracking-widest text-primary">Prueba 7 días</div>
+      <h3 class="mb-1 text-2xl font-bold text-foreground">{productName}</h3>
+      <p class="mb-6 text-sm text-muted-foreground">Dejanos tu correo y te avisamos cuando tengas el demo listo.</p>
+
+      <form data-demo-form class="space-y-4">
+        <p data-demo-error class="hidden text-sm text-destructive">
+          Algo salió mal. Intentá de nuevo o escribinos por <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="underline">WhatsApp</a>.
+        </p>
+        <input data-demo-email type="email" required placeholder="tu@correo.com" class="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-colors focus:border-ring focus:bg-card" />
+        <button data-demo-submit type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-muted px-6 py-3 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground disabled:opacity-50">
+          <span data-demo-submit-text>Solicitar demo</span>
+          <Icon name="arrowRight" class="h-4 w-4" />
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.querySelector<HTMLElement>('[data-demo-modal]');
+  const dialog = document.querySelector<HTMLElement>('[data-demo-dialog]');
+  const demoForm = document.querySelector<HTMLFormElement>('[data-demo-form]');
+  const demoEmail = document.querySelector<HTMLInputElement>('[data-demo-email]');
+  const demoError = document.querySelector<HTMLElement>('[data-demo-error]');
+  const demoSubmit = document.querySelector<HTMLButtonElement>('[data-demo-submit]');
+  const demoSubmitText = document.querySelector<HTMLElement>('[data-demo-submit-text]');
+  const demoSuccess = document.querySelector<HTMLElement>('[data-demo-success]');
+  const demoShell = document.querySelector<HTMLElement>('[data-demo-form-shell]');
+  const sentEmail = document.querySelector<HTMLElement>('[data-demo-sent-email]');
+
+  const closeDemo = () => modal?.classList.replace('flex', 'hidden');
+  const openDemo = () => {
+    demoEmail && (demoEmail.value = '');
+    demoError?.classList.add('hidden');
+    demoSuccess?.classList.add('hidden');
+    demoShell?.classList.remove('hidden');
+    demoSubmitText && (demoSubmitText.textContent = 'Solicitar demo');
+    if (demoSubmit) demoSubmit.disabled = false;
+    modal?.classList.replace('hidden', 'flex');
+    setTimeout(() => demoEmail?.focus(), 0);
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-open-demo-modal]').forEach((button) => button.addEventListener('click', openDemo));
+  document.querySelectorAll<HTMLElement>('[data-demo-close]').forEach((button) => button.addEventListener('click', closeDemo));
+  modal?.addEventListener('click', closeDemo);
+  dialog?.addEventListener('click', (event) => event.stopPropagation());
+
+  demoForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = demoEmail?.value.trim() ?? '';
+    if (!email || !modal || !demoSubmit) return;
+    demoSubmit.disabled = true;
+    demoSubmitText && (demoSubmitText.textContent = 'Enviando…');
+    demoError?.classList.add('hidden');
+    const search = new URLSearchParams(window.location.search);
+
+    try {
+      const response = await fetch('/api/demo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          demo_type: modal.dataset.productType,
+          source: 'landing',
+          page_url: window.location.href,
+          referrer: document.referrer || '',
+          user_agent: navigator.userAgent,
+          utm_source: search.get('utm_source') || '',
+          utm_medium: search.get('utm_medium') || '',
+          utm_campaign: search.get('utm_campaign') || '',
+          created_at: new Date().toISOString(),
+        }),
+      });
+      if (!response.ok) throw new Error('HTTP error');
+      sentEmail && (sentEmail.textContent = email);
+      demoShell?.classList.add('hidden');
+      demoSuccess?.classList.remove('hidden');
+    } catch {
+      demoError?.classList.remove('hidden');
+      demoSubmit.disabled = false;
+      demoSubmitText && (demoSubmitText.textContent = 'Solicitar demo');
+    }
+  });
+</script>

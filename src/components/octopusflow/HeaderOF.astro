@@ -1,0 +1,88 @@
+---
+import Icon from '../Icon.astro';
+import PurchaseButton from './PurchaseButton.astro';
+---
+
+<header data-of-header class="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/75 backdrop-blur-2xl transition-colors duration-500">
+  <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+    <a href="#inicio" class="flex items-center gap-3">
+      <span class="of-logo-float inline-flex shrink-0 overflow-visible">
+        <img src="/images/logos/logo-header1.svg" alt="OctopusFlow" class="h-[52px] w-[52px]" />
+      </span>
+      <span class="text-[17px] font-bold leading-tight tracking-tight text-primary">OctopusFlow</span>
+    </a>
+    <div class="flex items-center gap-3">
+      <PurchaseButton source="octopusflow-header" className="hidden rounded-lg px-4 sm:inline-flex items-center justify-center gap-2 py-1.5 text-sm font-semibold shadow-lg transition-all duration-500 hover:scale-[1.03] bg-primary text-primary-foreground shadow-primary/20 hover:bg-primary/90">Obtener OctopusFlow</PurchaseButton>
+      <button type="button" data-of-theme-toggle aria-label="Cambiar a modo noche" class="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border/70 bg-card/70 text-muted-foreground transition-all duration-500 hover:scale-[1.03] hover:bg-card hover:text-foreground">
+        <span data-of-moon><Icon name="moon" class="relative z-10 h-4 w-4" /></span>
+        <span data-of-sun class="hidden"><Icon name="sun" class="relative z-10 h-4 w-4" /></span>
+      </button>
+      <button type="button" data-of-menu-toggle aria-label="Abrir menú" class="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border/70 bg-card/70 text-muted-foreground transition-all duration-500 hover:bg-card hover:text-foreground">
+        <span data-of-menu-open><Icon name="menu" class="h-5 w-5" /></span>
+        <span data-of-menu-close class="hidden"><Icon name="x" class="h-5 w-5" /></span>
+      </button>
+    </div>
+  </div>
+
+  <div data-of-mobile-menu class="max-h-0 overflow-hidden border-t border-border/60 bg-background/75 opacity-0 transition-all duration-500 ease-out">
+    <nav class="relative mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-4 sm:px-6 sm:py-5">
+      <a data-of-menu-link data-scroll-target="caracteristicas" href="#caracteristicas" class="group relative flex items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground" style="transition-delay: 0ms"><span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>Características</span><span class="relative z-10 font-mono text-xs text-muted-foreground/60">01</span></a>
+      <a data-of-menu-link data-scroll-target="contacto" href="#contacto" class="group relative flex items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground" style="transition-delay: 45ms"><span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>Contacto</span><span class="relative z-10 font-mono text-xs text-muted-foreground/60">02</span></a>
+      <a href="/" class="group relative flex items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground"><span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>OctopusTrack</span><span class="relative z-10 font-mono text-xs text-muted-foreground/60">Volver</span></a>
+      <PurchaseButton source="octopusflow-mobile-menu" className="relative mt-2 flex items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-3 text-center text-sm font-semibold shadow-lg transition-all duration-500 hover:-translate-y-0.5 bg-primary text-primary-foreground hover:bg-primary/90">Obtener OctopusFlow</PurchaseButton>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .of-logo-float { animation: of-logo-float 3.8s ease-in-out infinite alternate; }
+  @keyframes of-logo-float { from { transform: translateY(0); } to { transform: translateY(-7px); } }
+  @media (prefers-reduced-motion: reduce) { .of-logo-float { animation: none; } }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-theme="octopusflow"]');
+  const menu = document.querySelector<HTMLElement>('[data-of-mobile-menu]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-of-menu-toggle]');
+  const openIcon = document.querySelector<HTMLElement>('[data-of-menu-open]');
+  const closeIcon = document.querySelector<HTMLElement>('[data-of-menu-close]');
+  const themeToggle = document.querySelector<HTMLButtonElement>('[data-of-theme-toggle]');
+  const moon = document.querySelector<HTMLElement>('[data-of-moon]');
+  const sun = document.querySelector<HTMLElement>('[data-of-sun]');
+
+  const applyTheme = (theme: string) => {
+    const isNight = theme === 'night';
+    root?.classList.toggle('dark', isNight);
+    document.documentElement.classList.toggle('dark', isNight);
+    localStorage.setItem('octopusflow-theme', isNight ? 'night' : 'light');
+    themeToggle?.setAttribute('aria-label', isNight ? 'Cambiar a modo claro' : 'Cambiar a modo noche');
+    moon?.classList.toggle('hidden', isNight);
+    sun?.classList.toggle('hidden', !isNight);
+  };
+
+  applyTheme(localStorage.getItem('octopusflow-theme') === 'night' ? 'night' : 'light');
+  themeToggle?.addEventListener('click', () => applyTheme(root?.classList.contains('dark') ? 'light' : 'night'));
+
+  const setMenuOpen = (open: boolean) => {
+    menu?.classList.toggle('max-h-[400px]', open);
+    menu?.classList.toggle('opacity-100', open);
+    menu?.classList.toggle('max-h-0', !open);
+    menu?.classList.toggle('opacity-0', !open);
+    openIcon?.classList.toggle('hidden', open);
+    closeIcon?.classList.toggle('hidden', !open);
+    document.querySelectorAll<HTMLElement>('[data-of-menu-link]').forEach((link) => {
+      link.classList.toggle('opacity-100', open);
+      link.classList.toggle('opacity-0', !open);
+    });
+  };
+  toggle?.addEventListener('click', () => setMenuOpen(!menu?.classList.contains('opacity-100')));
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-of-menu-link]').forEach((link) => link.addEventListener('click', (event) => {
+    event.preventDefault();
+    setMenuOpen(false);
+    const target = document.getElementById(link.dataset.scrollTarget ?? '');
+    if (!target) return;
+    const offset = window.innerWidth >= 768 ? 90 : 82;
+    window.scrollTo({ top: Math.max(target.getBoundingClientRect().top + window.scrollY - offset, 0), behavior: 'smooth' });
+  }));
+</script>

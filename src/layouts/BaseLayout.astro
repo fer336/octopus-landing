@@ -129,11 +129,13 @@ const ogImageAbsolute = ogImage.startsWith('http')
     }
 
     <!-- Theme init — runs before first paint to avoid flash -->
+    <!-- Reads the same key (octopustrack-theme) that Header.astro writes,
+         falling back to system preference when never set. -->
     <script is:inline>
       (function () {
-        const theme = localStorage.getItem('theme');
+        const theme = localStorage.getItem('octopustrack-theme');
         if (
-          theme === 'dark' ||
+          theme === 'night' ||
           (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
         ) {
           document.documentElement.classList.add('dark');

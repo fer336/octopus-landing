@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import AnimatedTentacleLogo from '../components/ui/AnimatedTentacleLogo';
+import AnimatedTentacleLogo from '../components/ui/AnimatedTentacleLogo.astro';
 
 const OCTOPUS_TRACK_LOGIN_URL = 'https://app.octopustrack.shop';
 const OCTOPUS_FLOW_LOGIN_URL = import.meta.env.VITE_OCTOPUS_FLOW_LOGIN_URL;
@@ -43,7 +43,7 @@ const products = [
     <header class="animate-fade-in-up fixed left-0 right-0 top-0 z-30 border-b border-white/10 bg-[#0d0d1a]/80 backdrop-blur-2xl">
       <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <a href="/" class="flex items-center gap-2 text-sm font-medium text-white/90 transition hover:text-white">
-          <AnimatedTentacleLogo className="h-[36px] w-[36px]" alt="OctopusTrack" client:load />
+          <AnimatedTentacleLogo class="h-[36px] w-[36px]" alt="OctopusTrack" />
           <span>OctopusTrack</span>
         </a>
 

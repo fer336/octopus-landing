@@ -1,0 +1,39 @@
+---
+import Icon from './Icon.astro';
+
+const pains = [
+  { icon: 'timer', title: 'El cliente espera mientras el sistema tarda', description: 'Cada búsqueda lenta o paso extra corta el ritmo de atención en el mostrador.' },
+  { icon: 'search', title: 'Encontrar productos lleva demasiado', description: 'Si el vendedor no ubica rápido código, precio o stock, la venta se enfría.' },
+  { icon: 'fileText', title: 'Demasiadas ventanas confunden al equipo', description: 'Saltar entre pantallas hace más lenta la operación y aumenta los errores.' },
+  { icon: 'receipt', title: 'Facturar en ARCA interrumpe la venta', description: 'Entrar a otra página, cargar datos y volver al sistema rompe la atención al cliente.' },
+  { icon: 'package', title: 'El stock no coincide con el mostrador', description: 'Vendés confiando en un dato que después no aparece en depósito o salón.' },
+  { icon: 'wallet', title: 'La cuenta corriente no está clara', description: 'Saldos, pagos parciales y deudas pendientes no pueden depender de cuadernos o memoria.' },
+  { icon: 'refresh', title: 'Actualizar precios se vuelve riesgoso', description: 'Listas, aumentos y acuerdos por cliente necesitan orden sin frenar la venta.' },
+  { icon: 'barChart', title: 'Decidís con información incompleta', description: 'Sin reportes claros, cuesta saber qué se vende, qué falta y qué conviene reponer.' },
+];
+---
+
+<section id="dolores" class="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
+  <div class="section-container">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        Cada demora en el sistema <span class="text-primary">se nota en el mostrador</span>
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+        Cuando el cliente está esperando, no hay margen para buscar en planillas, abrir ventanas innecesarias o facturar a mano. OctopusTrack ordena la operación para que vender sea rápido, claro y controlado.
+      </p>
+    </div>
+    <div class="mx-auto mt-14 grid max-w-6xl auto-rows-fr items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {pains.map((pain, index) => (
+        <div class="h-full reveal-on-scroll" style={`--reveal-delay: ${index * 45}ms`}>
+          <div data-magnet-card class="group relative isolate flex h-full min-h-[230px] flex-col overflow-visible rounded-2xl bg-card/70 p-6 ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:bg-card hover:shadow-2xl hover:shadow-primary/10">
+            <span class="pointer-events-none absolute left-1/2 top-1/2 -z-10 block h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-70"></span>
+            <Icon name={pain.icon} class="mb-4 h-6 w-6 shrink-0 text-primary" />
+            <h3 class="min-w-0 text-lg font-medium leading-relaxed text-foreground transition-transform duration-300 group-hover:translate-x-0.5">{pain.title}</h3>
+            <p class="mt-auto pt-4 text-sm leading-relaxed text-muted-foreground">{pain.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

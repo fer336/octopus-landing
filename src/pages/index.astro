@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LandingRoot from '../components/LandingRoot';
-import ScrollProgressBar from '../components/ScrollProgressBar';
+import LandingRoot from '../components/LandingRoot.astro';
+import ScrollProgressBar from '../components/ScrollProgressBar.astro';
+import { homeFaqItems } from '../data/homeFaq';
 
 const structuredData = [
   {
@@ -11,7 +12,7 @@ const structuredData = [
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     description:
-      'Sistema de gestión ERP para ferreterías, sanitarios, distribuidoras y casas de electricidad. Control de ventas, stock, cuentas corrientes y facturación.',
+      'ERP comercial para venta de mostrador diseñado para comercios, pymes y distribuidoras que necesitan vender rápido, controlar stock, facturar, manejar caja, cuentas corrientes, listas de precios y reportes desde una plataforma simple y fácil de aprender.',
     url: 'https://octopustrack.shop',
     publisher: {
       '@type': 'Organization',
@@ -39,36 +40,26 @@ const structuredData = [
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '¿Qué es OctopusTrack?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'OctopusTrack es un sistema de gestión ERP diseñado para ferreterías, sanitarios, distribuidoras y casas de electricidad. Permite controlar ventas, stock, cuentas corrientes, listas de precios y facturación desde un solo lugar.',
-        },
+    mainEntity: homeFaqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
       },
-      {
-        '@type': 'Question',
-        name: '¿OctopusTrack funciona para ferreterías?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Sí. OctopusTrack está diseñado específicamente para ferreterías: manejo de stock por SKU, listas de precio diferenciadas, cuentas corrientes, remitos y facturación integrada.',
-        },
-      },
-    ],
+    })),
   },
 ];
 ---
 
 <BaseLayout
-  title="OctopusTrack — Sistema de gestión para ferreterías, sanitarios y distribuidoras"
-  description="Software ERP para ferreterías, sanitarios y casas de Electricidad. Controlá ventas, stock, cuentas corrientes y facturación desde un solo lugar. Simple, rápido y sin complicaciones."
+  title="ERP Comercial para Venta de Mostrador | OctopusTrack"
+  description="ERP comercial para venta de mostrador: vendé rápido, controlá stock, facturación, caja, cuentas corrientes, listas de precios y reportes desde un sistema simple y fácil de aprender."
   canonicalUrl="https://octopustrack.shop/"
   structuredData={structuredData}
 >
-  <ScrollProgressBar client:load />
-  <LandingRoot client:load />
+  <ScrollProgressBar />
+  <LandingRoot />
   <script>
     const visitorWebhookUrl = import.meta.env.VITE_VISITOR_WEBHOOK_URL || '';
     if (visitorWebhookUrl && !visitorWebhookUrl.startsWith('#')) {

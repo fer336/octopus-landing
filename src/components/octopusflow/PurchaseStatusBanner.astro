@@ -1,0 +1,23 @@
+<div data-purchase-status-banner class="hidden border-b border-primary/20 bg-primary/10 px-4 pb-3 pt-[84px] text-primary sm:px-6">
+  <div class="mx-auto max-w-6xl rounded-xl border border-primary/20 bg-card/80 px-4 py-3 text-sm shadow-lg shadow-primary/5">
+    <p data-purchase-status-title class="font-semibold text-foreground"></p>
+    <p data-purchase-status-message class="mt-1 text-muted-foreground"></p>
+  </div>
+</div>
+
+<script>
+  const copy = {
+    success: { title: 'Pago recibido', message: 'Gracias por comprar OctopusFlow. Si Mercado Pago ya confirmó la operación, te vamos a contactar con el acceso.' },
+    pending: { title: 'Pago pendiente', message: 'Tu pago todavía está pendiente de confirmación. Te avisamos apenas Mercado Pago lo apruebe.' },
+    failure: { title: 'No se completó el pago', message: 'No pudimos confirmar la compra. Podés intentar nuevamente o escribirnos por WhatsApp.' },
+  } as const;
+  const status = new URLSearchParams(window.location.search).get('purchase');
+  if (status === 'success' || status === 'pending' || status === 'failure') {
+    const banner = document.querySelector<HTMLElement>('[data-purchase-status-banner]');
+    const title = document.querySelector<HTMLElement>('[data-purchase-status-title]');
+    const message = document.querySelector<HTMLElement>('[data-purchase-status-message]');
+    title && (title.textContent = copy[status].title);
+    message && (message.textContent = copy[status].message);
+    banner?.classList.remove('hidden');
+  }
+</script>
