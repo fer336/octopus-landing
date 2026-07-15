@@ -1,65 +1,85 @@
 ---
 import AnimatedTentacleLogo from './ui/AnimatedTentacleLogo.astro';
+import Button from './ui/Button.astro';
 import Icon from './Icon.astro';
 
-const WHATSAPP_URL = 'https://wa.me/5492254596618';
+// NOTE: "Producto" -> #producto is intentionally omitted; that section ships in PR3.
+const NAV_ITEMS = [
+  { label: 'Funciones', href: '#caracteristicas' },
+  { label: 'Rubros', href: '#rubros' },
+  { label: 'Demos', href: '#precios' },
+  { label: 'Seguridad', href: '/politicas-seguridad' },
+];
 ---
 
-<header data-main-header class="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/75 backdrop-blur-2xl transition-colors duration-500">
-  <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-    <a href="#inicio" class="flex items-center gap-3">
-      <span class="inline-flex shrink-0 overflow-visible" style="transition: filter 0.6s ease">
-        <AnimatedTentacleLogo class="h-[52px] w-[52px]" alt="OctopusTrack" />
-      </span>
-      <span data-main-header-product class="header-product-shell overflow-hidden transition-all duration-500 ease-out" style="max-width: 0; opacity: 0">
-        <span class="header-product-label-wrap block whitespace-nowrap">
-          <span class="header-product-label block text-[17px] font-bold leading-tight tracking-tight text-primary transition-colors duration-500">
-            OctopusTrack
-          </span>
-        </span>
-      </span>
+<header class="fixed left-0 right-0 top-0 z-50 h-16 border-b border-border/60 bg-background/80 backdrop-blur-md">
+  <div class="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <a href="#inicio" class="flex shrink-0 items-center gap-2.5">
+      <AnimatedTentacleLogo class="h-9 w-9" alt="OctopusTrack" />
+      <span class="font-display text-lg font-bold tracking-tight text-foreground">OctopusTrack</span>
     </a>
 
+    <nav aria-label="Navegación principal" class="hidden items-center gap-7 lg:flex">
+      {
+        NAV_ITEMS.map((item) => (
+          <a href={item.href} class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            {item.label}
+          </a>
+        ))
+      }
+      <Button href="/acceder" variant="ghost" size="sm">
+        Ingresar
+      </Button>
+    </nav>
+
     <div class="flex items-center gap-3">
-      <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="hidden rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-500 hover:scale-[1.03] hover:bg-primary/90 sm:inline-flex items-center justify-center gap-2">
-        <Icon name="messageCircle" class="h-4 w-4" />
-        Demo
-      </a>
+      <Button data-open-demo-modal size="sm" class="hidden sm:inline-flex">
+        Probar demo
+      </Button>
       <button
         type="button"
         aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
         data-menu-toggle
-        class="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border/70 bg-card/70 text-muted-foreground transition-all duration-500 hover:bg-card hover:text-foreground"
+        class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/70 bg-card/70 text-muted-foreground transition-colors hover:bg-card hover:text-foreground lg:hidden"
       >
-        <span data-menu-glow class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.18),transparent_55%)] opacity-0 transition-opacity duration-300"></span>
         <span data-menu-icon-open><Icon name="menu" class="h-5 w-5" /></span>
         <span data-menu-icon-close class="hidden"><Icon name="x" class="h-5 w-5" /></span>
       </button>
     </div>
   </div>
 
-  <div data-mobile-menu class="max-h-0 overflow-hidden border-t border-border/60 bg-background/95 opacity-0 transition-all duration-500 ease-out">
-    <nav class="relative mx-auto flex w-full max-w-7xl flex-col gap-2 overflow-hidden px-4 py-4 sm:px-6 sm:py-5">
-      <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:28px_28px] opacity-40"></div>
-      <div class="pointer-events-none absolute right-6 top-0 h-28 w-28 rounded-full bg-primary-500/18 blur-3xl"></div>
-      <a data-menu-link data-scroll-target="octopustrack-content" href="#octopustrack-content" class="group relative flex translate-y-0 items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground" style="transition-delay: 0ms">
-        <span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>OctopusTrack</span>
-        <span class="relative z-10 font-mono text-xs text-muted-foreground/60 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-muted-foreground">01</span>
-        <span class="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-primary/70 transition-transform duration-500 group-hover:scale-x-100"></span>
+  <div id="mobile-menu" data-mobile-menu class="max-h-0 overflow-hidden border-t border-border/60 bg-background/95 opacity-0 transition-all duration-300 ease-out lg:hidden">
+    <nav aria-label="Navegación móvil" class="mx-auto flex w-full max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6">
+      {
+        NAV_ITEMS.map((item) => (
+          <a
+            data-mobile-menu-link
+            href={item.href}
+            class="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-foreground"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        data-mobile-menu-link
+        href="/acceder"
+        class="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-foreground"
+      >
+        Ingresar
       </a>
-      <a data-menu-link data-scroll-target="contacto" href="#contacto" class="group relative flex translate-y-0 items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground" style="transition-delay: 45ms">
-        <span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>Contacto</span>
-        <span class="relative z-10 font-mono text-xs text-muted-foreground/60 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-muted-foreground">02</span>
-        <span class="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-primary/70 transition-transform duration-500 group-hover:scale-x-100"></span>
+      <a
+        data-mobile-menu-link
+        href="/octopusflow"
+        class="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-foreground"
+      >
+        OctopusFlow
       </a>
-      <a href="/octopusflow" class="group relative flex items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground">
-        <span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>OctopusFlow</span>
-        <span class="relative z-10 font-mono text-xs text-muted-foreground/60">Nuevo</span>
-      </a>
-      <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="relative mt-2 flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground shadow-lg transition-all duration-500 hover:-translate-y-0.5 hover:bg-primary/90">
-        <Icon name="messageCircle" class="h-4 w-4" />
-        Demo
-      </a>
+      <Button data-open-demo-modal data-mobile-menu-link class="mt-2 w-full">
+        Probar demo
+      </Button>
     </nav>
   </div>
 </header>
@@ -69,59 +89,22 @@ const WHATSAPP_URL = 'https://wa.me/5492254596618';
   const menuToggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const openIcon = document.querySelector<HTMLElement>('[data-menu-icon-open]');
   const closeIcon = document.querySelector<HTMLElement>('[data-menu-icon-close]');
-  const menuGlow = document.querySelector<HTMLElement>('[data-menu-glow]');
-  const product = document.querySelector<HTMLElement>('[data-main-header-product]');
+
+  const isMenuOpen = () => menuToggle?.getAttribute('aria-expanded') === 'true';
 
   const setMenuOpen = (open: boolean) => {
-    menu?.classList.toggle('max-h-[420px]', open);
+    menu?.classList.toggle('max-h-[480px]', open);
     menu?.classList.toggle('opacity-100', open);
     menu?.classList.toggle('max-h-0', !open);
     menu?.classList.toggle('opacity-0', !open);
     openIcon?.classList.toggle('hidden', open);
     closeIcon?.classList.toggle('hidden', !open);
-    menuGlow?.classList.toggle('opacity-100', open);
-    document.querySelectorAll<HTMLElement>('[data-menu-link]').forEach((link) => {
-      link.classList.toggle('opacity-100', open);
-      link.classList.toggle('opacity-0', !open);
-    });
+    menuToggle?.setAttribute('aria-expanded', String(open));
   };
 
-  menuToggle?.addEventListener('click', () => setMenuOpen(!menu?.classList.contains('opacity-100')));
+  menuToggle?.addEventListener('click', () => setMenuOpen(!isMenuOpen()));
 
-  const scrollToId = (id: string, desktopOffset = 94, mobileOffset = 86) => {
-    const element = document.getElementById(id);
-    if (!element) return;
-    const offset = window.innerWidth >= 768 ? desktopOffset : mobileOffset;
-    const top = element.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
-  };
-
-  document.querySelectorAll<HTMLAnchorElement>('[data-scroll-target]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      setMenuOpen(false);
-      scrollToId(link.dataset.scrollTarget ?? '');
-    });
+  document.querySelectorAll<HTMLElement>('[data-mobile-menu-link]').forEach((link) => {
+    link.addEventListener('click', () => setMenuOpen(false));
   });
-
-  const updateProductLabel = () => {
-    const trackSection = document.getElementById('caracteristicas');
-    const reportesMarker = document.getElementById('octopustrack-reportes');
-    if (!trackSection || !reportesMarker || !product) return;
-    const activationLine = Math.min(window.innerHeight * 0.28, 190);
-    const sectionRect = trackSection.getBoundingClientRect();
-    const reportesRect = reportesMarker.getBoundingClientRect();
-    const show = sectionRect.top <= activationLine && sectionRect.bottom >= activationLine && reportesRect.top > activationLine;
-    product.style.maxWidth = show ? '180px' : '0px';
-    product.style.opacity = show ? '1' : '0';
-  };
-
-  let frame = 0;
-  const scheduleHeaderUpdate = () => {
-    cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(updateProductLabel);
-  };
-  scheduleHeaderUpdate();
-  window.addEventListener('scroll', scheduleHeaderUpdate, { passive: true });
-  window.addEventListener('resize', scheduleHeaderUpdate);
 </script>

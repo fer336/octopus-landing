@@ -161,6 +161,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keep in-page anchor targets clear of the fixed header (h-16 in Header.astro) plus breathing room */
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -370,82 +372,6 @@ body {
 
 .carousel-image {
   animation: carouselFadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-/* Header product name: tentacle-like unfurl on section change */
-@keyframes tentacle-unfurl {
-  0% {
-    clip-path: inset(0 100% 0 0 round 999px);
-    opacity: 0;
-    transform: translateX(-14px) scaleX(0.42) skewX(-18deg);
-    filter: blur(5px);
-  }
-  46% {
-    clip-path: inset(0 22% 0 0 round 999px);
-    opacity: 1;
-    transform: translateX(2px) scaleX(1.08) skewX(7deg);
-    filter: blur(1px);
-  }
-  72% {
-    clip-path: inset(0 0 0 0 round 999px);
-    transform: translateX(0) scaleX(0.98) skewX(-2deg);
-    filter: blur(0);
-  }
-  100% {
-    clip-path: inset(0 0 0 0 round 999px);
-    opacity: 1;
-    transform: translateX(0) scaleX(1) skewX(0deg);
-    filter: blur(0);
-  }
-}
-
-@keyframes tentacle-sucker-scan {
-  0% { transform: translateX(-18px) scale(0.72); opacity: 0; }
-  42% { opacity: 0.9; }
-  100% { transform: translateX(calc(100% + 10px)) scale(0.2); opacity: 0; }
-}
-
-.header-product-shell {
-  position: relative;
-  contain: paint;
-}
-
-.header-product-label-wrap {
-  position: relative;
-  transform-origin: left center;
-  animation: tentacle-unfurl 0.78s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.header-product-label-wrap::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  width: 52px;
-  height: 3px;
-  border-radius: 999px;
-  background: currentColor;
-  opacity: 0.5;
-  transform-origin: left center;
-  animation: tentacle-unfurl 0.88s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
-}
-
-.header-product-label {
-  position: relative;
-}
-
-.header-product-label::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: currentColor;
-  box-shadow: 12px 5px 0 -2px currentColor, 24px -4px 0 -2px currentColor, 38px 4px 0 -2px currentColor;
-  opacity: 0;
-  animation: tentacle-sucker-scan 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
 }
 
 /* Scroll reveal + stagger */
