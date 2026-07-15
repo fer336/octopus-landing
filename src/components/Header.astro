@@ -21,17 +21,6 @@ const WHATSAPP_URL = 'https://wa.me/5492254596618';
     </a>
 
     <div class="flex items-center gap-3">
-      <button
-        type="button"
-        data-theme-toggle
-        aria-label="Cambiar a modo noche"
-        title="Modo noche"
-        class="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border/70 bg-card/70 text-muted-foreground transition-all duration-500 hover:scale-[1.03] hover:bg-card hover:text-foreground"
-      >
-        <span class="absolute inset-0 bg-primary/10 opacity-0 transition-opacity duration-300 hover:opacity-100"></span>
-        <span data-theme-icon-moon class="relative z-10"><Icon name="moon" class="h-4 w-4" /></span>
-        <span data-theme-icon-sun class="relative z-10 hidden"><Icon name="sun" class="h-4 w-4" /></span>
-      </button>
       <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="hidden rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-500 hover:scale-[1.03] hover:bg-primary/90 sm:inline-flex items-center justify-center gap-2">
         <Icon name="messageCircle" class="h-4 w-4" />
         Demo
@@ -82,9 +71,6 @@ const WHATSAPP_URL = 'https://wa.me/5492254596618';
   const closeIcon = document.querySelector<HTMLElement>('[data-menu-icon-close]');
   const menuGlow = document.querySelector<HTMLElement>('[data-menu-glow]');
   const product = document.querySelector<HTMLElement>('[data-main-header-product]');
-  const themeToggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
-  const moonIcon = document.querySelector<HTMLElement>('[data-theme-icon-moon]');
-  const sunIcon = document.querySelector<HTMLElement>('[data-theme-icon-sun]');
 
   const setMenuOpen = (open: boolean) => {
     menu?.classList.toggle('max-h-[420px]', open);
@@ -116,22 +102,6 @@ const WHATSAPP_URL = 'https://wa.me/5492254596618';
       setMenuOpen(false);
       scrollToId(link.dataset.scrollTarget ?? '');
     });
-  });
-
-  const applyThemeIcon = () => {
-    const isDark = document.documentElement.classList.contains('dark');
-    themeToggle?.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo noche');
-    themeToggle?.setAttribute('title', isDark ? 'Modo claro' : 'Modo noche');
-    moonIcon?.classList.toggle('hidden', isDark);
-    sunIcon?.classList.toggle('hidden', !isDark);
-  };
-
-  applyThemeIcon();
-  themeToggle?.addEventListener('click', () => {
-    const nextDark = !document.documentElement.classList.contains('dark');
-    document.documentElement.classList.toggle('dark', nextDark);
-    localStorage.setItem('octopustrack-theme', nextDark ? 'night' : 'light');
-    applyThemeIcon();
   });
 
   const updateProductLabel = () => {

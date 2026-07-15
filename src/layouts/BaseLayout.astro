@@ -1,5 +1,10 @@
 ---
 import '../styles/globals.css';
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
+import manropeWoff2 from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -49,7 +54,7 @@ const ogImageAbsolute = ogImage.startsWith('http')
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1a1823" />
+    <meta name="theme-color" content="#7654A8" />
 
     <!-- Google / Search Engine -->
     <title>{title}</title>
@@ -78,47 +83,20 @@ const ogImageAbsolute = ogImage.startsWith('http')
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbsolute} />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800;900&family=Figtree:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Self-hosted variable fonts: preload the woff2 the CSS will request first -->
+    <link rel="preload" as="font" type="font/woff2" href={manropeWoff2} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin />
 
-    <!-- CSS custom property tokens — inline to prevent FOUC -->
+    <!-- Subset of src/styles/globals.css :root, inlined to avoid FOUC before the stylesheet loads.
+         Keep numeric values identical to globals.css. -->
     <style is:inline>
       :root {
-        --background: #f0f0f2;
-        --foreground: #121325;
-        --card: #ffffff;
-        --card-foreground: #121325;
-        --primary: #9d84bf;
-        --primary-foreground: #f0f0f2;
-        --secondary: #ece6f6;
-        --muted: #ece6f6;
-        --muted-foreground: #7b6b95;
-        --accent: #d9caeb;
-        --accent-foreground: #121325;
-        --border: #d9caeb;
-        --ring: #5c3a8c;
+        --background: 247 247 250; --foreground: 22 20 29;
+        --card: 255 255 255; --card-foreground: 22 20 29;
+        --primary: 118 84 168; --primary-foreground: 255 255 255;
+        --border: 222 216 232;
       }
-      .dark {
-        --background: #121325;
-        --foreground: #ffffff;
-        --card: #1b1b32;
-        --card-foreground: #ffffff;
-        --primary: #9d84bf;
-        --primary-foreground: #121325;
-        --secondary: #272345;
-        --muted: #272345;
-        --muted-foreground: #b2a6c6;
-        --accent: #3b305a;
-        --accent-foreground: #ffffff;
-        --border: #3b305a;
-        --ring: #9d84bf;
-      }
-      body { background: var(--background); color: var(--foreground); }
+      body { background-color: rgb(var(--background)); color: rgb(var(--foreground)); }
     </style>
 
     <!-- Structured Data (JSON-LD) -->
@@ -128,20 +106,6 @@ const ogImageAbsolute = ogImage.startsWith('http')
       ))
     }
 
-    <!-- Theme init — runs before first paint to avoid flash -->
-    <!-- Reads the same key (octopustrack-theme) that Header.astro writes,
-         falling back to system preference when never set. -->
-    <script is:inline>
-      (function () {
-        const theme = localStorage.getItem('octopustrack-theme');
-        if (
-          theme === 'night' ||
-          (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    </script>
   </head>
   <body class={bodyClass}>
     <!-- Google Tag Manager (noscript) -->
