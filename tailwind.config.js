@@ -1,13 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    './landing.html',
-    './politicas-privacidad.html',
-    './politicas-seguridad.html',
     './src/**/*.{astro,js,ts,jsx,tsx}',
   ],
   darkMode: 'class',
   theme: {
+    fontWeight: {
+      thin: '400',
+      extralight: '400',
+      light: '400',
+      normal: '400',
+      medium: '500',
+      semibold: '500',
+      bold: '700',
+      extrabold: '700',
+      black: '700',
+    },
     extend: {
       colors: {
         background: 'rgb(var(--background) / <alpha-value>)',
@@ -55,20 +63,15 @@ export default {
           foreground: 'rgb(var(--destructive-foreground) / <alpha-value>)',
         },
         'destructive-foreground': 'rgb(var(--destructive-foreground) / <alpha-value>)',
-        tool: {
-          background: '#0d1f0e',
-          surface: '#1a3d1f',
-          border: '#2d6b35',
-          primary: '#3d8c47',
-          accent: '#5aad62',
-          highlight: '#7ecf86',
-          'text-dark': '#b4e8b8',
-          'text-light': '#e0f5e2',
+        success: {
+          DEFAULT: 'rgb(var(--success) / <alpha-value>)',
+          foreground: 'rgb(var(--success-foreground) / <alpha-value>)',
         },
       },
       fontFamily: {
-        sans: ['Figtree', 'system-ui', 'sans-serif'],
-        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        sans: ['Inter Variable', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['Manrope Variable', 'Manrope', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono Variable', 'JetBrains Mono', 'ui-monospace', 'monospace'],
       },
     },
   },
