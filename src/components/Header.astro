@@ -1,77 +1,76 @@
 ---
 import AnimatedTentacleLogo from './ui/AnimatedTentacleLogo.astro';
 import Icon from './Icon.astro';
-
-const WHATSAPP_URL = 'https://wa.me/5492254596618';
 ---
 
-<header data-main-header class="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/75 backdrop-blur-2xl transition-colors duration-500">
-  <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-    <a href="#inicio" class="flex items-center gap-3">
-      <span class="inline-flex shrink-0 overflow-visible" style="transition: filter 0.6s ease">
-        <AnimatedTentacleLogo class="h-[52px] w-[52px]" alt="OctopusTrack" />
-      </span>
-      <span data-main-header-product class="header-product-shell overflow-hidden transition-all duration-500 ease-out" style="max-width: 0; opacity: 0">
-        <span class="header-product-label-wrap block whitespace-nowrap">
-          <span class="header-product-label block text-[17px] font-bold leading-tight tracking-tight text-primary transition-colors duration-500">
-            OctopusTrack
-          </span>
+<header data-main-header class="lumen fixed inset-x-0 top-0 z-50">
+  <div class="mx-auto flex w-full max-w-7xl justify-center px-4 pt-4 sm:px-6 lg:px-8">
+    <div class="flex w-full max-w-[820px] items-center justify-between gap-3 rounded-full border border-border bg-background/80 py-2 pl-3 pr-2 shadow-[0_8px_28px_-14px_rgb(0_0_0/0.65)] backdrop-blur-md transition-colors duration-300 sm:gap-5 sm:pl-4 sm:pr-3">
+      <a href="#inicio" class="flex shrink-0 items-center gap-2.5">
+        <span class="inline-flex shrink-0">
+          <AnimatedTentacleLogo class="h-8 w-8" alt="OctopusTrack" />
         </span>
-      </span>
-    </a>
-
-    <div class="flex items-center gap-3">
-      <button
-        type="button"
-        data-theme-toggle
-        aria-label="Cambiar a modo noche"
-        title="Modo noche"
-        class="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border/70 bg-card/70 text-muted-foreground transition-all duration-500 hover:scale-[1.03] hover:bg-card hover:text-foreground"
-      >
-        <span class="absolute inset-0 bg-primary/10 opacity-0 transition-opacity duration-300 hover:opacity-100"></span>
-        <span data-theme-icon-moon class="relative z-10"><Icon name="moon" class="h-4 w-4" /></span>
-        <span data-theme-icon-sun class="relative z-10 hidden"><Icon name="sun" class="h-4 w-4" /></span>
-      </button>
-      <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="hidden rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-500 hover:scale-[1.03] hover:bg-primary/90 sm:inline-flex items-center justify-center gap-2">
-        <Icon name="messageCircle" class="h-4 w-4" />
-        Demo
+        <span class="font-lumen-display text-lg font-normal leading-none tracking-tight text-foreground">octopustrack</span>
       </a>
+
+      <nav class="hidden items-center gap-6 lg:flex">
+        <a href="#producto" class="text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground">producto</a>
+        <a href="#funciones" class="text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground">funciones</a>
+        <a href="#rubros" class="text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground">rubros</a>
+        <a href="#preguntas-frecuentes" class="text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground">preguntas</a>
+      </nav>
+
+      <div class="hidden items-center gap-4 lg:flex">
+        <span class="h-5 w-px bg-border" aria-hidden="true"></span>
+        <a href="/acceder" class="text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground">ingresar</a>
+        <button type="button" data-open-demo-modal class="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90 active:bg-primary/80">
+          solicitar demo
+        </button>
+      </div>
+
       <button
         type="button"
         aria-label="Abrir menú"
         data-menu-toggle
-        class="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border/70 bg-card/70 text-muted-foreground transition-all duration-500 hover:bg-card hover:text-foreground"
+        class="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors duration-200 hover:text-foreground lg:hidden"
       >
-        <span data-menu-glow class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.18),transparent_55%)] opacity-0 transition-opacity duration-300"></span>
         <span data-menu-icon-open><Icon name="menu" class="h-5 w-5" /></span>
         <span data-menu-icon-close class="hidden"><Icon name="x" class="h-5 w-5" /></span>
       </button>
     </div>
   </div>
 
-  <div data-mobile-menu class="max-h-0 overflow-hidden border-t border-border/60 bg-background/95 opacity-0 transition-all duration-500 ease-out">
-    <nav class="relative mx-auto flex w-full max-w-7xl flex-col gap-2 overflow-hidden px-4 py-4 sm:px-6 sm:py-5">
-      <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:28px_28px] opacity-40"></div>
-      <div class="pointer-events-none absolute right-6 top-0 h-28 w-28 rounded-full bg-primary-500/18 blur-3xl"></div>
-      <a data-menu-link data-scroll-target="octopustrack-content" href="#octopustrack-content" class="group relative flex translate-y-0 items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground" style="transition-delay: 0ms">
-        <span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>OctopusTrack</span>
-        <span class="relative z-10 font-mono text-xs text-muted-foreground/60 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-muted-foreground">01</span>
-        <span class="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-primary/70 transition-transform duration-500 group-hover:scale-x-100"></span>
+  <div class="mx-auto w-full max-w-[820px] px-4 sm:px-6 lg:px-8">
+    <div data-mobile-menu class="mx-auto mt-2 max-h-0 w-full overflow-hidden rounded-3xl border border-border bg-background opacity-0 shadow-[0_8px_28px_-14px_rgb(0_0_0/0.65)] transition-all duration-500 ease-out lg:hidden">
+    <nav class="flex w-full flex-col gap-2 px-4 py-4 sm:px-6 sm:py-5">
+      <a data-menu-link data-scroll-target="producto" href="#producto" class="group flex translate-y-0 items-center justify-between rounded-[10px] border border-border bg-card px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 transition-all duration-500 hover:text-foreground" style="transition-delay: 0ms">
+        producto
+        <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground/50">01</span>
       </a>
-      <a data-menu-link data-scroll-target="contacto" href="#contacto" class="group relative flex translate-y-0 items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground" style="transition-delay: 45ms">
-        <span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>Contacto</span>
-        <span class="relative z-10 font-mono text-xs text-muted-foreground/60 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-muted-foreground">02</span>
-        <span class="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-primary/70 transition-transform duration-500 group-hover:scale-x-100"></span>
+      <a data-menu-link data-scroll-target="funciones" href="#funciones" class="group flex translate-y-0 items-center justify-between rounded-[10px] border border-border bg-card px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 transition-all duration-500 hover:text-foreground" style="transition-delay: 45ms">
+        funciones
+        <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground/50">02</span>
       </a>
-      <a href="/octopusflow" class="group relative flex items-center justify-between overflow-hidden rounded-xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-medium text-muted-foreground shadow-lg shadow-background/30 transition-all duration-500 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-foreground">
-        <span class="relative z-10 flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150"></span>OctopusFlow</span>
-        <span class="relative z-10 font-mono text-xs text-muted-foreground/60">Nuevo</span>
+      <a data-menu-link data-scroll-target="rubros" href="#rubros" class="group flex translate-y-0 items-center justify-between rounded-[10px] border border-border bg-card px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 transition-all duration-500 hover:text-foreground" style="transition-delay: 90ms">
+        rubros
+        <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground/50">03</span>
       </a>
-      <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="relative mt-2 flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground shadow-lg transition-all duration-500 hover:-translate-y-0.5 hover:bg-primary/90">
-        <Icon name="messageCircle" class="h-4 w-4" />
-        Demo
+      <a data-menu-link data-scroll-target="contacto" href="#contacto" class="group flex translate-y-0 items-center justify-between rounded-[10px] border border-border bg-card px-4 py-3 text-sm font-medium text-muted-foreground opacity-0 transition-all duration-500 hover:text-foreground" style="transition-delay: 135ms">
+        contacto
+        <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground/50">04</span>
       </a>
+      <a href="/octopusflow" class="group flex items-center justify-between rounded-[10px] border border-border bg-card px-4 py-3 text-sm font-medium text-muted-foreground transition-all duration-500 hover:text-foreground">
+        octopusflow
+        <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground/60">nuevo</span>
+      </a>
+      <a href="/acceder" class="flex items-center justify-between rounded-[10px] border border-border bg-card px-4 py-3 text-sm font-medium text-muted-foreground transition-all duration-500 hover:text-foreground">
+        ingresar
+      </a>
+      <button type="button" data-open-demo-modal class="mt-2 flex items-center justify-center gap-2 rounded-[10px] bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground transition-all duration-500 hover:bg-primary/90 active:bg-primary/80">
+        solicitar demo
+      </button>
     </nav>
+    </div>
   </div>
 </header>
 
@@ -80,11 +79,6 @@ const WHATSAPP_URL = 'https://wa.me/5492254596618';
   const menuToggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const openIcon = document.querySelector<HTMLElement>('[data-menu-icon-open]');
   const closeIcon = document.querySelector<HTMLElement>('[data-menu-icon-close]');
-  const menuGlow = document.querySelector<HTMLElement>('[data-menu-glow]');
-  const product = document.querySelector<HTMLElement>('[data-main-header-product]');
-  const themeToggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
-  const moonIcon = document.querySelector<HTMLElement>('[data-theme-icon-moon]');
-  const sunIcon = document.querySelector<HTMLElement>('[data-theme-icon-sun]');
 
   const setMenuOpen = (open: boolean) => {
     menu?.classList.toggle('max-h-[420px]', open);
@@ -93,7 +87,6 @@ const WHATSAPP_URL = 'https://wa.me/5492254596618';
     menu?.classList.toggle('opacity-0', !open);
     openIcon?.classList.toggle('hidden', open);
     closeIcon?.classList.toggle('hidden', !open);
-    menuGlow?.classList.toggle('opacity-100', open);
     document.querySelectorAll<HTMLElement>('[data-menu-link]').forEach((link) => {
       link.classList.toggle('opacity-100', open);
       link.classList.toggle('opacity-0', !open);
@@ -102,7 +95,7 @@ const WHATSAPP_URL = 'https://wa.me/5492254596618';
 
   menuToggle?.addEventListener('click', () => setMenuOpen(!menu?.classList.contains('opacity-100')));
 
-  const scrollToId = (id: string, desktopOffset = 94, mobileOffset = 86) => {
+  const scrollToId = (id: string, desktopOffset = 100, mobileOffset = 92) => {
     const element = document.getElementById(id);
     if (!element) return;
     const offset = window.innerWidth >= 768 ? desktopOffset : mobileOffset;
@@ -117,41 +110,4 @@ const WHATSAPP_URL = 'https://wa.me/5492254596618';
       scrollToId(link.dataset.scrollTarget ?? '');
     });
   });
-
-  const applyThemeIcon = () => {
-    const isDark = document.documentElement.classList.contains('dark');
-    themeToggle?.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo noche');
-    themeToggle?.setAttribute('title', isDark ? 'Modo claro' : 'Modo noche');
-    moonIcon?.classList.toggle('hidden', isDark);
-    sunIcon?.classList.toggle('hidden', !isDark);
-  };
-
-  applyThemeIcon();
-  themeToggle?.addEventListener('click', () => {
-    const nextDark = !document.documentElement.classList.contains('dark');
-    document.documentElement.classList.toggle('dark', nextDark);
-    localStorage.setItem('octopustrack-theme', nextDark ? 'night' : 'light');
-    applyThemeIcon();
-  });
-
-  const updateProductLabel = () => {
-    const trackSection = document.getElementById('caracteristicas');
-    const reportesMarker = document.getElementById('octopustrack-reportes');
-    if (!trackSection || !reportesMarker || !product) return;
-    const activationLine = Math.min(window.innerHeight * 0.28, 190);
-    const sectionRect = trackSection.getBoundingClientRect();
-    const reportesRect = reportesMarker.getBoundingClientRect();
-    const show = sectionRect.top <= activationLine && sectionRect.bottom >= activationLine && reportesRect.top > activationLine;
-    product.style.maxWidth = show ? '180px' : '0px';
-    product.style.opacity = show ? '1' : '0';
-  };
-
-  let frame = 0;
-  const scheduleHeaderUpdate = () => {
-    cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(updateProductLabel);
-  };
-  scheduleHeaderUpdate();
-  window.addEventListener('scroll', scheduleHeaderUpdate, { passive: true });
-  window.addEventListener('resize', scheduleHeaderUpdate);
 </script>

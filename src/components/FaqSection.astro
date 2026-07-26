@@ -2,27 +2,24 @@
 import { homeFaqItems } from '../data/homeFaq';
 ---
 
-<section id="preguntas-frecuentes" class="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
-  <div class="pointer-events-none absolute -left-24 top-16 h-[420px] w-[420px] rounded-full bg-primary/10 blur-[120px]"></div>
-  <div class="pointer-events-none absolute bottom-0 right-[-14%] h-[360px] w-[520px] rounded-full bg-primary-600/8 blur-[120px]"></div>
-
-  <div class="section-container relative">
-    <div class="mx-auto max-w-3xl text-center reveal-on-scroll">
-      <p class="text-sm font-semibold uppercase tracking-[0.28em] text-primary/80">Preguntas frecuentes</p>
-      <h2 class="mt-5 font-display text-3xl font-black leading-[1.05] text-foreground sm:text-4xl lg:text-5xl">
-        ERP comercial para mostrador, sin vueltas
+<section id="preguntas-frecuentes" class="lumen relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28 scroll-mt-24">
+  <div class="relative mx-auto w-full max-w-6xl">
+    <div class="reveal-on-scroll mx-auto max-w-3xl text-center">
+      <p class="eyebrow justify-center">preguntas frecuentes</p>
+      <h2 class="mt-5 font-lumen-display text-3xl leading-[1.05] text-foreground sm:text-4xl lg:text-5xl">
+        erp comercial para mostrador, sin vueltas
       </h2>
       <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Respuestas simples para entender si OctopusTrack encaja con tu comercio, tu forma de vender y la operación diaria detrás del mostrador.
+        respuestas simples para entender si OctopusTrack encaja con tu comercio, tu forma de vender y la operación diaria detrás del mostrador.
       </p>
     </div>
 
     <div class="mx-auto mt-12 grid max-w-5xl gap-4">
       {homeFaqItems.map((item, index) => (
-        <details class="group reveal-on-scroll rounded-2xl border border-border bg-card/70 p-6 shadow-lg shadow-background/30 transition-all duration-300 open:border-primary/30 open:bg-card open:shadow-2xl open:shadow-primary/10" style={`--reveal-delay: ${index * 65}ms`}>
+        <details class="group reveal-on-scroll lumen-card p-6 open:border-primary/30" style={`--reveal-delay: ${index * 65}ms`}>
           <summary class="flex cursor-pointer list-none items-start justify-between gap-5 text-left marker:hidden">
-            <span class="text-lg font-semibold leading-tight text-foreground sm:text-xl">{item.question}</span>
-            <span class="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/12 text-primary ring-1 ring-primary/15 transition-transform duration-300 group-open:rotate-45">
+            <span class="text-lg font-medium leading-tight text-foreground sm:text-xl">{item.question}</span>
+            <span class="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] border border-border text-primary transition-transform duration-300 group-open:rotate-45">
               <span class="text-2xl font-light leading-none" aria-hidden="true">+</span>
             </span>
           </summary>

@@ -1,0 +1,213 @@
+---
+import Icon from './Icon.astro';
+
+const tabs = [
+  {
+    id: 'ventas',
+    label: 'ventas',
+    image: '/assets/mockup-ventas-1400.webp',
+    description: 'Centralizá la venta de mostrador en una pantalla ágil, pensada para operar rápido, facturar y cobrar sin cambiar de entorno.',
+    bullets: [
+      'Cotización, remito, factura y cuenta corriente sin salir de la pantalla de venta.',
+      'Carga ágil de productos por código, con stock y precio a la vista.',
+      'Totales, descuentos y redondeo calculados al instante.',
+      'La misma venta, igual de rápida, desde el celular.',
+    ],
+    metric: 'todo el flujo de venta, en una sola pantalla',
+  },
+  {
+    id: 'facturacion',
+    label: 'facturación',
+    image: '/assets/mockup-principal-1400.webp',
+    description: 'Facturación electrónica en 3 pasos: buscás el producto, lo cargás y emitís. Sin pantallas intermedias.',
+    bullets: [
+      'Factura con CAE emitida al instante, integrada a ARCA/AFIP.',
+      'Buscá y cargá productos sin perder de vista el total.',
+      'La factura se comparte por WhatsApp directo desde el celular.',
+      'Todo queda vinculado a la venta y a la cuenta corriente del cliente.',
+    ],
+    metric: 'facturación electrónica en 3 pasos',
+  },
+  {
+    id: 'productos',
+    label: 'productos',
+    image: '/assets/mockup-qrproductos-1400.webp',
+    description: 'Catálogo completo con filtros por categoría, proveedor y marca, más etiquetas con código QR listas para imprimir.',
+    bullets: [
+      'Búsqueda por código o descripción sobre todo el catálogo.',
+      'Filtros por categoría, proveedor, marca y stock bajo.',
+      'Etiquetas con código QR generadas e impresas desde el sistema.',
+      'Mismo catálogo, mismo control, desde la compu o el celular.',
+    ],
+    metric: 'todo el catálogo ordenado y con etiquetas listas',
+  },
+  {
+    id: 'precios',
+    label: 'precios',
+    image: '/assets/mockup-actualizacion-1400.webp',
+    description: 'Actualizá precios por lote, filtrando por categoría o proveedor, sin tocar producto por producto.',
+    bullets: [
+      'Filtrá por categoría, proveedor o búsqueda antes de actualizar.',
+      'Seleccioná varios productos y aplicá el cambio de una vez.',
+      'Guardá borradores para revisar antes de confirmar.',
+      'La misma actualización masiva funciona desde el celular.',
+    ],
+    metric: 'actualización de precios por lote, sin planillas',
+  },
+  {
+    id: 'acopios',
+    label: 'acopios',
+    image: '/assets/mockup-acopios-1400.webp',
+    description: 'Gestioná acopios de materiales por cliente y obra, con saldo inicial, retirado y disponible siempre a la vista.',
+    bullets: [
+      'Acopios por cliente, con vínculo a la obra correspondiente.',
+      'Estado claro: abierto, parcial o cerrado.',
+      'Saldo inicial, retirado y disponible en cada acopio.',
+      'Detalle y remito accesibles con un clic, o compartibles por WhatsApp.',
+    ],
+    metric: 'saldo de cada acopio, siempre visible',
+  },
+  {
+    id: 'cuenta-corriente',
+    label: 'cuenta corriente',
+    image: '/assets/mockup-ctactes-1400.webp',
+    description: 'Cerrá cuentas corrientes en pasos guiados, con autorizaciones de titulares y subclientes bajo control.',
+    bullets: [
+      'Autorizaciones de titulares y subclientes en un mismo lugar.',
+      'Cierre de cuenta guiado: elegís titular, marcás remitos y cerrás.',
+      'Remitos pendientes de facturar, siempre a la vista antes de cerrar.',
+      'Resumen e historial completo por cliente.',
+    ],
+    metric: 'cierre de cuenta corriente en pasos guiados',
+  },
+  {
+    id: 'dashboard',
+    label: 'dashboard',
+    image: '/assets/mockup-dashboard-1400.webp',
+    description: 'Mirá cómo va tu caja y tus cobros del período sin armar una planilla aparte.',
+    bullets: [
+      'Ingresado en caja y composición de ingresos del período.',
+      'Facturado vs. cobrado, para saber qué falta cobrar.',
+      'Cuentas corrientes y acopios cobrados en el mismo panel.',
+      'WhatsApp Business conectado para avisos y cobros.',
+    ],
+    metric: 'la caja del negocio, de un vistazo',
+  },
+  {
+    id: 'meli',
+    label: 'mercado libre',
+    image: '/assets/mockup-meli-1400.webp',
+    description: 'Conectá tu cuenta de Mercado Libre y administrá tus publicaciones sin salir de OctopusTrack.',
+    bullets: [
+      'Conectá tu cuenta de Mercado Libre en un paso.',
+      'Filtrá publicaciones por activas, pausadas o cerradas.',
+      'Buscá publicaciones puntuales por número de MLA.',
+      'Mismo panel de publicaciones, también desde el celular.',
+    ],
+    metric: 'tus publicaciones de mercado libre, desde octopustrack',
+  },
+];
+---
+
+<section id="funciones" class="lumen relative overflow-hidden bg-background px-4 py-24 sm:px-6 sm:py-32 scroll-mt-24">
+  <div class="relative mx-auto w-full max-w-7xl">
+    <div class="max-w-3xl">
+      <h2 class="font-lumen-display text-3xl leading-[1.05] text-foreground sm:text-4xl lg:text-5xl">
+        una función distinta para cada parte del negocio
+      </h2>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+        elegí una función y mirá cómo se ve dentro de OctopusTrack.
+      </p>
+    </div>
+
+    <div data-tabs class="mt-12 sm:mt-14">
+      <div role="tablist" aria-label="Funciones de OctopusTrack" class="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-2.5">
+        {tabs.map((tab, index) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-trigger-${tab.id}`}
+            data-tab-trigger={tab.id}
+            aria-selected={index === 0 ? 'true' : 'false'}
+            aria-controls={`tab-panel-${tab.id}`}
+            class="tab-trigger flex items-center justify-center rounded-[10px] border border-border bg-card px-4 py-2 text-center font-mono text-xs uppercase tracking-[0.08em] text-muted-foreground transition-colors duration-200 hover:text-foreground aria-selected:border-primary aria-selected:bg-primary aria-selected:text-primary-foreground"
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <div class="mt-8 sm:mt-10">
+        {tabs.map((tab, index) => (
+          <div
+            role="tabpanel"
+            id={`tab-panel-${tab.id}`}
+            data-tab-panel={tab.id}
+            aria-labelledby={`tab-trigger-${tab.id}`}
+            hidden={index !== 0}
+            class="grid w-full items-center gap-10 lg:grid-cols-2 lg:gap-20"
+          >
+            <figure class="lumen-card overflow-hidden p-1">
+              <div class="relative aspect-[16/9] w-full overflow-hidden rounded-[16px]">
+                <img
+                  src={tab.image}
+                  alt={`Pantalla de ${tab.label} en OctopusTrack`}
+                  class="h-full w-full object-cover object-center"
+                  loading="lazy"
+                />
+              </div>
+            </figure>
+            <div class="flex flex-col justify-center">
+              <p class="text-2xl font-medium leading-relaxed text-foreground/85">{tab.description}</p>
+              <ul class="mt-8 space-y-4">
+                {tab.bullets.map((line) => (
+                  <li class="flex items-start gap-3 text-lg leading-relaxed text-muted-foreground">
+                    <Icon name="checkCircle" class="mt-1 h-6 w-6 shrink-0 text-primary" />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="mt-8 font-mono text-base font-medium text-primary">{tab.metric}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tab-trigger[aria-selected='true'] {
+    box-shadow: 0 10px 24px -12px oklch(var(--primary) / 0.45);
+  }
+
+  /* Tailwind's `grid` utility sets display:grid at the same specificity as the
+     [hidden] UA style, so inactive panels leak through without this override. */
+  [data-tab-panel][hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  const shell = document.querySelector<HTMLElement>('[data-tabs]');
+  if (shell) {
+    const triggers = Array.from(shell.querySelectorAll<HTMLButtonElement>('[data-tab-trigger]'));
+    const panels = Array.from(shell.querySelectorAll<HTMLElement>('[data-tab-panel]'));
+
+    const activate = (id: string) => {
+      triggers.forEach((trigger) => {
+        trigger.setAttribute('aria-selected', trigger.dataset.tabTrigger === id ? 'true' : 'false');
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.tabPanel !== id;
+      });
+    };
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const id = trigger.dataset.tabTrigger;
+        if (id) activate(id);
+      });
+    });
+  }
+</script>

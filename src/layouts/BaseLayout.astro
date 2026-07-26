@@ -49,7 +49,7 @@ const ogImageAbsolute = ogImage.startsWith('http')
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1a1823" />
+    <meta name="theme-color" content="#05070d" />
 
     <!-- Google / Search Engine -->
     <title>{title}</title>
@@ -82,41 +82,29 @@ const ogImageAbsolute = ogImage.startsWith('http')
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800;900&family=Figtree:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif&family=Geist:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
-    <!-- CSS custom property tokens — inline to prevent FOUC -->
+    <!-- CSS custom property tokens — inline to prevent FOUC.
+         Hex approximations of Night Foundry's oklch tokens (globals.css / tokens.css),
+         computed so the first paint doesn't flash Day Foundry's light colors before the
+         stylesheet loads and the real oklch() values take over. -->
     <style is:inline>
       :root {
-        --background: #f0f0f2;
-        --foreground: #121325;
-        --card: #ffffff;
-        --card-foreground: #121325;
-        --primary: #9d84bf;
-        --primary-foreground: #f0f0f2;
-        --secondary: #ece6f6;
-        --muted: #ece6f6;
-        --muted-foreground: #7b6b95;
-        --accent: #d9caeb;
-        --accent-foreground: #121325;
-        --border: #d9caeb;
-        --ring: #5c3a8c;
-      }
-      .dark {
-        --background: #121325;
-        --foreground: #ffffff;
-        --card: #1b1b32;
-        --card-foreground: #ffffff;
-        --primary: #9d84bf;
-        --primary-foreground: #121325;
-        --secondary: #272345;
-        --muted: #272345;
-        --muted-foreground: #b2a6c6;
-        --accent: #3b305a;
-        --accent-foreground: #ffffff;
-        --border: #3b305a;
-        --ring: #9d84bf;
+        --background: #05070d;
+        --foreground: #f0f2f6;
+        --card: #0c0f17;
+        --card-foreground: #f0f2f6;
+        --primary: #8a76ec;
+        --primary-foreground: #0d0b19;
+        --secondary: #141822;
+        --muted: #141822;
+        --muted-foreground: #999eaa;
+        --accent: #1e1b35;
+        --accent-foreground: #f0f2f6;
+        --border: #292e38;
+        --ring: #8a76ec;
       }
       body { background: var(--background); color: var(--foreground); }
     </style>
@@ -127,21 +115,6 @@ const ogImageAbsolute = ogImage.startsWith('http')
         <script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />
       ))
     }
-
-    <!-- Theme init — runs before first paint to avoid flash -->
-    <!-- Reads the same key (octopustrack-theme) that Header.astro writes,
-         falling back to system preference when never set. -->
-    <script is:inline>
-      (function () {
-        const theme = localStorage.getItem('octopustrack-theme');
-        if (
-          theme === 'night' ||
-          (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    </script>
   </head>
   <body class={bodyClass}>
     <!-- Google Tag Manager (noscript) -->

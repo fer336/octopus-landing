@@ -1,16 +1,17 @@
 ---
 import Header from './Header.astro';
 import Hero from './Hero.astro';
-import PainPoints from './PainPoints.astro';
-import CounterSalesSection from './CounterSalesSection.astro';
 import MarqueeTicker from './MarqueeTicker.astro';
-import SectionDivider from './SectionDivider.astro';
-import OctopusTrackShowcase from './OctopusTrackShowcase.astro';
-import BigTextBanner from './BigTextBanner.astro';
-import SocialProof from './SocialProof.astro';
+import SalesExperience from './SalesExperience.astro';
+import FeatureTabs from './FeatureTabs.astro';
+import DifferentiatorSection from './DifferentiatorSection.astro';
+import RubroCards from './RubroCards.astro';
+import ResultsSection from './ResultsSection.astro';
+import DemoSteps from './DemoSteps.astro';
 import OctopusFlowCrossSell from './OctopusFlowCrossSell.astro';
 import FaqSection from './FaqSection.astro';
 import ContactForm from './ContactForm.astro';
+import FinalCta from './FinalCta.astro';
 import Footer from './Footer.astro';
 import FloatingContactButton from './FloatingContactButton.astro';
 import DemoModal from './DemoModal.astro';
@@ -23,7 +24,6 @@ const buildAssetWebhookUrl = (format: 'excel' | 'sheets') => {
   const separator = ASSET_WEBHOOK_URL.includes('?') ? '&' : '?';
   return `${ASSET_WEBHOOK_URL}${separator}format=${format}`;
 };
-const industriasTicker = ['Ferreterías', 'Distribuidoras', 'Forrajerías', 'Sanitarios', 'Electricidad'];
 ---
 
 <div class="min-h-screen bg-background text-foreground">
@@ -58,53 +58,17 @@ const industriasTicker = ['Ferreterías', 'Distribuidoras', 'Forrajerías', 'San
     <FloatingContactButton />
     <main>
       <Hero />
-      <SectionDivider from="transparent" to="rgb(var(--background))" />
-      <PainPoints />
-      <CounterSalesSection />
-      <MarqueeTicker items={industriasTicker} duration={42} />
-      <SectionDivider from="transparent" to="rgb(var(--background))" />
-      <OctopusTrackShowcase />
-      <BigTextBanner />
-      <MarqueeTicker items={['Stock', 'Ventas', 'Facturación ARCA', 'Cuentas corrientes', 'Listas de precio', 'Acopios', 'Órdenes de compra']} duration={28} reversed />
-      <SectionDivider from="rgb(var(--background))" to="rgb(var(--background))" />
-      <SocialProof />
-      <SectionDivider from="transparent" to="rgb(var(--background))" />
-      <section id="precios" class="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
-        <div class="section-container">
-          <div class="reveal-on-scroll overflow-hidden rounded-[28px] border border-primary/20 bg-card shadow-2xl shadow-primary/10 md:grid md:grid-cols-[0.92fr_1.08fr]">
-            <div class="relative overflow-hidden bg-primary px-6 py-10 text-primary-foreground sm:px-10 sm:py-14 lg:px-12 lg:py-16">
-              <div class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary-foreground/15 blur-3xl"></div>
-              <div class="pointer-events-none absolute -bottom-24 left-8 h-56 w-56 rounded-full bg-background/20 blur-3xl"></div>
-              <div class="relative">
-                <p class="text-[11px] font-bold uppercase tracking-[0.32em] text-primary-foreground/70">Demo guiada</p>
-                <h2 class="mt-5 max-w-xl font-display text-4xl font-black leading-[0.98] tracking-tight sm:text-5xl lg:text-6xl">Empezá en minutos. Sin complicaciones.</h2>
-              </div>
-            </div>
-            <div class="bg-card px-6 py-10 sm:px-10 sm:py-14 lg:px-12 lg:py-16">
-              <p class="max-w-xl text-lg leading-relaxed text-foreground sm:text-xl">Te mostramos cómo ordenar stock, ventas, listas de precio, cuentas corrientes y facturación sin cambiar la forma en que trabaja tu comercio.</p>
-              <div class="mt-8 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
-                {['Sin tarjeta', 'Sin contratos largos', 'Acompañamiento real', 'Configurado para tu rubro'].map((item) => (
-                  <div class="flex items-center gap-2.5"><Icon name="checkCircle" class="h-4 w-4 shrink-0 text-primary" /><span>{item}</span></div>
-                ))}
-              </div>
-              <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-                <button type="button" data-open-demo-modal class="group relative isolate inline-flex touch-none items-center justify-center gap-2 overflow-visible rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:bg-primary/90 sm:min-w-[210px]">
-                  <span class="pointer-events-none absolute left-1/2 top-1/2 -z-10 block h-full w-full -translate-x-1/2 -translate-y-1/2 rounded-[inherit] bg-primary/35 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-70"></span>
-                  <Icon name="magnet" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" />
-                  Probar demo
-                </button>
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 rounded-xl border border-border bg-background/40 px-6 py-3.5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-background">
-                  Hablar por WhatsApp
-                  <Icon name="messageCircle" class="h-4 w-4" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <OctopusFlowCrossSell />
+      <MarqueeTicker items={['Ventas', 'Stock', 'Facturación ARCA', 'Caja', 'Cuentas corrientes', 'Mercado Libre']} duration={38} />
+      <SalesExperience />
+      <FeatureTabs />
+      <DifferentiatorSection />
+      <RubroCards />
+      <ResultsSection />
+      <DemoSteps />
       <FaqSection />
       <ContactForm />
+      <FinalCta />
+      <OctopusFlowCrossSell />
     </main>
     <Footer />
     <DemoModal productType="octopustrack" productName="OctopusTrack" />
@@ -126,26 +90,19 @@ const industriasTicker = ['Ferreterías', 'Distribuidoras', 'Forrajerías', 'San
     gsap.registerPlugin(ScrollTrigger);
     document.querySelectorAll<HTMLElement>('.reveal-on-scroll').forEach((element) => {
       const rawDelay = element.style.getPropertyValue('--reveal-delay') || getComputedStyle(element).getPropertyValue('--reveal-delay') || '0';
-      gsap.fromTo(element, { opacity: 0, y: 36, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.85, delay: parseFloat(rawDelay) / 1000, ease: 'power3.out', scrollTrigger: { trigger: element, start: 'top 88%', once: true } });
+      gsap.fromTo(
+        element,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.6, delay: parseFloat(rawDelay) / 1000, ease: 'power2.out', scrollTrigger: { trigger: element, start: 'top 88%', once: true } }
+      );
     });
 
-    document.querySelectorAll<HTMLElement>('[data-tilt-card]').forEach((card) => {
-      let frame = 0;
-      const strength = Number(card.dataset.tiltStrength ?? '10');
-      card.addEventListener('mousemove', (event) => {
-        cancelAnimationFrame(frame);
-        frame = requestAnimationFrame(() => {
-          const rect = card.getBoundingClientRect();
-          const x = (event.clientX - rect.left) / rect.width - 0.5;
-          const y = (event.clientY - rect.top) / rect.height - 0.5;
-          card.style.transform = `perspective(1000px) rotateY(${x * strength}deg) rotateX(${-y * strength}deg) translateZ(6px)`;
-        });
-      });
-      card.addEventListener('mouseenter', () => card.style.transition = 'transform 0.08s linear, box-shadow 0.3s ease');
-      card.addEventListener('mouseleave', () => {
-        cancelAnimationFrame(frame);
-        card.style.transition = 'transform 0.55s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease';
-        card.style.transform = '';
+    document.querySelectorAll<HTMLElement>('.verb--on-scroll').forEach((element) => {
+      ScrollTrigger.create({
+        trigger: element,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => element.classList.add('is-revealed'),
       });
     });
   }

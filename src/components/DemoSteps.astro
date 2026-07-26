@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+
+const steps = [
+  { number: '01', text: 'Contanos cómo trabaja tu comercio' },
+  { number: '02', text: 'Configuramos el sistema para tu operación' },
+  { number: '03', text: 'Empezás a vender con acompañamiento' },
+];
+---
+
+<section id="demo" class="lumen relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28 scroll-mt-24">
+  <div class="relative mx-auto w-full max-w-6xl">
+    <p class="eyebrow">cómo empezás</p>
+    <h2 class="mt-6 max-w-xl font-lumen-display text-3xl leading-[1.05] text-foreground sm:text-4xl lg:text-5xl">
+      empezá en minutos, sin complicaciones
+    </h2>
+
+    <div class="mx-auto mt-14 grid max-w-4xl gap-8 sm:mt-16 sm:grid-cols-3 sm:gap-6">
+      {steps.map((step, index) => (
+        <div class="reveal-on-scroll flex flex-col items-start" style={`--reveal-delay: ${index * 90}ms`}>
+          <span class="font-mono text-4xl font-semibold text-primary/25 sm:text-5xl" style="font-variant-numeric: tabular-nums;">{step.number}</span>
+          <p class="mt-3 text-lg font-medium leading-snug text-foreground">{step.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="reveal-on-scroll mt-14 flex justify-center sm:mt-16">
+      <button type="button" data-open-demo-modal class="inline-flex items-center justify-center gap-2 rounded-[10px] bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90 active:bg-primary/80 sm:min-w-[220px]">
+        agendar demostración
+        <Icon name="arrowRight" class="h-4 w-4" />
+      </button>
+    </div>
+  </div>
+</section>

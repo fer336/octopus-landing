@@ -1,17 +1,27 @@
 export const homeFaqItems = [
   {
-    question: '¿Qué es OctopusTrack?',
+    question: '¿Para qué tipo de comercio sirve?',
     answer:
-      'OctopusTrack es un ERP comercial para venta de mostrador. Está diseñado para que comercios, pymes y distribuidoras puedan vender rápido, atender sin demoras y administrar la operación desde una plataforma simple y fácil de aprender.',
+      'OctopusTrack está pensado para comercios, pymes y distribuidoras que venden por mostrador o atención comercial directa: ferreterías, distribuidoras, forrajerías, sanitarios, casas de electricidad y negocios similares con catálogo, stock y cuentas corrientes.',
   },
   {
-    question: '¿Para quién está pensado OctopusTrack?',
+    question: '¿Puedo importar mis productos desde Excel?',
     answer:
-      'OctopusTrack está pensado para comercios, pymes y distribuidoras que venden productos físicos por mostrador o con atención comercial directa. Funciona para rubros como ferreterías, librerías, forrajerías, sanitarios, electricidad y otros negocios con catálogo, stock y cuentas corrientes.',
+      'Sí. Podés cargar tu catálogo manualmente o importarlo desde Excel, incluyendo actualización masiva de precios por categorías y listas, sin depender de planillas sueltas.',
   },
   {
-    question: '¿Qué ayuda a gestionar OctopusTrack?',
+    question: '¿Incluye facturación electrónica?',
     answer:
-      'OctopusTrack ayuda a gestionar ventas, búsqueda de productos, stock, caja, facturación, cuentas corrientes, listas de precios, reportes, presupuestos, remitos y procesos comerciales desde un solo sistema.',
+      'Sí, OctopusTrack incluye facturación electrónica ARCA integrada al flujo de venta, para que puedas facturar sin salir del sistema ni interrumpir la atención al cliente.',
+  },
+  {
+    question: '¿Funciona desde celular?',
+    answer:
+      'Sí, OctopusTrack tiene una interfaz pensada para usarse también desde el celular, para que puedas consultar precios, stock y ventas aunque no estés frente a la computadora del mostrador.',
+  },
+  {
+    question: '¿Me ayudan con la configuración?',
+    answer:
+      'Sí, la puesta en marcha incluye configuración acompañada: te ayudamos a cargar tu catálogo, ajustar el sistema a tu operación y empezar a vender con soporte real desde el primer día.',
   },
 ] as const;

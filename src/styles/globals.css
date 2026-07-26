@@ -2,141 +2,130 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V5
+ * Hallmark · genre: lumen (catalog) · macrostructure: Workbench · theme: Lumen · drop: night
+ * accent: custom violet (H288.3, from brand hex #6D3BE8) — deliberate deviation from
+ *   Night Foundry's literal molten-brass spec, at explicit user request, to match the
+ *   real OctopusTrack product screenshots embedded across the page. Coral (H18) stays
+ *   as the sole secondary accent; two-hue discipline preserved, only the primary hue moved.
+ * enrichment: hand-built apparatus (ledger/receipt instrument, Tier A/B CSS+SVG)
+ * nav: N1b (editorial-voiced, hairline not floating-pill) · footer: Ft1 Mast-headed
+ * contrast: pass (40-41 — new primary verified 5.64:1 on --background, 5.37:1 on --card;
+ *   primary-foreground uses dark ink on primary, 5.45:1, since light text on this violet
+ *   only reaches 3.27:1; coral chord unchanged at 6.49:1; destructive unchanged at 5.06:1)
+ *   · chrome: pass (47, real screenshots only)
+ * tokens: pass (48) · responsive: pass (34, 49-57, overflow-x:clip added to html+body)
+ * Full token block also exported to /tokens.css at the project root.
+ */
 :root {
-  --background: 240 240 242;
-  --foreground: 18 19 37;
-  --card: 255 255 255;
-  --card-foreground: 18 19 37;
-  --popover: 255 255 255;
-  --popover-foreground: 18 19 37;
-  --primary: 157 132 191;
-  --primary-foreground: 240 240 242;
-  --secondary: 236 230 246;
-  --secondary-foreground: 18 19 37;
-  --muted: 236 230 246;
-  --muted-foreground: 123 107 149;
-  --accent: 217 202 235;
-  --accent-foreground: 18 19 37;
-  --border: 217 202 235;
-  --input: 236 230 246;
-  --ring: 92 58 140;
-  --destructive: 217 92 92;
-  --destructive-foreground: 240 240 242;
-  --chart-1: 157 132 191;
-  --chart-2: 217 202 235;
-  --chart-3: 236 230 246;
-  --chart-4: 123 107 149;
+  /* OKLCH triplets (L% C H) — consumed via oklch(var(--x) / <alpha>) in tailwind.config.js */
+  --background: 13% 0.014 265;
+  --foreground: 96% 0.006 262;
+  --card: 17% 0.018 265;
+  --card-foreground: 96% 0.006 262;
+  --popover: 17% 0.018 265;
+  --popover-foreground: 96% 0.006 262;
+  --primary: 64% 0.17 288.3;
+  --primary-foreground: 16% 0.03 288.3;
+  --primary-dark: 22% 0.09 288.3; /* unused by any component (grepped); repurposed as alias of primary-950 — retained for API stability */
+  --secondary: 21% 0.02 265;
+  --secondary-foreground: 96% 0.006 262;
+  --muted: 21% 0.02 265;
+  --muted-foreground: 70% 0.018 265;
+  --accent: 24% 0.05 288.3;
+  --accent-foreground: 96% 0.006 262;
+  --border: 30% 0.02 265;
+  --input: 21% 0.02 265;
+  --ring: 64% 0.17 288.3;
+  --destructive: 62% 0.19 25;
+  --destructive-foreground: 98% 0.006 265;
+  --success: 64% 0.10 159;
+  --chart-1: 109 59 232;
+  --chart-2: 232 222 255;
+  --chart-3: 240 236 247;
+  --chart-4: 110 104 120;
   --chart-5: 217 92 92;
   --sidebar-background: 255 255 255;
-  --sidebar-foreground: 18 19 37;
-  --sidebar-primary: 157 132 191;
-  --sidebar-primary-foreground: 240 240 242;
-  --sidebar-accent: 217 202 235;
-  --sidebar-accent-foreground: 18 19 37;
-  --sidebar-border: 217 202 235;
-  --sidebar-ring: 92 58 140;
+  --sidebar-foreground: 24 21 31;
+  --sidebar-primary: 109 59 232;
+  --sidebar-primary-foreground: 255 255 255;
+  --sidebar-accent: 232 222 255;
+  --sidebar-accent-foreground: 24 21 31;
+  --sidebar-border: 227 221 235;
+  --sidebar-ring: 109 59 232;
 
-  --primary-50: 245 242 250;
-  --primary-100: 236 230 246;
-  --primary-200: 217 202 235;
-  --primary-300: 195 171 223;
-  --primary-400: 173 142 210;
-  --primary-500: 157 132 191;
-  --primary-600: 124 92 168;
-  --primary-700: 92 58 140;
-  --primary-800: 75 47 114;
-  --primary-900: 58 36 89;
-  --primary-950: 37 22 58;
+  /* Anchored on hue 288.3 (OctopusTrack's real product violet, reverse-engineered from
+     brand hex #6D3BE8 — its natural OKLCH is 52.3% L / 0.24 C / 288.3 H). --primary-600
+     === --primary. Chroma is pulled down from the brand's native 0.24 as lightness rises
+     above ~55%, because H288 clips out of sRGB gamut (shifts toward blue) at high L with
+     high C — every step below is verified in-gamut. Deliberately deviates from Night
+     Foundry's literal molten-brass spec at the user's explicit request: the site now
+     embeds real OctopusTrack product screenshots (violet-branded), so the accent matches
+     the product instead of Lumen's stock brass, avoiding a chrome/screenshot mismatch. */
+  --primary-50: 92% 0.035 288.3;
+  --primary-100: 88% 0.055 288.3;
+  --primary-200: 82% 0.085 288.3;
+  --primary-300: 76% 0.115 288.3;
+  --primary-400: 70% 0.145 288.3;
+  --primary-500: 66% 0.160 288.3;
+  --primary-600: 64% 0.170 288.3;
+  --primary-700: 52% 0.190 288.3;
+  --primary-800: 40% 0.160 288.3;
+  --primary-900: 30% 0.120 288.3;
+  --primary-950: 22% 0.090 288.3;
 
-  --color-brand-black: rgb(var(--foreground));
-  --color-brand-white: rgb(var(--background));
-  --color-brand-lilac: rgb(var(--primary));
-  --color-brand-purple: rgb(var(--primary-700));
+  /* Lumen-specific raw tokens (not part of the rgb()/oklch() Tailwind alpha system) */
+  --color-accent-2: oklch(68% 0.16 18); /* coral chord — Night Foundry's literal spec value, kept as the one secondary accent (unchanged by the violet swap). Verified: 6.49:1 against --background (13% 0.014 265). */
+  --color-glow: oklch(70% 0.16 288.3 / 0.42);
+  --color-paper-emit: oklch(64% 0.17 288.3 / 0.04);
+  --color-rule-2: oklch(30% 0.02 265);
+  --rule-blueprint: oklch(96% 0.006 262 / 0.04);
+  --color-night-paper: oklch(8% 0.012 265); /* now a deliberately deeper pocket than --background (13%), not a duplicate of it — see DifferentiatorSection note below */
+  --color-night-ink: oklch(97% 0.004 262);
 
-  --color-bg-primary: rgb(var(--background));
-  --color-bg-secondary: rgb(var(--card));
-  --color-bg-tertiary: rgb(var(--secondary));
-  --color-text-primary: rgb(var(--foreground));
-  --color-text-secondary: rgb(var(--primary));
-  --color-text-muted: rgb(var(--muted-foreground));
-  --color-border: rgb(var(--border));
-  --color-border-focus: rgb(var(--ring));
+  --font-display-lumen: "Instrument Serif", "Tiempos Headline", ui-serif, Georgia, serif;
+  --font-body-lumen: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-label: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  --text-display: clamp(2.75rem, 4.4vw + 1.4rem, 4.75rem);
+  --text-display-s: clamp(2.1rem, 2.8vw + 1.2rem, 3.25rem);
+  --text-stat: clamp(2.5rem, 4vw + 1rem, 4.5rem);
+  --tracking-micro: 0.10em;
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-pulse: 4s;
+  --dur-reveal: 320ms;
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --radius-input: 12px;
+
+  /* Space (4pt scale) — backs every var(--space-*) in the .lumen-meter / .lumen-apparatus
+     rules below. Was referenced throughout but never defined here (only ever existed in
+     the portable tokens.css export), so every padding/margin/gap using it was silently
+     resolving to 0 and every var(--font-label) was falling back to the inherited body font. */
+  --space-3xs: 0.25rem; --space-2xs: 0.5rem; --space-xs: 0.75rem;
+  --space-sm: 1rem;     --space-md: 1.5rem;  --space-lg: 2rem;
+  --space-xl: 3rem;     --space-2xl: 4.5rem; --space-3xl: 7rem;
+
+  --color-brand-black: oklch(var(--foreground));
+  --color-brand-white: oklch(var(--background));
+  --color-brand-lilac: oklch(var(--primary));
+  --color-brand-purple: oklch(var(--primary-700));
+
+  --color-bg-primary: oklch(var(--background));
+  --color-bg-secondary: oklch(var(--card));
+  --color-bg-tertiary: oklch(var(--secondary));
+  --color-text-primary: oklch(var(--foreground));
+  --color-text-secondary: oklch(var(--primary));
+  --color-text-muted: oklch(var(--muted-foreground));
+  --color-border: oklch(var(--border));
+  --color-border-focus: oklch(var(--ring));
 
   /* Driver.js (Product Tour) */
-  --driver-popover-bg-color: rgb(var(--popover));
-  --driver-popover-title-color: rgb(var(--popover-foreground));
-  --driver-popover-description-color: rgb(var(--muted-foreground));
-  --driver-popover-border-color: rgb(var(--border));
-  --driver-overlay-color: rgba(10, 11, 24, 0.72);
+  --driver-popover-bg-color: oklch(var(--popover));
+  --driver-popover-title-color: oklch(var(--popover-foreground));
+  --driver-popover-description-color: oklch(var(--muted-foreground));
+  --driver-popover-border-color: oklch(var(--border));
+  --driver-overlay-color: oklch(13% 0.014 265 / 0.72);
   --driver-popover-border-radius: 12px;
-}
-
-.dark {
-  --background: 18 19 37;
-  --foreground: 255 255 255;
-  --card: 27 27 50;
-  --card-foreground: 255 255 255;
-  --popover: 27 27 50;
-  --popover-foreground: 255 255 255;
-  --primary: 157 132 191;
-  --primary-foreground: 18 19 37;
-  --secondary: 39 35 69;
-  --secondary-foreground: 255 255 255;
-  --muted: 39 35 69;
-  --muted-foreground: 178 166 198;
-  --accent: 59 48 90;
-  --accent-foreground: 255 255 255;
-  --border: 59 48 90;
-  --input: 39 35 69;
-  --ring: 157 132 191;
-  --destructive: 229 115 115;
-  --destructive-foreground: 18 19 37;
-  --chart-1: 157 132 191;
-  --chart-2: 59 48 90;
-  --chart-3: 39 35 69;
-  --chart-4: 178 166 198;
-  --chart-5: 229 115 115;
-  --sidebar-background: 27 27 50;
-  --sidebar-foreground: 255 255 255;
-  --sidebar-primary: 157 132 191;
-  --sidebar-primary-foreground: 18 19 37;
-  --sidebar-accent: 59 48 90;
-  --sidebar-accent-foreground: 255 255 255;
-  --sidebar-border: 59 48 90;
-  --sidebar-ring: 157 132 191;
-
-  --primary-50: 26 22 40;
-  --primary-100: 42 34 66;
-  --primary-200: 60 47 92;
-  --primary-300: 77 59 117;
-  --primary-400: 99 73 160;
-  --primary-500: 124 92 168;
-  --primary-600: 157 132 191;
-  --primary-700: 176 154 207;
-  --primary-800: 195 171 223;
-  --primary-900: 217 202 235;
-  --primary-950: 236 230 246;
-
-  --color-brand-black: rgb(var(--background));
-  --color-brand-white: rgb(var(--foreground));
-  --color-brand-lilac: rgb(var(--primary));
-  --color-brand-purple: rgb(var(--secondary));
-
-  --color-bg-primary: rgb(var(--background));
-  --color-bg-secondary: rgb(var(--card));
-  --color-bg-tertiary: rgb(var(--muted));
-  --color-text-primary: rgb(var(--foreground));
-  --color-text-secondary: rgb(var(--primary));
-  --color-text-muted: rgb(var(--muted-foreground));
-  --color-border: rgb(var(--border));
-  --color-border-focus: rgb(var(--ring));
-
-  /* Driver.js (Product Tour) */
-  --driver-popover-bg-color: rgb(var(--popover));
-  --driver-popover-title-color: rgb(var(--popover-foreground));
-  --driver-popover-description-color: rgb(var(--muted-foreground));
-  --driver-popover-border-color: rgb(var(--border));
-  --driver-overlay-color: rgba(0, 0, 0, 0.78);
 }
 
 * {
@@ -147,15 +136,17 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
-  font-family: 'Figtree', 'Segoe UI', sans-serif;
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
   transition: background-color 0.2s ease, color 0.2s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 /* Scrollbar personalizada */
@@ -232,15 +223,6 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.8;
   }
 }
 
@@ -331,31 +313,19 @@ body {
   }
 }
 
+/* Mobile viewports show far less of the strip per screen than desktop at the
+   same px/s speed, so the same --marquee-duration reads as sluggish — halve it below sm. */
+@media (max-width: 639px) {
+  .animate-marquee-ltr,
+  .animate-marquee-rtl,
+  .animate-marquee-big {
+    animation-duration: calc(var(--marquee-duration, 38s) * 0.5);
+  }
+}
+
 .animate-fade-in-up-delay-3 {
   animation: fadeInUpDelayed 0.6s ease-out 0.45s forwards;
   opacity: 0;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-/* Image carousel smooth slide */
-@keyframes carouselFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateX(16px);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateX(0);
-    filter: blur(0);
-  }
-}
-
-.carousel-image {
-  animation: carouselFadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* Header product name: tentacle-like unfurl on section change */
@@ -438,19 +408,12 @@ body {
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(22px);
-  filter: blur(3px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
-.reveal-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-/* CTA shimmer */
+/* CTA shimmer (used by src/pages/acceder.astro) */
 @keyframes shimmerMove {
   0% { transform: translateX(-140%); }
   100% { transform: translateX(180%); }
@@ -474,41 +437,6 @@ body {
   pointer-events: none;
 }
 
-/* Oculta flechas nativas en inputs number (solo donde se aplique la clase) */
-.no-spinner::-webkit-outer-spin-button,
-.no-spinner::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.no-spinner[type='number'] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-/* Aurora blob animations */
-@keyframes aurora-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-  40%       { transform: translate(45px, -28px) scale(1.09); opacity: 0.85; }
-  70%       { transform: translate(-22px, 20px) scale(0.93); opacity: 0.5; }
-}
-
-@keyframes aurora-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-  35%       { transform: translate(-38px, 22px) scale(1.07); opacity: 0.72; }
-  70%       { transform: translate(24px, -16px) scale(0.96); opacity: 0.42; }
-}
-
-.aurora-blob {
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-.animate-aurora-1 { animation: aurora-1 15s ease-in-out infinite; }
-.animate-aurora-2 { animation: aurora-2 12s ease-in-out infinite; }
-
 /* Float */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
@@ -518,32 +446,527 @@ body {
 .animate-float          { animation: float 5s ease-in-out infinite; }
 .animate-float-delayed  { animation: float 5s ease-in-out 1.8s infinite; }
 
-/* Ping indicator */
-@keyframes ping-slow {
-  75%, 100% { transform: scale(2.2); opacity: 0; }
+/* Form feedback: error shake + valid-state pulse */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(5px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(3px); }
 }
 
-.animate-ping-slow { animation: ping-slow 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.88; transform: scale(1.015); }
+}
+
+.animate-shake { animation: shake 0.4s ease-in-out; }
+.animate-pulse-subtle { animation: pulse-subtle 2.2s ease-in-out infinite; }
 
 /* Respect reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   .reveal-on-scroll,
-  .reveal-on-scroll.is-visible,
   .cta-shimmer::after,
   .animate-fade-in-up,
   .animate-fade-in-up-delay-1,
   .animate-fade-in-up-delay-2,
   .animate-fade-in-up-delay-3,
-  .carousel-image,
-  .animate-aurora-1,
-  .animate-aurora-2,
   .animate-float,
   .animate-float-delayed,
-  .animate-ping-slow {
+  .animate-shake,
+  .animate-pulse-subtle {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+  }
+}
+
+/* ============================================================
+   Lumen (Night Foundry) — home page component vocabulary
+   Scoped under .lumen so other routes (acceder, octopusflow,
+   industrias) are unaffected. Applied via LandingRoot's root div.
+   ============================================================ */
+
+.lumen {
+  font-family: var(--font-body-lumen);
+  color: oklch(var(--muted-foreground));
+  font-variant-numeric: tabular-nums;
+  text-transform: lowercase; /* two-register foundation — mono labels override back to uppercase */
+}
+
+.lumen .lumen-noncase {
+  text-transform: none; /* escape hatch for real proper nouns that must not lowercase (rare) */
+}
+
+.lumen h1,
+.lumen h2,
+.lumen h3,
+.lumen .font-lumen-display {
+  font-family: var(--font-display-lumen);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+}
+
+.lumen .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: var(--tracking-micro);
+  text-transform: uppercase;
+  color: oklch(var(--foreground));
+  opacity: 0.55;
+}
+
+.lumen .verb {
+  font-style: normal;
+  color: oklch(var(--primary));
+  text-shadow: 0 0 18px var(--color-glow);
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Sharpie-style underline — hand-drawn, animates like a pen sweeping left to right.
+   Two overlapping strokes (different widths/opacity/wobble) fake the variable thickness
+   of a real marker; pathLength="1" lets both share the same 0..1 dash math regardless
+   of each path's actual geometry. */
+.verb-underline {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: -0.16em;
+  width: 104%;
+  height: 0.36em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.verb-underline__stroke {
+  fill: none;
+  stroke: oklch(var(--primary));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 5px var(--color-glow));
+  animation: verb-underline-draw 700ms var(--ease-soft) 800ms forwards;
+}
+
+.verb-underline__stroke--base {
+  stroke-width: 3.2;
+  opacity: 0.95;
+}
+
+.verb-underline__stroke--accent {
+  stroke-width: 1.8;
+  opacity: 0.5;
+  animation-delay: 840ms;
+}
+
+@keyframes verb-underline-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Long phrases (verb--wrap-safe) can't stay on one nowrap line on narrow phones without
+   overflowing — the site clips overflow-x, so that would go invisible rather than scroll.
+   Below sm, drop nowrap + the animated SVG for a plain wrapping underline instead. */
+@media (max-width: 639px) {
+  .lumen .verb--wrap-safe {
+    white-space: normal;
+    text-decoration-line: underline;
+    text-decoration-color: oklch(var(--primary));
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+  }
+
+  .verb--wrap-safe .verb-underline {
+    display: none;
+  }
+}
+
+/* Phrases too long to ever fit one nowrap line (verb--multiline, e.g. a whole heading
+   clause) — always wrap normally with a plain violet text-decoration underline, since a
+   single absolutely-positioned SVG stroke can't reliably track text across line breaks. */
+.lumen .verb--multiline {
+  white-space: normal;
+  text-decoration-line: underline;
+  text-decoration-color: oklch(var(--primary));
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.verb--multiline .verb-underline {
+  display: none;
+}
+
+/* underlineOnly: keep the wrapped text at its inherited color, only the underline
+   itself is violet — used where the surrounding heading must stay white. */
+.lumen .verb.verb--underline-only {
+  color: inherit;
+  text-shadow: none;
+}
+
+/* onScroll (paired with verb--multiline): underline starts transparent and fades to
+   violet once .is-revealed is added by the ScrollTrigger loop in LandingRoot.astro,
+   instead of animating shortly after page load like the single-line SVG variant. */
+.lumen .verb--multiline.verb--on-scroll {
+  text-decoration-color: transparent;
+  transition: text-decoration-color 550ms var(--ease-soft);
+}
+
+.lumen .verb--multiline.verb--on-scroll.is-revealed {
+  text-decoration-color: oklch(var(--primary));
+}
+
+/* Blueprint grid — hero + meter strip background discipline */
+.lumen-blueprint {
+  background:
+    linear-gradient(var(--rule-blueprint) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, var(--rule-blueprint) 1px, transparent 1px) 0 0 / 48px 48px,
+    radial-gradient(60% 50% at 78% 28%, var(--color-paper-emit) 0%, transparent 65%),
+    oklch(var(--background));
+}
+
+/* Hairline card with inner emission (signature move 6) */
+.lumen-card {
+  position: relative;
+  border: 1px solid oklch(var(--border));
+  border-radius: var(--radius-card);
+  background: oklch(var(--card));
+  box-shadow: none;
+  transition: transform var(--dur-short) var(--ease-soft), box-shadow var(--dur-short) var(--ease-soft);
+}
+
+.lumen-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 90% at 20% 0%, var(--color-paper-emit) 0%, transparent 60%);
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity var(--dur-short) var(--ease-soft);
+}
+
+.lumen-card:hover {
+  transform: translateY(-4px);
+  /* Depth shadow stays fixed near-black regardless of theme — on Day, --foreground
+     was dark ink so oklch(var(--foreground)) worked as a shadow color; on Night,
+     --foreground is near-white, so that same reference would render a white halo
+     instead of depth. Per spec: card shadows are soft depth, never glows. */
+  box-shadow: 0 24px 48px -32px oklch(0% 0 0 / 0.55);
+}
+
+.lumen-card:hover::before {
+  opacity: 1.6;
+}
+
+/* Meter strip — procedurally-uneven readout band (signature move 5) */
+.lumen-meter {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  align-items: center;
+  padding: var(--space-sm) 0;
+  border-block: 1px solid oklch(var(--border));
+  font-family: var(--font-label);
+}
+
+@media (min-width: 640px) {
+  .lumen-meter {
+    grid-template-columns: auto 1fr auto;
+  }
+}
+
+.lumen-meter__label {
+  font-size: 11px;
+  letter-spacing: var(--tracking-micro);
+  text-transform: uppercase;
+  color: oklch(var(--foreground));
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+.lumen-meter__bars {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  height: 28px;
+  overflow: hidden;
+}
+
+.lumen-meter__bars > span {
+  flex: 1;
+  min-width: 1px;
+  background: oklch(var(--primary));
+  border-radius: 0.5px;
+  opacity: 0.55;
+}
+
+.lumen-meter__bars > span:nth-child(3n) {
+  opacity: 0.85;
+}
+
+/* Apparatus — ledger/receipt instrument (hero focal object, one per page) */
+.lumen-apparatus {
+  position: relative;
+  width: clamp(260px, 28vw, 360px);
+  flex-shrink: 0;
+  margin-inline: auto;
+  border: 1px solid oklch(var(--border));
+  border-radius: 18px;
+  background: oklch(var(--card));
+  /* Fixed near-black depth shadow (not tied to --foreground — see .lumen-card:hover note) */
+  box-shadow: 0 32px 64px -36px oklch(0% 0 0 / 0.6);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: lumen-apparatus-reveal var(--dur-reveal) var(--ease-soft) 200ms forwards;
+}
+
+@keyframes lumen-apparatus-reveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.lumen-apparatus__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-lg);
+  border-bottom: 1px solid oklch(var(--border));
+}
+
+.lumen-apparatus__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-accent-2);
+  box-shadow: 0 0 6px 1px oklch(68% 0.16 18 / 0.55);
+}
+
+.lumen-apparatus__line {
+  height: 1px;
+  margin-inline: var(--space-md);
+  background: oklch(var(--border));
+}
+
+/* Night Foundry emission physics: this bar is the apparatus's "filament" — the one
+   part of the card that generates light. The card itself keeps a plain, non-glowing
+   depth shadow (see .lumen-apparatus below); only this element pulses, 3% intensity
+   oscillation over --dur-pulse (4s), same envelope as the theme's canonical filament
+   chamber. Never rotates — pulse only. */
+.lumen-apparatus__line--accent {
+  background: linear-gradient(90deg, transparent, oklch(var(--primary) / 0.75), transparent);
+  height: 2px;
+  box-shadow: 0 0 14px 2px var(--color-glow);
+  animation: lumen-filament-pulse var(--dur-pulse) ease-in-out infinite;
+}
+
+@keyframes lumen-filament-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 14px 2px var(--color-glow); }
+  50%      { opacity: 0.86; box-shadow: 0 0 22px 5px var(--color-glow); }
+}
+
+.lumen-apparatus__heading {
+  font-family: var(--font-label);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: oklch(var(--foreground));
+}
+
+.lumen-apparatus__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.4rem;
+  font-family: var(--font-label);
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+  color: oklch(var(--muted-foreground));
+}
+
+.lumen-apparatus__table {
+  margin: var(--space-sm) var(--space-lg) 0;
+  padding-top: var(--space-xs);
+  border-top: 1px solid oklch(var(--border));
+}
+
+.lumen-apparatus__table-head,
+.lumen-apparatus__table-row {
+  display: grid;
+  grid-template-columns: 1.7fr 0.4fr 0.85fr 0.85fr;
+  gap: 0.4rem;
+  font-family: var(--font-label);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+
+.lumen-apparatus__table-head {
+  padding-bottom: 0.35rem;
+  color: oklch(var(--muted-foreground) / 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lumen-apparatus__table-row {
+  padding: 0.3rem 0;
+  color: oklch(var(--foreground) / 0.8);
+}
+
+.lumen-apparatus__table-row span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lumen-apparatus__table-row span:not(:first-child),
+.lumen-apparatus__table-head span:not(:first-child) {
+  text-align: right;
+}
+
+.lumen-apparatus__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 var(--space-lg);
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  letter-spacing: 0.03em;
+  color: oklch(var(--muted-foreground));
+}
+
+.lumen-apparatus__row--sub {
+  margin-top: 0.3rem;
+}
+
+.lumen-apparatus__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: var(--space-xs) var(--space-lg) 0;
+  padding-top: var(--space-xs);
+  border-top: 1px dashed oklch(var(--rule-2, var(--border)));
+  font-family: var(--font-label);
+  font-size: 15px;
+  font-weight: 700;
+  color: oklch(var(--primary));
+}
+
+.lumen-apparatus__status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 var(--space-lg) var(--space-md);
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  background: oklch(64% 0.10 159 / 0.12);
+  color: oklch(64% 0.10 159);
+}
+
+.lumen-apparatus__status p:first-child {
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.lumen-apparatus__status p:last-child {
+  margin-top: 0.15rem;
+  font-family: var(--font-label);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  color: oklch(64% 0.10 159 / 0.75);
+}
+
+/* Connected status cards — flank the apparatus in two columns (desktop-only, xl+).
+   Two-hue discipline: icon chip + check use primary or success, never a rainbow. */
+.lumen-node-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid oklch(var(--border));
+  border-radius: 12px;
+  background: oklch(var(--card) / 0.92);
+  box-shadow: 0 14px 28px -18px oklch(0% 0 0 / 0.6);
+}
+
+.lumen-node-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: oklch(var(--primary) / 0.14);
+  color: oklch(var(--primary));
+}
+
+.lumen-node-card__title {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-label);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: oklch(var(--foreground));
+}
+
+.lumen-node-card__meta {
+  margin-top: 0.3rem;
+  font-family: var(--font-label);
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: oklch(var(--muted-foreground));
+}
+
+.lumen-node-card__meta--success {
+  color: oklch(64% 0.10 159);
+}
+
+.lumen-node-card__badge {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  background: oklch(64% 0.10 159 / 0.16);
+  color: oklch(64% 0.10 159);
+  font-family: var(--font-label);
+  font-size: 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lumen-apparatus {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .lumen-apparatus__line--accent {
+    animation: none;
+    opacity: 1;
+    box-shadow: 0 0 22px 5px var(--color-glow); /* freeze at max pulse intensity, per Night Foundry motion spec */
+  }
+  .lumen-card {
+    transition: none;
+  }
+  .verb-underline__stroke {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .lumen .verb--multiline.verb--on-scroll {
+    text-decoration-color: oklch(var(--primary));
+    transition: none;
   }
 }

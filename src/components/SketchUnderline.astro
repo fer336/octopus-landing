@@ -1,0 +1,41 @@
+---
+interface Props {
+  /** Set when the underlined phrase is long enough that it can't stay on one line on
+   * narrow phones — below 640px it drops the nowrap + animated SVG for a plain wrapping
+   * underline instead of silently overflowing (the site clips overflow-x, so a too-wide
+   * nowrap span there goes invisible rather than scrolling). */
+  wrapSafe?: boolean;
+  /** Set when the phrase is long enough that it never fits on one line, at any viewport
+   * (e.g. underlining a whole heading clause) — always wraps normally and uses a plain
+   * violet text-decoration underline instead of the single-line animated SVG stroke,
+   * which can't reliably track text that wraps across multiple lines. */
+  multiline?: boolean;
+  /** Keep the wrapped text at its inherited color (e.g. white heading text) instead of
+   * recoloring it violet — only the underline itself becomes violet. */
+  underlineOnly?: boolean;
+  /** Defer the reveal until the phrase scrolls into view, instead of firing shortly
+   * after page load. Wired up by the ScrollTrigger loop in LandingRoot.astro. */
+  onScroll?: boolean;
+}
+const { wrapSafe = false, multiline = false, underlineOnly = false, onScroll = false } = Astro.props;
+const classes = ['verb'];
+if (wrapSafe) classes.push('verb--wrap-safe');
+if (multiline) classes.push('verb--multiline');
+if (underlineOnly) classes.push('verb--underline-only');
+if (onScroll) classes.push('verb--on-scroll');
+---
+<em class={classes.join(' ')}><slot /><svg
+    class="verb-underline"
+    viewBox="0 0 220 20"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    focusable="false"
+  ><path
+      class="verb-underline__stroke verb-underline__stroke--base"
+      pathLength="1"
+      d="M4,11 C18,7 34,14 52,10 C70,6 88,13 106,9 C124,6 142,12 160,8 C176,6 192,11 208,7 Q214,4.5 216,9"
+    /><path
+      class="verb-underline__stroke verb-underline__stroke--accent"
+      pathLength="1"
+      d="M3,13 C20,16 38,9 56,13 C74,17 92,10 110,14 C128,17 146,11 164,14 C180,17 196,12 210,10"
+    /></svg></em>

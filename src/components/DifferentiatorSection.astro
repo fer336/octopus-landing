@@ -1,0 +1,192 @@
+---
+import SketchUnderline from './SketchUnderline.astro';
+
+const rows = [
+  {
+    title: 'pensado para teclado',
+    description: 'Atajos y navegación rápida para vendedores que trabajan todo el día con el sistema.',
+  },
+  {
+    title: 'menos pantallas',
+    description: 'Ventas, cobros, comprobantes y clientes conectados dentro del mismo flujo.',
+  },
+  {
+    title: 'fácil de aprender',
+    description: 'Una interfaz clara para incorporar personal sin semanas de capacitación.',
+  },
+];
+---
+
+<section id="diferenciales" class="lumen relative overflow-hidden bg-night-paper px-4 py-20 sm:px-6 sm:py-28 scroll-mt-24">
+  <div class="relative mx-auto w-full max-w-6xl">
+    <p class="eyebrow" style="color: var(--color-night-ink); opacity: 0.55;">por qué octopustrack</p>
+    <h2 class="mt-6 max-w-xl font-lumen-display text-3xl leading-[1.05] sm:text-4xl lg:text-5xl" style="color: var(--color-night-ink);">
+      un erp que <SketchUnderline>no te hace perder tiempo</SketchUnderline>
+    </h2>
+
+    <div class="mt-12 sm:mt-16">
+      {rows.map((row, index) => (
+        <div
+          class="reveal-on-scroll diff-row grid gap-4 border-t border-white/10 py-7 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-10 sm:py-8"
+          style={`--reveal-delay: ${index * 90}ms`}
+        >
+          <span class="font-mono text-sm text-white/35">0{index + 1}</span>
+          <div>
+            <h3 class="text-lg font-medium" style="color: var(--color-night-ink);">{row.title}</h3>
+            <p class="mt-2 max-w-md text-sm leading-relaxed text-white/60 sm:text-base">{row.description}</p>
+          </div>
+          <div class="w-full sm:w-[200px]">
+            {index === 0 && (
+              <div class="keyboard-demo flex flex-wrap gap-2" aria-hidden="true">
+                {['Ctrl', 'K', 'Enter', 'Esc'].map((key, keyIndex) => (
+                  <kbd class="keyboard-chip" style={`--chip-delay: ${keyIndex * 0.5}s`}>{key}</kbd>
+                ))}
+              </div>
+            )}
+            {index === 1 && (
+              <div class="screens-demo relative h-16 w-full" aria-hidden="true">
+                <div class="screen-rect screen-rect-1"></div>
+                <div class="screen-rect screen-rect-2"></div>
+                <div class="screen-rect screen-rect-3"></div>
+              </div>
+            )}
+            {index === 2 && (
+              <div class="learn-demo flex items-center gap-2" aria-hidden="true">
+                <span class="learn-check">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
+                <span class="learn-bar"><span class="learn-bar-fill"></span></span>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+      <div class="border-t border-white/10"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Keyboard row: looping highlight pulse across kbd chips */
+  .keyboard-chip {
+    display: inline-flex;
+    min-width: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: 1px solid oklch(var(--primary-200) / 0.25);
+    background: rgb(255 255 255 / 0.06);
+    padding: 0.4rem 0.65rem;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: oklch(var(--primary-100) / 0.85);
+    animation: kbd-pulse 3.2s ease-in-out infinite;
+    animation-delay: var(--chip-delay, 0s);
+  }
+
+  @keyframes kbd-pulse {
+    0%, 70%, 100% {
+      background: rgb(255 255 255 / 0.06);
+      border-color: oklch(var(--primary-200) / 0.25);
+      color: oklch(var(--primary-100) / 0.85);
+    }
+    15% {
+      background: oklch(var(--primary-400) / 0.4);
+      border-color: oklch(var(--primary-200) / 0.7);
+      color: white;
+    }
+  }
+
+  /* "Menos pantallas" row: stacked rectangles gently overlapping */
+  .screen-rect {
+    position: absolute;
+    left: 0;
+    height: 2.75rem;
+    width: 88%;
+    border-radius: 0.65rem;
+    border: 1px solid oklch(var(--primary-200) / 0.22);
+    background: rgb(255 255 255 / 0.06);
+    animation: screen-overlap 4.2s ease-in-out infinite;
+  }
+
+  .screen-rect-1 { top: 0; z-index: 1; animation-delay: 0s; }
+  .screen-rect-2 { top: 0.55rem; left: 6%; z-index: 2; animation-delay: 0.35s; }
+  .screen-rect-3 { top: 1.1rem; left: 12%; z-index: 3; animation-delay: 0.7s; }
+
+  @keyframes screen-overlap {
+    0%, 100% { transform: translateY(0); opacity: 0.75; }
+    50% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* "Fácil de aprender" row: checkmark tick-in + progress fill loop */
+  .learn-check {
+    display: inline-flex;
+    height: 1.75rem;
+    width: 1.75rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: oklch(var(--primary-400) / 0.35);
+    color: white;
+  }
+
+  .learn-check svg {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: check-tick-in 3.2s ease-in-out infinite;
+  }
+
+  .learn-bar {
+    display: block;
+    height: 0.4rem;
+    width: 100%;
+    max-width: 9rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.1);
+  }
+
+  .learn-bar-fill {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-radius: 999px;
+    background: oklch(var(--primary-200) / 0.85);
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: bar-fill 3.2s ease-in-out infinite;
+  }
+
+  @keyframes check-tick-in {
+    0% { stroke-dashoffset: 24; }
+    35%, 100% { stroke-dashoffset: 0; }
+  }
+
+  @keyframes bar-fill {
+    0% { transform: scaleX(0); }
+    35%, 100% { transform: scaleX(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .keyboard-chip {
+      animation: none;
+    }
+    .screen-rect {
+      animation: none;
+      transform: none;
+      opacity: 0.9;
+    }
+    .learn-check svg {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+    .learn-bar-fill {
+      animation: none;
+      width: 100%;
+    }
+  }
+</style>

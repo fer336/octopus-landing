@@ -1,0 +1,26 @@
+---
+const stats = [
+  { value: '5', label: 'rubros atendidos' },
+  { value: '6', label: 'módulos integrados' },
+  { value: '1', label: 'sistema, sin planillas sueltas' },
+];
+---
+
+<section class="lumen relative overflow-hidden bg-secondary px-4 py-16 sm:px-6 sm:py-20">
+  <div class="mx-auto w-full max-w-6xl">
+    <div class="grid gap-8 sm:grid-cols-3 sm:divide-x sm:divide-border">
+      {stats.map((stat, index) => (
+        <div class="reveal-on-scroll flex flex-col items-start gap-1 sm:px-8 sm:first:pl-0" style={`--reveal-delay: ${index * 70}ms`}>
+          <span class="font-lumen-display text-stat leading-none text-foreground" style="font-variant-numeric: tabular-nums;">{stat.value}</span>
+          <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted-foreground/70">{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .text-stat {
+    font-size: var(--text-stat);
+  }
+</style>

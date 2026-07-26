@@ -1,41 +1,31 @@
 ---
 const WHATSAPP_URL = 'https://wa.me/5492254596618';
+const year = new Date().getFullYear();
 ---
 
-<footer id="contacto" class="border-t border-border bg-background px-4 py-12 sm:px-6 sm:py-16">
-  <div class="mx-auto flex w-full max-w-6xl flex-col items-center justify-center gap-6">
+<footer class="lumen border-t border-border bg-background px-4 py-14 sm:px-6 sm:py-16">
+  <div class="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 text-center">
+    <p class="font-lumen-display text-2xl text-foreground">octopustrack</p>
+    <p class="max-w-md text-sm leading-relaxed text-muted-foreground">
+      erp de mostrador para ferreterías, distribuidoras, forrajerías, sanitarios y casas de electricidad.
+    </p>
+
     <nav aria-label="Enlaces legales" class="flex flex-wrap items-center justify-center gap-4 text-sm">
-      <a
-        href="/politicas-privacidad.html"
-        class="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-      >
-        Política de privacidad
+      <a href="/politicas-privacidad.html" class="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground">
+        política de privacidad
       </a>
-      <span class="text-muted-foreground/40" aria-hidden="true">•</span>
-      <a
-        href="/politicas-seguridad.html"
-        class="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-      >
-        Política de seguridad
+      <span class="text-muted-foreground/40" aria-hidden="true">·</span>
+      <a href="/politicas-seguridad.html" class="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground">
+        política de seguridad
       </a>
-      <span class="text-muted-foreground/40" aria-hidden="true">•</span>
-      <a
-        href="/industrias/"
-        class="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-      >
-        Industrias
+      <span class="text-muted-foreground/40" aria-hidden="true">·</span>
+      <a href="/industrias/" class="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground">
+        industrias
       </a>
     </nav>
-    <p class="text-xs text-muted-foreground">
-      Contacto:
-      <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-primary transition-colors hover:text-primary/80"
-      >
-        WhatsApp
-      </a>
+
+    <p class="font-mono text-xs uppercase tracking-[0.08em] text-muted-foreground/60">
+      © {year} octopustrack · <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="text-primary transition-colors hover:text-primary/80">whatsapp</a>
     </p>
   </div>
 </footer>
