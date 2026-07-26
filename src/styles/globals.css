@@ -554,7 +554,7 @@ body {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   filter: drop-shadow(0 0 5px var(--color-glow));
-  animation: verb-underline-draw 700ms var(--ease-soft) 800ms forwards;
+  animation: verb-underline-draw 1700ms var(--ease-soft) 800ms forwards;
 }
 
 .verb-underline__stroke--base {
@@ -572,36 +572,20 @@ body {
   to { stroke-dashoffset: 0; }
 }
 
-/* Long phrases (verb--wrap-safe) can't stay on one nowrap line on narrow phones without
-   overflowing — the site clips overflow-x, so that would go invisible rather than scroll.
-   Below sm, drop nowrap + the animated SVG for a plain wrapping underline instead. */
+/* Wrapping variants keep the same two SVG strokes. The underline spans the phrase's
+   complete inline block, so long copy stays inside the viewport without changing medium. */
+.lumen .verb--multiline {
+  display: inline-block;
+  max-width: 100%;
+  white-space: normal;
+}
+
 @media (max-width: 639px) {
   .lumen .verb--wrap-safe {
+    display: inline-block;
+    max-width: 100%;
     white-space: normal;
-    text-decoration-line: underline;
-    text-decoration-color: oklch(var(--primary));
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.2em;
   }
-
-  .verb--wrap-safe .verb-underline {
-    display: none;
-  }
-}
-
-/* Phrases too long to ever fit one nowrap line (verb--multiline, e.g. a whole heading
-   clause) — always wrap normally with a plain violet text-decoration underline, since a
-   single absolutely-positioned SVG stroke can't reliably track text across line breaks. */
-.lumen .verb--multiline {
-  white-space: normal;
-  text-decoration-line: underline;
-  text-decoration-color: oklch(var(--primary));
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.2em;
-}
-
-.verb--multiline .verb-underline {
-  display: none;
 }
 
 /* underlineOnly: keep the wrapped text at its inherited color, only the underline
@@ -611,16 +595,18 @@ body {
   text-shadow: none;
 }
 
-/* onScroll (paired with verb--multiline): underline starts transparent and fades to
-   violet once .is-revealed is added by the ScrollTrigger loop in LandingRoot.astro,
-   instead of animating shortly after page load like the single-line SVG variant. */
-.lumen .verb--multiline.verb--on-scroll {
-  text-decoration-color: transparent;
-  transition: text-decoration-color 550ms var(--ease-soft);
+/* onScroll uses the same dash drawing as the default underline, starting only once the
+   ScrollTrigger loop adds .is-revealed. */
+.verb--on-scroll .verb-underline__stroke {
+  animation: none;
 }
 
-.lumen .verb--multiline.verb--on-scroll.is-revealed {
-  text-decoration-color: oklch(var(--primary));
+.verb--on-scroll.is-revealed .verb-underline__stroke {
+  animation: verb-underline-draw 1700ms var(--ease-soft) forwards;
+}
+
+.verb--on-scroll.is-revealed .verb-underline__stroke--accent {
+  animation-delay: 40ms;
 }
 
 /* Blueprint grid — hero + meter strip background discipline */
@@ -715,7 +701,7 @@ body {
 /* Apparatus — ledger/receipt instrument (hero focal object, one per page) */
 .lumen-apparatus {
   position: relative;
-  width: clamp(260px, 28vw, 360px);
+  width: min(100%, 390px);
   flex-shrink: 0;
   margin-inline: auto;
   border: 1px solid oklch(var(--border));
@@ -737,7 +723,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-sm) var(--space-lg);
+  padding: 0.7rem clamp(1rem, 4vw, 1.25rem);
   border-bottom: 1px solid oklch(var(--border));
 }
 
@@ -780,11 +766,15 @@ body {
   color: oklch(var(--foreground));
 }
 
+.lumen-apparatus__intro {
+  padding: 0.7rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
 .lumen-apparatus__meta {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  margin-top: 0.4rem;
+  gap: 0.1rem;
+  margin-top: 0.25rem;
   font-family: var(--font-label);
   font-size: 9.5px;
   letter-spacing: 0.03em;
@@ -792,49 +782,85 @@ body {
 }
 
 .lumen-apparatus__table {
-  margin: var(--space-sm) var(--space-lg) 0;
-  padding-top: var(--space-xs);
+  margin: 0.65rem clamp(1rem, 4vw, 1.25rem) 0;
+  padding-top: 0.35rem;
   border-top: 1px solid oklch(var(--border));
 }
 
-.lumen-apparatus__table-head,
-.lumen-apparatus__table-row {
+.lumen-apparatus__table-head {
   display: grid;
-  grid-template-columns: 1.7fr 0.4fr 0.85fr 0.85fr;
-  gap: 0.4rem;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
   font-family: var(--font-label);
   font-size: 9px;
   letter-spacing: 0.02em;
-}
-
-.lumen-apparatus__table-head {
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.2rem;
   color: oklch(var(--muted-foreground) / 0.7);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .lumen-apparatus__table-row {
-  padding: 0.3rem 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.15rem 0.75rem;
+  padding: 0.35rem 0;
+  border-top: 1px solid oklch(var(--border) / 0.55);
+  font-family: var(--font-label);
+  font-size: 9px;
+  letter-spacing: 0.02em;
   color: oklch(var(--foreground) / 0.8);
 }
 
-.lumen-apparatus__table-row span:first-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
+.lumen-apparatus__product,
+.lumen-apparatus__line-total {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  min-width: 0;
+}
+
+.lumen-apparatus__product > span,
+.lumen-apparatus__line-total > span {
+  color: oklch(var(--muted-foreground) / 0.72);
+  font-size: 7.5px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.lumen-apparatus__product strong {
+  overflow-wrap: anywhere;
+  font-size: 9px;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.lumen-apparatus__line-total {
+  align-items: flex-end;
+  text-align: right;
   white-space: nowrap;
 }
 
-.lumen-apparatus__table-row span:not(:first-child),
-.lumen-apparatus__table-head span:not(:first-child) {
-  text-align: right;
+.lumen-apparatus__line-total strong {
+  color: oklch(var(--foreground));
+  font-size: 9px;
+}
+
+.lumen-apparatus__item-data {
+  grid-column: 1 / -1;
+  padding-top: 0.08rem;
+  color: oklch(var(--muted-foreground));
+  font-size: 8px;
+  line-height: 1.25;
+  white-space: nowrap;
 }
 
 .lumen-apparatus__row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 0 var(--space-lg);
+  padding: 0 clamp(1rem, 4vw, 1.25rem);
   font-family: var(--font-label);
   font-size: 10.5px;
   letter-spacing: 0.03em;
@@ -842,15 +868,15 @@ body {
 }
 
 .lumen-apparatus__row--sub {
-  margin-top: 0.3rem;
+  margin-top: 0.22rem;
 }
 
 .lumen-apparatus__total {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin: var(--space-xs) var(--space-lg) 0;
-  padding-top: var(--space-xs);
+  margin: 0.35rem clamp(1rem, 4vw, 1.25rem) 0;
+  padding-top: 0.35rem;
   border-top: 1px dashed oklch(var(--rule-2, var(--border)));
   font-family: var(--font-label);
   font-size: 15px;
@@ -858,12 +884,16 @@ body {
   color: oklch(var(--primary));
 }
 
+.lumen-apparatus__accent-wrap {
+  padding: 0.55rem clamp(1rem, 4vw, 1.25rem);
+}
+
 .lumen-apparatus__status {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  margin: 0 var(--space-lg) var(--space-md);
-  padding: 0.65rem 0.8rem;
+  margin: 0 clamp(1rem, 4vw, 1.25rem) 0.75rem;
+  padding: 0.5rem 0.7rem;
   border-radius: 10px;
   background: oklch(64% 0.10 159 / 0.12);
   color: oklch(64% 0.10 159);
@@ -962,11 +992,7 @@ body {
     transition: none;
   }
   .verb-underline__stroke {
-    animation: none;
+    animation: none !important;
     stroke-dashoffset: 0;
-  }
-  .lumen .verb--multiline.verb--on-scroll {
-    text-decoration-color: oklch(var(--primary));
-    transition: none;
   }
 }

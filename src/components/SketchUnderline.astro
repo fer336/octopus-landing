@@ -1,23 +1,18 @@
 ---
 interface Props {
-  /** Set when the underlined phrase is long enough that it can't stay on one line on
-   * narrow phones — below 640px it drops the nowrap + animated SVG for a plain wrapping
-   * underline instead of silently overflowing (the site clips overflow-x, so a too-wide
-   * nowrap span there goes invisible rather than scrolling). */
+  /** Let a long phrase wrap on narrow phones while retaining the shared SVG underline. */
   wrapSafe?: boolean;
-  /** Set when the phrase is long enough that it never fits on one line, at any viewport
-   * (e.g. underlining a whole heading clause) — always wraps normally and uses a plain
-   * violet text-decoration underline instead of the single-line animated SVG stroke,
-   * which can't reliably track text that wraps across multiple lines. */
+  /** Set when the phrase is long enough that it never fits on one line, at any viewport.
+   * It wraps inside an inline block while retaining the shared SVG underline. */
   multiline?: boolean;
   /** Keep the wrapped text at its inherited color (e.g. white heading text) instead of
    * recoloring it violet — only the underline itself becomes violet. */
   underlineOnly?: boolean;
-  /** Defer the reveal until the phrase scrolls into view, instead of firing shortly
-   * after page load. Wired up by the ScrollTrigger loop in LandingRoot.astro. */
+  /** Draw when the phrase enters the viewport. Set to false to opt out of the
+   * ScrollTrigger loop in LandingRoot.astro. */
   onScroll?: boolean;
 }
-const { wrapSafe = false, multiline = false, underlineOnly = false, onScroll = false } = Astro.props;
+const { wrapSafe = false, multiline = false, underlineOnly = false, onScroll = true } = Astro.props;
 const classes = ['verb'];
 if (wrapSafe) classes.push('verb--wrap-safe');
 if (multiline) classes.push('verb--multiline');

@@ -76,7 +76,7 @@ const meterBars = Array.from({ length: METER_TICKS }, (_, i) => {
           <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground/70">comprobante</span>
           <span class="lumen-apparatus__dot"></span>
         </div>
-        <div class="px-6 pt-4">
+        <div class="lumen-apparatus__intro">
           <p class="lumen-apparatus__heading">venta <span class="text-primary">#0025917</span></p>
           <div class="lumen-apparatus__meta">
             <span>23/05/2025 · 14:32:08</span>
@@ -84,18 +84,31 @@ const meterBars = Array.from({ length: METER_TICKS }, (_, i) => {
           </div>
         </div>
         <div class="lumen-apparatus__table">
-          <div class="lumen-apparatus__table-head"><span>producto</span><span>cant</span><span>precio</span><span>total</span></div>
-          <div class="lumen-apparatus__table-row"><span>auriculares bluetooth x1</span><span>1</span><span>$89.900</span><span>$89.900</span></div>
-          <div class="lumen-apparatus__table-row"><span>mouse inalámbrico m2</span><span>1</span><span>$24.500</span><span>$24.500</span></div>
-          <div class="lumen-apparatus__table-row"><span>teclado mecánico tkl</span><span>1</span><span>$59.900</span><span>$59.900</span></div>
+          <div class="lumen-apparatus__table-head"><span>detalle</span><span>total</span></div>
+          <div class="lumen-apparatus__table-row">
+            <div class="lumen-apparatus__product"><span>cód. 966</span><strong>CAÑO AWADUCT 110 X 4.00</strong></div>
+            <div class="lumen-apparatus__line-total"><span>importe</span><strong>$ 23,733.43</strong></div>
+            <p class="lumen-apparatus__item-data">1.00 × $ 23,733.43 · dto. 0%</p>
+          </div>
+          <div class="lumen-apparatus__table-row">
+            <div class="lumen-apparatus__product"><span>cód. 930</span><strong>CAÑO AWADUCT 40 X 0.50</strong></div>
+            <div class="lumen-apparatus__line-total"><span>importe</span><strong>$ 2,022.07</strong></div>
+            <p class="lumen-apparatus__item-data">1.00 × $ 2,022.07 · dto. 0%</p>
+          </div>
+          <div class="lumen-apparatus__table-row">
+            <div class="lumen-apparatus__product"><span>cód. 1816</span><strong>CODO 87º MH (ACUSTIK) 110</strong></div>
+            <div class="lumen-apparatus__line-total"><span>importe</span><strong>$ 121,460.60</strong></div>
+            <p class="lumen-apparatus__item-data">10.00 × $ 12,146.06 · dto. 0%</p>
+          </div>
         </div>
-        <div class="lumen-apparatus__row lumen-apparatus__row--sub"><span>subtotal</span><span>$174.300</span></div>
-        <div class="lumen-apparatus__row lumen-apparatus__row--sub"><span>iva (21%)</span><span>$36.603</span></div>
+        <div class="lumen-apparatus__row lumen-apparatus__row--sub"><span>subtotal / base</span><span>$ 147,216.10</span></div>
+        <div class="lumen-apparatus__row lumen-apparatus__row--sub"><span>bonificación</span><span>0%</span></div>
+        <div class="lumen-apparatus__row lumen-apparatus__row--sub"><span>iva (21%)</span><span>$ 30,915.38</span></div>
         <div class="lumen-apparatus__total">
-          <span>total</span>
-          <span>$210.903</span>
+          <span>importe a pagar</span>
+          <span>$ 178,131.48</span>
         </div>
-        <div class="px-6 py-3">
+        <div class="lumen-apparatus__accent-wrap">
           <div class="lumen-apparatus__line lumen-apparatus__line--accent"></div>
         </div>
         <div class="lumen-apparatus__status">
@@ -112,7 +125,7 @@ const meterBars = Array.from({ length: METER_TICKS }, (_, i) => {
           <span class="lumen-node-card__icon"><Icon name="package" class="h-4 w-4" /></span>
           <div>
             <p class="lumen-node-card__title">stock actualizado<Icon name="checkCircle" class="h-3 w-3 text-[oklch(64%_0.10_159)]" /></p>
-            <p class="lumen-node-card__meta">auriculares bluetooth x1<br />stock 100 → 99</p>
+            <p class="lumen-node-card__meta">CAÑO AWADUCT 110 X 4.00<br />stock 100 → 99</p>
           </div>
         </div>
         <div class="lumen-node-card reveal-on-scroll" style="--reveal-delay: 210ms;">
@@ -120,7 +133,7 @@ const meterBars = Array.from({ length: METER_TICKS }, (_, i) => {
           <div>
             <p class="lumen-node-card__title">caja impactada<Icon name="checkCircle" class="h-3 w-3 text-[oklch(64%_0.10_159)]" /></p>
             <p class="lumen-node-card__meta">efectivo</p>
-            <p class="lumen-node-card__meta lumen-node-card__meta--success">+ $210.903</p>
+            <p class="lumen-node-card__meta lumen-node-card__meta--success">+ $ 178,131.48</p>
           </div>
         </div>
         <div class="lumen-node-card reveal-on-scroll" style="--reveal-delay: 310ms;">
