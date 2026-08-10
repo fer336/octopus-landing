@@ -493,7 +493,6 @@ body {
   font-family: var(--font-body-lumen);
   color: oklch(var(--muted-foreground));
   font-variant-numeric: tabular-nums;
-  text-transform: lowercase; /* two-register foundation — mono labels override back to uppercase */
 }
 
 .lumen .lumen-noncase {
@@ -508,7 +507,6 @@ body {
   font-weight: 400;
   font-style: normal;
   letter-spacing: -0.02em;
-  text-transform: lowercase;
 }
 
 .lumen .eyebrow {

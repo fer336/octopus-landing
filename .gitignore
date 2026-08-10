@@ -9,3 +9,17 @@ npm-debug.log*
 .DS_Store
 excalidraw.log
 videos/
+
+# Artefactos locales / herramientas (no son parte del sitio)
+octopustrack-landing-violeta/
+.claude/
+.agents/
+.impeccable/
+.playwright-mcp/
+.hallmark/
+.mcp.json
+mockup/
+skills-lock.json
+tokens.css
+.atl/.skill-registry.cache.json
+octopus.md
