@@ -1,0 +1,176 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_call:
+    inputs:
+      tag:
+        description: Exact release tag in vX.Y.Z format
+        required: true
+        type: string
+
+env:
+  IMAGE: ghcr.io/fer336/octopus-landing
+  RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: landing-release-${{ inputs.tag || github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-test:
+    name: validate-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate exact SemVer tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Release tag '$RELEASE_TAG' is not valid vX.Y.Z SemVer."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+          fetch-depth: 0
+
+      - name: Verify checkout matches release tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^{commit})" = "$(git rev-parse "${RELEASE_TAG}^{commit}")"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check Astro and TypeScript
+        run: npm run check
+
+      - name: Build production site
+        run: npm run build
+
+  build-and-push:
+    name: build-and-push
+    needs: validate-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push exact-tag image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ env.IMAGE }}:${{ env.RELEASE_TAG }}
+          platforms: linux/amd64
+          no-cache: true
+          build-args: |
+            VITE_OCTOPUS_TRACK_LOGIN_URL=${{ vars.VITE_OCTOPUS_TRACK_LOGIN_URL }}
+            VITE_OCTOPUS_FLOW_LOGIN_URL=${{ vars.VITE_OCTOPUS_FLOW_LOGIN_URL }}
+            VITE_LANDING_CHECKOUT_URL=${{ vars.VITE_LANDING_CHECKOUT_URL }}
+            VITE_LANDING_MP_CHECKOUT_WEBHOOK_URL=${{ vars.VITE_LANDING_MP_CHECKOUT_WEBHOOK_URL }}
+            VITE_LANDING_ASSET_WEBHOOK_URL=${{ vars.VITE_LANDING_ASSET_WEBHOOK_URL }}
+            VITE_VISITOR_WEBHOOK_URL=${{ vars.VITE_VISITOR_WEBHOOK_URL }}
+            APP_VERSION=${{ env.RELEASE_TAG }}
+
+  pin-stack:
+    name: pin-stack
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Pin production stack to exact image tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+          sed -i -E "s|^([[:space:]]*image:[[:space:]]*)${IMAGE}:.*|\1${IMAGE}:${RELEASE_TAG}|" docs/devops/stack.landing.yml
+          sed -i -E "s|^([[:space:]]*-[[:space:]]*APP_VERSION=).*|\1${RELEASE_TAG}|" docs/devops/stack.landing.yml
+
+          grep -qF "image: ${IMAGE}:${RELEASE_TAG}" docs/devops/stack.landing.yml
+          grep -qF -- "- APP_VERSION=${RELEASE_TAG}" docs/devops/stack.landing.yml
+
+      - name: Commit pinned stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "release-bot"
+          git config user.email "release-bot@users.noreply.github.com"
+
+          if git diff --quiet -- docs/devops/stack.landing.yml; then
+            echo "Stack is already pinned to ${RELEASE_TAG}."
+            exit 0
+          fi
+
+          git add docs/devops/stack.landing.yml
+          git commit -m "chore(release): pin landing image to ${RELEASE_TAG}"
+          git push origin HEAD:main
+
+  notify-portainer:
+    name: notify-portainer
+    needs: pin-stack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Portainer stack redeploy
+        shell: bash
+        env:
+          PORTAINER_WEBHOOK_URL: ${{ secrets.PORTAINER_LANDING_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "$PORTAINER_WEBHOOK_URL" ]; then
+            echo "::error::PORTAINER_LANDING_WEBHOOK_URL is not configured."
+            exit 1
+          fi
+          curl -fsS -X POST "$PORTAINER_WEBHOOK_URL"
+
+  verify-health:
+    name: verify-health
+    needs: notify-portainer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Poll production landing until healthy
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://octopustrack.shop/"
+          attempts=18
+          delay=10
+
+          for i in $(seq 1 "$attempts"); do
+            if curl -fsS "$url" >/dev/null; then
+              echo "Production is healthy (attempt $i/$attempts)."
+              exit 0
+            fi
+            echo "Attempt $i/$attempts failed; retrying in ${delay}s."
+            sleep "$delay"
+          done
+
+          echo "::error::Production health check failed after $((attempts * delay)) seconds."
+          exit 1
