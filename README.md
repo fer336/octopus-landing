@@ -22,18 +22,22 @@ El workflow `.github/workflows/ci.yml` ejecuta ambos comandos en cada pull reque
 
 ## Releases y deploy
 
-El workflow `.github/workflows/release.yml` se ejecuta al publicar un GitHub Release con un tag exacto `vX.Y.Z`:
+El deploy sigue una cadena versionada:
 
-1. Valida el tag, instala dependencias y ejecuta los checks y el build de producción.
-2. Publica únicamente la imagen inmutable:
+1. Un merge a `main` activa `.github/workflows/auto-tag.yml`.
+2. Los commits convencionales desde el último tag `vX.Y.Z` determinan el incremento:
+   - `feat` → minor.
+   - `fix` o `perf` → patch.
+   - `!` o `BREAKING CHANGE` → major.
+3. Auto Tag publica el GitHub Release y llama al workflow reutilizable `.github/workflows/release.yml`.
+4. Release valida y construye el sitio, luego publica únicamente la imagen inmutable:
 
    ```txt
    ghcr.io/fer336/octopus-landing:vX.Y.Z
    ```
 
-3. Actualiza `docs/devops/stack.landing.yml` con ese mismo tag y hace un commit `chore(release): pin ...`.
-4. Dispara el webhook de Portainer después de que el stack quedó pinneado.
-5. Verifica `https://octopustrack.shop/` con reintentos acotados.
+5. El workflow actualiza `docs/devops/stack.landing.yml` con ese mismo tag, hace un commit `chore(release): pin ...` y recién entonces dispara el webhook de Portainer.
+6. Después del redeploy verifica `https://octopustrack.shop/` con reintentos acotados.
 
 No se publica ni se despliega `latest`. El archivo de stack versionado es la fuente de verdad de la imagen activa y permite identificar o revertir una versión exacta.
 

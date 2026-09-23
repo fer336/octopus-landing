@@ -1,0 +1,102 @@
+name: Auto Tag Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  auto-tag:
+    name: auto-tag
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, 'chore(release): pin')"
+    outputs:
+      next_tag: ${{ steps.version.outputs.next_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine version bump from conventional commits
+        id: bump
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          last_tag=$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1 || true)
+          if [ -z "$last_tag" ]; then
+            echo "::error::No prior vX.Y.Z tag found. Create the first release tag manually."
+            exit 1
+          fi
+
+          commits=$(git log "${last_tag}..HEAD" --pretty=%s)
+          if [ -z "$commits" ]; then
+            echo "No new commits since ${last_tag}."
+            echo "bump=none" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Commits since ${last_tag}:"
+          echo "$commits"
+
+          bump="none"
+          while IFS= read -r subject; do
+            case "$subject" in
+              *"BREAKING CHANGE"*|*"!:"*) bump="major" ;;
+              feat:*|feat\(*\):*)
+                if [ "$bump" != "major" ]; then bump="minor"; fi
+                ;;
+              fix:*|fix\(*\):*|perf:*|perf\(*\):*)
+                if [ "$bump" = "none" ]; then bump="patch"; fi
+                ;;
+            esac
+          done <<< "$commits"
+
+          echo "Computed bump: $bump"
+          echo "bump=$bump" >> "$GITHUB_OUTPUT"
+          echo "last_tag=$last_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Compute next version
+        id: version
+        if: steps.bump.outputs.bump != 'none'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          version="${{ steps.bump.outputs.last_tag }}"
+          version="${version#v}"
+          IFS='.' read -r major minor patch <<< "$version"
+
+          case "${{ steps.bump.outputs.bump }}" in
+            major) major=$((major + 1)); minor=0; patch=0 ;;
+            minor) minor=$((minor + 1)); patch=0 ;;
+            patch) patch=$((patch + 1)) ;;
+          esac
+
+          next_tag="v${major}.${minor}.${patch}"
+          echo "Next tag: $next_tag"
+          echo "next_tag=$next_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub release
+        if: steps.bump.outputs.bump != 'none'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release create "${{ steps.version.outputs.next_tag }}" \
+            --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" \
+            --title "${{ steps.version.outputs.next_tag }}" \
+            --generate-notes
+
+  release:
+    name: release
+    needs: auto-tag
+    if: needs.auto-tag.outputs.next_tag != ''
+    uses: ./.github/workflows/release.yml
+    with:
+      tag: ${{ needs.auto-tag.outputs.next_tag }}
+    secrets: inherit
