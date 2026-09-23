@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import SketchUnderline from './SketchUnderline.astro';
+import { DEMO_WHATSAPP_URL } from '../lib/contact';
 
 // Meter-strip bar heights — procedural envelope (sine), not decorative noise.
 // Represents no invented metric; it is a measured-instrument motif per Lumen's
@@ -31,10 +32,10 @@ const meterBars = Array.from({ length: METER_TICKS }, (_, i) => {
       </p>
 
       <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:items-center">
-        <button type="button" data-open-demo-modal class="inline-flex items-center justify-center gap-2 rounded-[10px] bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90 active:bg-primary/80">
+        <a href={DEMO_WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-[10px] bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90 active:bg-primary/80">
           solicitar demo
           <Icon name="arrowRight" class="h-4 w-4" />
-        </button>
+        </a>
         <a data-scroll-target="producto" href="#producto" class="inline-flex items-center justify-center gap-2 rounded-[10px] border border-border px-6 py-3.5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-card active:bg-secondary">
           ver cómo funciona
         </a>
