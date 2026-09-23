@@ -11,11 +11,14 @@ npm install
 npm run dev
 ```
 
-## Build
+## Verificación
 
 ```bash
+npm run check
 npm run build
 ```
+
+El workflow `.github/workflows/ci.yml` ejecuta ambos comandos en cada pull request hacia `main` y en cada push a `main`.
 
 ## Deploy
 

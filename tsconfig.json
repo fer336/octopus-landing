@@ -7,5 +7,5 @@
     }
   },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "dist-landing", "node_modules", "_legacy"]
+  "exclude": ["dist", "dist-landing", "node_modules", "_legacy", "videos"]
 }
