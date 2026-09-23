@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { DEMO_WHATSAPP_URL } from '../lib/contact';
 
 const steps = [
   { number: '01', text: 'Contanos cómo trabaja tu comercio' },
@@ -25,10 +26,10 @@ const steps = [
     </div>
 
     <div class="reveal-on-scroll mt-14 flex justify-center sm:mt-16">
-      <button type="button" data-open-demo-modal class="inline-flex items-center justify-center gap-2 rounded-[10px] bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90 active:bg-primary/80 sm:min-w-[220px]">
+      <a href={DEMO_WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-[10px] bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90 active:bg-primary/80 sm:min-w-[220px]">
         agendar demostración
         <Icon name="arrowRight" class="h-4 w-4" />
-      </button>
+      </a>
     </div>
   </div>
 </section>
